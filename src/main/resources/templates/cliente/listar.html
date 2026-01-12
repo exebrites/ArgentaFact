@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}"> <!-- APUNTA A TU ARCHIVO BASE -->
+
+<head>
+    <title>Clientes</title>
+    <!-- Puedes añadir CSS específico para index aquí si usas layout:fragment="styles" -->
+</head>
+
+<body>
+
+    <!-- ZONA CLAVE: Este contenido se inyecta en el fragmento "content" de la base -->
+    <section layout:fragment="content">
+        <h1>¡Bienvenido a la página de clientes!</h1>
+        <table class="table">
+            <thead>
+                <tr>
+
+                    <th>Nombre</th>
+
+                </tr>
+            </thead>
+            <tbody th:each="cliente : ${clientes}">
+                <tr>
+
+                    <td th:text="${cliente.nombre}"></td>
+
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+</body>
+
+</html>
