@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Título dinámico -->
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">
+        Mi App
+    </title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS personalizado común -->
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+
+    <!-- Espacio para CSS específico de cada vista -->
+    <th:block layout:fragment="styles" />
+</head>
+
+<body>
+
+
+    <div class="container-fluid p-0">
+        <!-- Header incluido -->
+        <header th:insert="~{partials/header :: header}"></header>
+
+        <!-- Contenido principal -->
+        <main class="container mt-4">
+            <div layout:fragment="content">
+                <!-- Contenido por defecto (solo se muestra si la vista hija no define el fragmento) -->
+                <div class="alert alert-warning">
+                    No se ha definido contenido para esta página.
+                </div>
+            </div>
+        </main>
+
+
+
+        <!-- Incluir footer -->
+        <footer th:insert="~{partials/footer :: footer}"></footer>
+    </div>
+
+    <!-- Bootstrap JS Bundle con Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
+    <!-- jQuery (opcional) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Espacio para JS específico de cada vista -->
+    <!-- <th:block layout:fragment="scripts" /> -->
+
+    <!-- Scripts comunes -->
+    <!-- <script th:src="@{/js/app.js}"></script> -->
+</body>
+
+</html>
