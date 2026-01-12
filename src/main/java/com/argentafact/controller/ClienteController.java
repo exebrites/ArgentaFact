@@ -7,17 +7,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.argentafact.model.Cliente;
-import com.argentafact.repository.ClienteRepository;
+import com.argentafact.service.ClienteService;
 
 @Controller
 @RequestMapping("/clientes")
 public class ClienteController {
     @Autowired
-    private ClienteRepository clienteRepository;
+    private ClienteService clienteService;
 
     @GetMapping("/")
     public String listarClientes(Model model) {
-        var clientes = clienteRepository.findAll();
+        var clientes = clienteService.buscarTodos();
         model.addAttribute("clientes", clientes);
         return "cliente/listar";
     }
@@ -25,7 +25,7 @@ public class ClienteController {
     @GetMapping("/nuevo")
     public String nuevoCliente() {
         Cliente cliente = new Cliente("Exequiel");
-        clienteRepository.save(cliente);
+        clienteService.guardar(cliente);
         return "redirect:/clientes/";
     }
 
