@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mi App -
+        <th:block layout:title-pattern="$CONTENT_TITLE" />
+    </title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  
+  
+
+    <!-- Espacio para CSS específico de cada vista -->
+    <th:block layout:fragment="styles" />
+</head>
+
+<body>
+
+    <header>
+        <!-- Aquí puedes poner tu barra de navegación Bootstrap común a todas las páginas -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <!-- ... contenido de la navbar ... -->
+        </nav>
+    </header>
+
+    <main class="container mt-4">
+        <!-- ZONA CLAVE: Aquí se inyectará el contenido de las vistas hijas -->
+        <section layout:fragment="content">
+            <!-- Contenido por defecto si no se define en la vista hija -->
+        </section>
+    </main>
+
+    <footer>
+        <!-- Pie de página común -->
+        <p>&copy; 2024 Mi App</p>
+    </footer>
+
+    <!-- CDN de Bootstrap JS (solo aquí) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
+    <!-- Espacio para JS específico de cada vista -->
+    <th:block layout:fragment="scripts" />
+
+</body>
+
+</html>
