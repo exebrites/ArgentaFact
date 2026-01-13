@@ -1,5 +1,6 @@
 package com.argentafact.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -15,23 +16,24 @@ public class Cliente {
     private String nombre;
     private String apellido;
     private String cuit;
+    @Column(nullable = true)
     private String direccion;
+    @Column(nullable = true)
     private String telefono;
+    @Column(nullable = true)
     private Double saldo;
     private CondicionFiscal condicionFiscal;
 
     public Cliente() {
     }
 
-    public Cliente(String nombre, String apellido, String cuit, String direccion, String telefono, Double saldo,
+    public Cliente(String nombre, String apellido, String cuit,
             CondicionFiscal condicionFiscal) {
 
         this.nombre = nombre;
         this.apellido = apellido;
         this.cuit = cuit;
-        this.direccion = direccion;
-        this.telefono = telefono;
-        this.saldo = saldo;
+
         this.condicionFiscal = condicionFiscal;
     }
 
