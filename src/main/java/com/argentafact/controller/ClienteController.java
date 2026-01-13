@@ -4,10 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.argentafact.model.Cliente;
+import com.argentafact.model.CondicionFiscal;
 import com.argentafact.service.ClienteService;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequestMapping("/clientes")
@@ -22,11 +26,33 @@ public class ClienteController {
         return "cliente/listar";
     }
 
-    @GetMapping("/nuevo")
-    public String nuevoCliente() {
-        Cliente cliente = new Cliente("Exequiel");
+    @GetMapping("/crear")
+    public String nuevoCliente(Model model) {
+        var cliente = new Cliente();
+        model.addAttribute("cliente", cliente);
+        model.addAttribute("condicionesFiscales", CondicionFiscal.values());
+        return "cliente/nuevoCliente";
+    }
+
+    @PostMapping("/")
+    public String agregarCliente(@ModelAttribute("cliente") Cliente cliente, Model model) {
         clienteService.guardar(cliente);
         return "redirect:/clientes/";
+    }
+
+    @GetMapping("/{id}")
+    public String verCliente(@PathVariable("id") Integer id, Model model) {
+        var cliente = clienteService.buscarPorId(id);
+        model.addAttribute("cliente", cliente);
+        return "cliente/verCliente";
+    }
+
+    @GetMapping("/{id}/editar")
+    public String editarCliente(@PathVariable("id") Integer id, Model model) {
+        var cliente = clienteService.buscarPorId(id);
+        model.addAttribute("cliente", cliente);
+        model.addAttribute("condicionesFiscales", CondicionFiscal.values());
+        return "cliente/actualizarCliente";
     }
 
 }

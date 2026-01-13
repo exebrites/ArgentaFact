@@ -23,4 +23,7 @@ public class ClienteService {
     public void guardar(Cliente cliente) {
         clienteRepository.save(cliente);
     }
+
+    public Cliente buscarPorId(Integer id) {
+        return clienteRepository.findByIdCliente(id);}
 }
