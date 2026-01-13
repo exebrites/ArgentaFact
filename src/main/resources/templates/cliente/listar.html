@@ -35,7 +35,11 @@
                             <td th:text="${cliente.apellido}"></td>
                             <td th:text="${cliente.cuit}"></td>
                             <td th:text="${cliente.condicionFiscal}"></td>
-                            <td><a th:href="@{/clientes/{id}(id=${cliente.idCliente})}" class="btn btn-primary">Ver</a></td>
+                            <td><a th:href="@{/clientes/{id}(id=${cliente.idCliente})}" class="btn btn-primary">Ver</a>
+                            </td>
+                            <td><a th:href="@{/clientes/{id}/editar(id=${cliente.idCliente})}"
+                                    class="btn btn-warning">Editar</a></td>
+
                         </tr>
                     </tbody>
                 </table>
