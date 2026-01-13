@@ -11,23 +11,28 @@ import jakarta.persistence.GenerationType;
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idCliente;
     private String nombre;
+    private String apellido;
+    private String cuit;
+    private String direccion;
+    private String telefono;
+    private Double saldo;
+    private CondicionFiscal condicionFiscal;
 
     public Cliente() {
     }
 
-    public Cliente(String nombre) {
+    public Cliente(String nombre, String apellido, String cuit, String direccion, String telefono, Double saldo,
+            CondicionFiscal condicionFiscal) {
 
         this.nombre = nombre;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.apellido = apellido;
+        this.cuit = cuit;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.saldo = saldo;
+        this.condicionFiscal = condicionFiscal;
     }
 
     public String getNombre() {
@@ -37,4 +42,68 @@ public class Cliente {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public Long getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Long idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getCuit() {
+        return cuit;
+    }
+
+    public void setCuit(String cuit) {
+        this.cuit = cuit;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public Double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(Double saldo) {
+        this.saldo = saldo;
+    }
+
+    public CondicionFiscal getCondicionFiscal() {
+        return condicionFiscal;
+    }
+
+    public void setCondicionFiscal(CondicionFiscal condicionFiscal) {
+        this.condicionFiscal = condicionFiscal;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente [idCliente=" + idCliente + ", nombre=" + nombre + ", apellido=" + apellido + ", cuil=" + cuit
+                + ", direccion=" + direccion + ", telefono=" + telefono + ", saldo=" + saldo + ", condicionFiscal="
+                + condicionFiscal + "]";
+    }
+
 }
