@@ -12,6 +12,7 @@ import com.argentafact.model.Cliente;
 import com.argentafact.model.CondicionFiscal;
 import com.argentafact.service.ClienteService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 @RequestMapping("/clientes")
@@ -53,6 +54,13 @@ public class ClienteController {
         model.addAttribute("cliente", cliente);
         model.addAttribute("condicionesFiscales", CondicionFiscal.values());
         return "cliente/actualizarCliente";
+    }
+
+    @PutMapping("/{id}")
+    public String actualizarCliente(@PathVariable("id") Integer id,
+            @ModelAttribute("cliente") Cliente cliente) {
+        clienteService.actualizarClientePorId((long) id, cliente);
+        return "redirect:/clientes/";
     }
 
 }
