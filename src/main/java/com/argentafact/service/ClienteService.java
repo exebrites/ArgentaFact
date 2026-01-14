@@ -25,5 +25,21 @@ public class ClienteService {
     }
 
     public Cliente buscarPorId(Integer id) {
-        return clienteRepository.findByIdCliente(id);}
+        return clienteRepository.findByIdCliente(id);
+    }
+   
+
+    public void actualizarClientePorId(Long id, Cliente cliente) {
+         clienteRepository.findById(id).
+            ifPresent(clienteObtenida -> {
+                clienteObtenida.setNombre(cliente.getNombre());
+                clienteObtenida.setApellido(cliente.getApellido());
+                clienteObtenida.setCuit(cliente.getCuit());
+                clienteObtenida.setDireccion(cliente.getDireccion());
+                clienteObtenida.setTelefono(cliente.getTelefono());
+                // clienteObtenida.setSaldo(cliente.getSaldo());
+                clienteObtenida.setCondicionFiscal(cliente.getCondicionFiscal());
+                clienteRepository.save(clienteObtenida);
+            });
+    }
 }
