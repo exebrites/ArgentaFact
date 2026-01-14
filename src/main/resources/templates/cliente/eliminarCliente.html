@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
+
+<head>
+    <title>Eliminar cliente</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <h1>Eliminar cliente</h1>
+        <div class="alert alert-danger">
+            <p>¿Estás seguro de que deseas eliminar al cliente <span th:text="${cliente.nombre}"> </span>?</p>
+            <form th:action="@{/clientes/{id}(id=${cliente.idCliente})}" th:method="delete">
+                <input type="submit" value="Eliminar" class="btn btn-danger">
+            </form>
+            <br>
+            <a th:href="@{/clientes/}" class="btn btn-primary">Cancelar</a>
+        </div>
+    </section>
+</body>
+
+</html>
