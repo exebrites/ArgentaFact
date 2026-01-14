@@ -8,6 +8,6 @@ import com.argentafact.model.Cliente;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
-    Cliente findByIdCliente(Integer id);
+    Cliente findByIdCliente(Long id);
 
 }

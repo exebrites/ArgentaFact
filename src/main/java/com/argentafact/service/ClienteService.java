@@ -24,7 +24,7 @@ public class ClienteService {
         clienteRepository.save(cliente);
     }
 
-    public Cliente buscarPorId(Integer id) {
+    public Cliente buscarPorId(Long id) {
         return clienteRepository.findByIdCliente(id);
     }
    
@@ -41,5 +41,8 @@ public class ClienteService {
                 clienteObtenida.setCondicionFiscal(cliente.getCondicionFiscal());
                 clienteRepository.save(clienteObtenida);
             });
+    }
+    public void eliminarClientePorId(Long id ){
+        clienteRepository.deleteById(id);
     }
 }

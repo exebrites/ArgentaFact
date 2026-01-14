@@ -3,6 +3,7 @@ package com.argentafact.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,14 +43,14 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    public String verCliente(@PathVariable("id") Integer id, Model model) {
+    public String verCliente(@PathVariable("id") Long id, Model model) {
         var cliente = clienteService.buscarPorId(id);
         model.addAttribute("cliente", cliente);
         return "cliente/verCliente";
     }
 
     @GetMapping("/{id}/editar")
-    public String editarCliente(@PathVariable("id") Integer id, Model model) {
+    public String editarCliente(@PathVariable("id") Long id, Model model) {
         var cliente = clienteService.buscarPorId(id);
         model.addAttribute("cliente", cliente);
         model.addAttribute("condicionesFiscales", CondicionFiscal.values());
@@ -60,6 +61,19 @@ public class ClienteController {
     public String actualizarCliente(@PathVariable("id") Integer id,
             @ModelAttribute("cliente") Cliente cliente) {
         clienteService.actualizarClientePorId((long) id, cliente);
+        return "redirect:/clientes/";
+    }
+
+    @GetMapping("/{id}/eliminar")
+    public String eliminarCliente(@PathVariable Long id, Model model) {
+        var cliente = clienteService.buscarPorId(id);
+        model.addAttribute("cliente", cliente);
+        return "cliente/eliminarCliente";
+    }
+
+    @DeleteMapping("/{id}")
+    public String bajaCliente(@PathVariable("id") Long id) {
+        clienteService.eliminarClientePorId(id);
         return "redirect:/clientes/";
     }
 
