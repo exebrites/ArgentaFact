@@ -17,4 +17,7 @@ public class FacturaService {
     public List<Factura> obtenerFacturas (){
         return facturaRespository.findAll();
     }
+    public void guardarFactura(Factura factura){
+        facturaRespository.save(factura);
+    }
 }
