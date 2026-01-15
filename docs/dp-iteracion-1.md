@@ -142,11 +142,25 @@ Comprobante "1" --> "1" HistoricoFiscal
 ```
 
 # Wireframe y caso de uso​
+
+## Inicio de sesion
+![Inicio de sesion](img/inicio_de_sesion.png)
+## Dashboard
+![Dashboard](img/dasboard_.png)
+## Facturacion
+### cargar factura
+![Facturaci n](img/facturacion.png)
+### preview factura
+![Previsual Facturacion](img/preview_facturacion.png)
+### formato pdf
+![Formato PDF](img/formato_pdf.png)
 ## Gestion clientes
 ### Listar cliente
 ![img/listado_de_clientes.png](img/listado_de_clientes.png)
 ### Crear cliente
 ![img/crear_cliente.png](img/crear_cliente.png)
+
+
 # Backlog de iteraciones​
 ​
 # Tareas
