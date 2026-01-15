@@ -33,7 +33,7 @@ class Servicio {
 class Factura {
   -idFactura: Long
   -numeroFactura: string
-  -fechaEmision: date
+  -fechaEmision: LocalDate
   -tipoFactura: TipoFactura
   -total: decimal
   -estado: EstadoFactura
