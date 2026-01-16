@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
+
+<head>
+    <title>Detalle de factura</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <h1>Detalle de factura</h1>
+        <form th:action="@{/agregarAlCarrito}" th:method="get">
+
+            <div class="form-group">
+                <label for="servicios">Servicios</label>
+                <select class="form-control" id="servicios" name="nombre">
+                    <option value="">Seleccione un servicio</option>
+                    <option th:each="servicio : ${servicios}" th:value="${servicio.idServicio}"
+                        th:text="${servicio.nombre}">
+                    </option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Agregar</button>
+        </form>
+    </section>
+</body>
+
+</html>

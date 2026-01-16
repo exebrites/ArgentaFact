@@ -12,10 +12,17 @@ public class ServicioService {
     public ServicioService(ServicioRepository servicioRepository) {
         this.servicioRepository = servicioRepository;
     }
+
     public void guardar(Servicio servicio) {
         servicioRepository.save(servicio);
     }
+
     public List<Servicio> buscarTodos() {
         return servicioRepository.findAll();
+    }
+
+    public Servicio findById(Long id) {
+
+        return servicioRepository.findByIdServicio(id);
     }
 }

@@ -1,6 +1,8 @@
 package com.argentafact.service;
 
  
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import com.argentafact.model.Empleado;
 import com.argentafact.repository.EmpleadoRepository;
@@ -16,7 +18,7 @@ public class EmpleadoService {
     public void guardar(Empleado empleado) {
         empleadoRepository.save(empleado);
     }
-    public Object buscarTodos() {
+    public List<Empleado> buscarTodos() {
         return empleadoRepository.findAll();
     }
 }

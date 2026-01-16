@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
+
+<head>
+    <title>Nueva Factura</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <h1>Nueva Factura</h1>
+        <form th:action="@{/facturas/}" th:method="post" th:object="${factura}">
+
+            <div class="form-group">
+                <label for="fechaEmision">Fecha de Emisi n</label>
+                <input type="date" class="form-control" th:field="*{fechaEmision}" required>
+            </div>
+            <div class="form-group">
+                <label for="tipoFactura">Tipo de Factura</label>
+                <select th:field="*{tipoFactura}" class="form-control" required>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cliente">Cliente</label>
+                <select th:field="*{cliente}" class="form-control" required>
+                    <option value="">Seleccione un cliente</option>
+                    <option th:each="cliente : ${clientes}" th:value="${cliente.idCliente}"
+                        th:text="${cliente.nombre} + ' ' + ${cliente.apellido} + ' - ' + ${cliente.cuit}">
+                    </option>
+                </select>
+            </div>
+            <br>
+            <hr>
+            <strong>Servicios</strong>
+            <a th:href="@{/detalleProducto}">Agregar servicio</a>
+            <p>Servicios prestados </p>
+
+            <!-- <div th:if="${not #lists.isEmpty(detalle.productosSeleccionados)}">
+                <h2>Productos en el carrito:</h2>
+                <ul>
+                    <li th:each="producto : ${detalle.productosSeleccionados}">
+                        Producto: <span th:text="${producto}">Nombre de ejemplo</span>
+                    </li>
+                </ul>
+            </div> -->
+
+            <!-- <div th:if="${#lists.isEmpty(detalle.productosSeleccionados)}">
+                <p>Tu carrito está vacío.</p>
+            </div> -->
+            <br>
+            <br>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+    </section>
+</body>
+
+</html>

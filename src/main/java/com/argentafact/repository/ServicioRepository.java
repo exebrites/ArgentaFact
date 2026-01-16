@@ -6,5 +6,6 @@ import com.argentafact.model.Servicio;
 
 @Repository
 public interface ServicioRepository extends JpaRepository<Servicio, Long> {
-    
+
+    Servicio findByIdServicio(Long id);
 }

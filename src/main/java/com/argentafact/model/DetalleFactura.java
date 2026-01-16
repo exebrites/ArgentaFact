@@ -1,5 +1,7 @@
 package com.argentafact.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,13 +18,6 @@ public class DetalleFactura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDetalleFactura;
 
-    // TODO relacionar con factura y servicio
-    // private Long factura;
-    // // private Long factura;
-    // @ManyToOne // Indica que muchos empleados pertenecen a un departamento
-    // @JoinColumn(name = "departamento_id", nullable = false) // Especifica la
-    // columna de la clave foránea
-    // private Departamento departamento;
     @ManyToOne
     @JoinColumn(name = "id_factura", nullable = false)
     private Factura factura;
@@ -30,4 +25,42 @@ public class DetalleFactura {
     @ManyToOne
     @JoinColumn(name = "id_servicio", nullable = false)
     private Servicio servicio;
+
+    private BigDecimal subtotal;
+
+    public DetalleFactura() {
+    }
+
+    public Long getIdDetalleFactura() {
+        return idDetalleFactura;
+    }
+
+    public void setIdDetalleFactura(Long idDetalleFactura) {
+        this.idDetalleFactura = idDetalleFactura;
+    }
+
+    public Factura getFactura() {
+        return factura;
+    }
+
+    public void setFactura(Factura factura) {
+        this.factura = factura;
+    }
+
+    public Servicio getServicio() {
+        return servicio;
+    }
+
+    public void setServicio(Servicio servicio) {
+        this.servicio = servicio;
+    }
+
+    public BigDecimal getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
+
 }
