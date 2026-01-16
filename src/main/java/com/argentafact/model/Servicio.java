@@ -1,24 +1,26 @@
 package com.argentafact.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.GenerationType;
 
 @Entity
 @Table(name = "servicios")
 public class Servicio {
     @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idServicio;
-    private String nombre;
+    private String nombreServicio;
+    private String descripcion;
+    private BigDecimal precio;
 
     public Servicio() {
-    }
-
-    public Servicio(String nombre) {
-        this.nombre = nombre;
     }
 
     public Long getIdServicio() {
@@ -29,12 +31,34 @@ public class Servicio {
         this.idServicio = idServicio;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreServicio() {
+        return nombreServicio;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreServicio(String nombreServicio) {
+        this.nombreServicio = nombreServicio;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public BigDecimal getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(BigDecimal precio) {
+        this.precio = precio;
+    }
+
+    @Override
+    public String toString() {
+        return "Servicio [idServicio=" + idServicio + ", nombreServicio=" + nombreServicio + ", descripcion="
+                + descripcion + ", precio=" + precio + "]";
     }
 
 }
