@@ -29,34 +29,7 @@ public class DetalleFacturaController {
         return new DetalleDeFacturaFormulario();
     }
 
-    @GetMapping("/detalleProducto")
-    public String verDetalleProducto(Model model) {
-        // El objeto "carrito" se inyecta automáticamente desde la sesión al modelo.
-        // model.addAttribute("carrito", ...); // No hace falta añadirlo explícitamente
-        // si usas @SessionAttributes
 
-        var servicios = servicioService.buscarTodos();
-        model.addAttribute("servicios", servicios);
-        return "factura/vistaDetalleFactura"; // Renderiza una vista HTML/JSP/Thymeleaf
-    }
-
-    /**
-     * Método para añadir un producto al carrito almacenado en la sesión.
-     */
-    @GetMapping("/agregarAlCarrito")
-    public String agregarProducto(@RequestParam("nombre") Long nombreServicio,
-            @ModelAttribute("detalle") DetalleDeFacturaFormulario detalle) {
-
-        // Spring recupera automáticamente el 'carrito' de la sesión,
-        // lo modifica con la nueva información.
-        var servicio = servicioService.findById(nombreServicio);
-
-        detalle.agregarServicio(servicio.getNombre(), 50.0);
-
-        // Al finalizar el método, Spring persiste los cambios del 'carrito' en la
-        // sesión.
-        return "redirect:/facturas/crear";
-    }
 
     /**
      * Método para "finalizar" la sesión de compra y limpiar el atributo específico.

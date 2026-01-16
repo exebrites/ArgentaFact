@@ -36,25 +36,26 @@
             <br>
             <hr>
             <strong>Servicios</strong>
-            <a th:href="@{/detalleProducto}">Agregar servicio</a>
+            <a th:href="@{/facturas/detalleFactura}">Agregar servicio</a>
             <p>Servicios prestados </p>
 
-            <!-- <div th:if="${not #lists.isEmpty(detalle.productosSeleccionados)}">
-                <h2>Productos en el carrito:</h2>
-                <ul>
-                    <li th:each="producto : ${detalle.productosSeleccionados}">
-                        Producto: <span th:text="${producto}">Nombre de ejemplo</span>
+            <div>
+                <ul th:if="${not #lists.isEmpty(detalle.getServiciosSeleccionados())}">
+                    <li th:each="servicio: ${detalle.getServiciosSeleccionados()}">
+                        Producto: <span th:text="${servicio.getNombre()}">Nombre de ejemplo</span>
+                        <br>
+                        Producto: <span th:text="${servicio.getDescripcion()}">Nombre de ejemplo</span>
                     </li>
                 </ul>
-            </div> -->
+                <p th:if="${#lists.isEmpty(detalle.getServiciosSeleccionados())}">No hay servicios seleccionados</p>
 
-            <!-- <div th:if="${#lists.isEmpty(detalle.productosSeleccionados)}">
-                <p>Tu carrito está vacío.</p>
-            </div> -->
+            </div>
             <br>
             <br>
             <button type="submit" class="btn btn-primary">Guardar</button>
         </form>
+
+
     </section>
 </body>
 

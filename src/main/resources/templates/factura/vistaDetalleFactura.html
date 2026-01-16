@@ -9,14 +9,14 @@
 <body>
     <section layout:fragment="content">
         <h1>Detalle de factura</h1>
-        <form th:action="@{/agregarAlCarrito}" th:method="get">
+        <form th:action="@{/facturas/agregarDetalleFactura}" th:method="get">
 
             <div class="form-group">
                 <label for="servicios">Servicios</label>
-                <select class="form-control" id="servicios" name="nombre">
+                <select class="form-control" id="servicios" name="idServicio">
                     <option value="">Seleccione un servicio</option>
                     <option th:each="servicio : ${servicios}" th:value="${servicio.idServicio}"
-                        th:text="${servicio.nombre}">
+                        th:text="${servicio.nombreServicio}">
                     </option>
                 </select>
             </div>

@@ -1,5 +1,7 @@
 package com.argentafact.controller;
 
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +20,10 @@ public class ServicioController {
     @GetMapping("/")
     public String listarServicios(Model model) {
         // crear servicio
-        var servicio = new Servicio("Limpieza");
+        var servicio = new Servicio();
+        servicio.setNombreServicio("servicio de prueba");
+        servicio.setDescripcion("descripcion de servicio es prueba");
+        servicio.setPrecio(new BigDecimal(100));
         servicioService.guardar(servicio);
         // listar
         var servicios = servicioService.buscarTodos();
