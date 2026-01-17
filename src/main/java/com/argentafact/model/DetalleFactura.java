@@ -63,4 +63,11 @@ public class DetalleFactura {
         this.subtotal = subtotal;
     }
 
+    @Override
+    public String toString() {
+        return "DetalleFactura [idDetalleFactura=" + idDetalleFactura + ", facturaId="
+                + (factura != null ? factura.getIdFactura() : "null") + ", servicio="
+                + servicio + ", subtotal=" + subtotal + "]";
+    }
+
 }

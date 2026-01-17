@@ -1,17 +1,16 @@
 package com.argentafact.controller;
 
-import java.math.BigDecimal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.argentafact.model.DetalleDeFacturaFormulario;
+import com.argentafact.model.DetalleFactura;
 import com.argentafact.model.EstadoFactura;
 import com.argentafact.model.Factura;
+import com.argentafact.model.FacturaSesion;
 import com.argentafact.model.Linea;
 import com.argentafact.service.ClienteService;
 import com.argentafact.service.EmpleadoService;
@@ -27,7 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequestMapping("/facturas")
-@SessionAttributes({ "detalle", "datosFactura" })
+@SessionAttributes({ "detalle", "facturaSesion" })
 public class FacturaController {
     @Autowired
     private FacturaService facturaService;
@@ -43,9 +42,9 @@ public class FacturaController {
         return new DetalleDeFacturaFormulario();
     }
 
-    @ModelAttribute("datosFactura")
-    public Factura setUpFactura() {
-        return new Factura();
+    @ModelAttribute("facturaSesion")
+    public FacturaSesion setUpDeFacturaSesion() {
+        return new FacturaSesion();
     }
 
     @GetMapping("/")
@@ -53,17 +52,6 @@ public class FacturaController {
         var facturas = facturaService.obtenerFacturas();
         model.addAttribute("facturas", facturas);
         return "factura/listar";
-    }
-
-    @PostMapping("/")
-    public String agregarFactura(@ModelAttribute("factura") Factura factura) {
-        // TODO : obtener empleado autenticado
-        factura.setEmpleado(empleadoService.buscarTodos().get(0));
-        factura.setNumeroFactura("123");
-        factura.setTotal(new BigDecimal(100));
-        factura.setEstado(EstadoFactura.PENDIENTE);
-        facturaService.guardarFactura(factura);
-        return "redirect:/facturas/";
     }
 
     @GetMapping("/crear")
@@ -79,6 +67,40 @@ public class FacturaController {
         model.addAttribute("servicios", servicios);
 
         return "factura/nuevaFactura";
+    }
+
+    @PostMapping("/")
+    public String agregarFactura(@ModelAttribute("detalle") DetalleDeFacturaFormulario detalleFactura,
+            @ModelAttribute("factura") Factura factura, Model model,
+            @ModelAttribute("facturaSesion") FacturaSesion facturaSesion) {
+        // TODO : obtener empleado autenticado
+        factura.setEmpleado(empleadoService.buscarTodos().get(0));
+        factura.setNumeroFactura("123");
+        factura.setTotal(detalleFactura.getTotal());
+        factura.setEstado(EstadoFactura.PENDIENTE);
+
+        DetalleFactura detalle = new DetalleFactura();
+        for (var linea : detalleFactura.getServiciosSeleccionados()) {
+            var servicio = servicioService.findById(linea.getIdServicio());
+            detalle.setServicio(servicio);
+            detalle.setFactura(factura);
+            detalle.setSubtotal(linea.getPrecio());
+            factura.AgregarDetalle(detalle);
+        }
+
+        // factura sesion representa los mismos campos que factura con la funcion de ser
+        // rederizable desde otra vista 
+        facturaSesion.setNumeroFactura(factura.getNumeroFactura());
+        facturaSesion.setFechaEmision(factura.getFechaEmision());
+        facturaSesion.setTipoFactura(factura.getTipoFactura());
+        facturaSesion.setTotal(factura.getTotal());
+        facturaSesion.setEstado(factura.getEstado());
+        facturaSesion.setCliente(factura.getCliente());
+        facturaSesion.setEmpleado(factura.getEmpleado());
+        facturaSesion.setDetalleFacturas(factura.getDetalleFacturas());
+
+        model.addAttribute("factura", factura);
+        return "factura/previewFactura";
     }
 
     @GetMapping("/detalleFactura")
@@ -105,7 +127,29 @@ public class FacturaController {
             detalle.agregarServicio(linea);
 
         }
+
         return "redirect:/facturas/crear";
+    }
+
+    @GetMapping("/confirmarDatos")
+    public String confirmarDatos(@ModelAttribute("facturaSesion") FacturaSesion facturaSesion) {
+        
+        Factura factura = new Factura();
+        factura.setNumeroFactura(facturaSesion.getNumeroFactura());
+        factura.setFechaEmision(facturaSesion.getFechaEmision());
+        factura.setTipoFactura(facturaSesion.getTipoFactura());
+        factura.setTotal(facturaSesion.getTotal());
+        factura.setEstado(facturaSesion.getEstado());
+        factura.setCliente(facturaSesion.getCliente());
+        factura.setEmpleado(facturaSesion.getEmpleado());
+        factura.setDetalleFacturas(facturaSesion.getDetalleFacturas());
+        // relacionar detalle con factura
+        for (DetalleFactura detalle : facturaSesion.getDetalleFacturas()) {
+            detalle.setFactura(factura);
+        }
+        facturaService.guardarFactura(factura);
+
+        return "redirect:/facturas/";
     }
 
     @GetMapping("/limpiarDetalle")
@@ -118,4 +162,7 @@ public class FacturaController {
         return "redirect:/facturas/crear";
     }
     // TODO : eliminar un servicio de detalle de factura
+
+
+    // TODO generar un archivo pdf de la factura 
 }
