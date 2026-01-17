@@ -37,4 +37,9 @@ public class Empleado {
         this.nombre = nombre;
     }
 
+    @Override
+    public String toString() {
+        return "Empleado [idEmpleado=" + idEmpleado + ", nombre=" + nombre + "]";
+    }
+
 }

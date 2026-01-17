@@ -2,13 +2,17 @@ package com.argentafact.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -30,6 +34,21 @@ public class Factura {
     @ManyToOne
     @JoinColumn(name = "id_empleado", nullable = false)
     private Empleado empleado;
+
+    @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DetalleFactura> detalleFacturas = new ArrayList<>();
+
+    public void AgregarDetalle(DetalleFactura detalle) {
+        if (!this.detalleFacturas.contains(detalle)) {
+            this.detalleFacturas.add(detalle);
+            detalle.setFactura(this);
+        }
+    }
+
+    public void removerDetalle(DetalleFactura detalle) {
+        this.detalleFacturas.remove(detalle);
+        detalle.setFactura(null);
+    }
 
     public Factura() {
     }
@@ -105,6 +124,21 @@ public class Factura {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public List<DetalleFactura> getDetalleFacturas() {
+        return detalleFacturas;
+    }
+
+    public void setDetalleFacturas(List<DetalleFactura> detalleFacturas) {
+        this.detalleFacturas = detalleFacturas;
+    }
+
+    @Override
+    public String toString() {
+        return "Factura [idFactura=" + idFactura + ", numeroFactura=" + numeroFactura + ", fechaEmision=" + fechaEmision
+                + ", tipoFactura=" + tipoFactura + ", total=" + total + ", estado=" + estado + ", cliente=" + cliente
+                + ", empleado=" + empleado + ", detalleFacturas=" + detalleFacturas + "]";
     }
 
 }
