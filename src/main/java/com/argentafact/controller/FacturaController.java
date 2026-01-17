@@ -18,13 +18,16 @@ import com.argentafact.service.EmpleadoService;
 import com.argentafact.service.FacturaService;
 import com.argentafact.service.ServicioService;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequestMapping("/facturas")
-@SessionAttributes("detalle")
+@SessionAttributes({ "detalle", "datosFactura" })
 public class FacturaController {
     @Autowired
     private FacturaService facturaService;
@@ -38,6 +41,11 @@ public class FacturaController {
     @ModelAttribute("detalle")
     public DetalleDeFacturaFormulario setUpDetalleFacturaFormulario() {
         return new DetalleDeFacturaFormulario();
+    }
+
+    @ModelAttribute("datosFactura")
+    public Factura setUpFactura() {
+        return new Factura();
     }
 
     @GetMapping("/")
@@ -92,9 +100,22 @@ public class FacturaController {
         linea.setDescripcion(servicio.getDescripcion());
         linea.setIdServicio(servicio.getIdServicio());
 
-        detalle.agregarServicio(linea);
+        if (!detalle.estaSeleccionado(linea.getIdServicio())) {
 
+            detalle.agregarServicio(linea);
+
+        }
         return "redirect:/facturas/crear";
     }
 
+    @GetMapping("/limpiarDetalle")
+    public String eliminarLinea(
+            @ModelAttribute("detalle") DetalleDeFacturaFormulario detalleFactura,
+            HttpSession session) {
+
+        detalleFactura.limpiar();
+
+        return "redirect:/facturas/crear";
+    }
+    // TODO : eliminar un servicio de detalle de factura
 }

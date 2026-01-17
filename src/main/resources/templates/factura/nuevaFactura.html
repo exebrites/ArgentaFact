@@ -9,6 +9,38 @@
 <body>
     <section layout:fragment="content">
         <h1>Nueva Factura</h1>
+        <hr>
+        <strong>Servicios</strong>
+        <a th:href="@{/facturas/detalleFactura}">Agregar servicio</a>
+        <p>Servicios prestados </p>
+
+        <a th:href="@{/facturas/limpiarDetalle}">Limpiar servicios</a>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Producto</th>
+                        <th>Descripci n</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${#lists.isEmpty(detalle.getServiciosSeleccionados())}">
+                        <td colspan="2">No hay servicios seleccionados</td>
+                    </tr>
+                    <tr th:each="servicio: ${detalle.getServiciosSeleccionados()}">
+                        <td><span th:text="${servicio.getIdServicio()}">Codigo de ejemplo</span></td>
+                        <td><span th:text="${servicio.getNombre()}">Nombre de ejemplo</span></td>
+                        <td><span th:text="${servicio.getDescripcion()}">Nombre de ejemplo</span></td>
+                        <td><a>Eliminar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <span>Datos de factura</span>
         <form th:action="@{/facturas/}" th:method="post" th:object="${factura}">
 
             <div class="form-group">
@@ -34,25 +66,10 @@
                 </select>
             </div>
             <br>
-            <hr>
-            <strong>Servicios</strong>
-            <a th:href="@{/facturas/detalleFactura}">Agregar servicio</a>
-            <p>Servicios prestados </p>
 
-            <div>
-                <ul th:if="${not #lists.isEmpty(detalle.getServiciosSeleccionados())}">
-                    <li th:each="servicio: ${detalle.getServiciosSeleccionados()}">
-                        Producto: <span th:text="${servicio.getNombre()}">Nombre de ejemplo</span>
-                        <br>
-                        Producto: <span th:text="${servicio.getDescripcion()}">Nombre de ejemplo</span>
-                    </li>
-                </ul>
-                <p th:if="${#lists.isEmpty(detalle.getServiciosSeleccionados())}">No hay servicios seleccionados</p>
-
-            </div>
             <br>
             <br>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-primary">Continuar</button>
         </form>
 
 
