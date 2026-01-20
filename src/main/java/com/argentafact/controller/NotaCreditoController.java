@@ -41,15 +41,17 @@ public class NotaCreditoController {
     public String nuevoNotaCredito(Model model) {
         var notaCredito = new NotaCredito();
         var listaFacturas =  facturaService.obtenerFacturas();
+        var motivos = Motivo.values();
         model.addAttribute("notaCredito", notaCredito);
         model.addAttribute("listaFacturas", listaFacturas);
+        model.addAttribute("motivos", motivos);
         return "notaCredito/nuevoNotaCredito";
     }
 
     // TODO definir el metodo para agregarNotaCredito
     @PostMapping("/")
     public String agregarNotaCredito(@ModelAttribute("notaCredito") NotaCredito notaCredito) {
-        //TODO: process POST request
+        //TODO: dar de baja la factura 
         notaCreditoService.guardarNotaCredito(notaCredito);
         return "redirect:/notaCredito/";
     }
