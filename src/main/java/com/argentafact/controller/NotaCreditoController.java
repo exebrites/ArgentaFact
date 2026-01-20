@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.argentafact.model.NotaCredito;
+import com.argentafact.service.FacturaService;
 import com.argentafact.service.NotaCreditoService;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class NotaCreditoController {
     @Autowired
     private NotaCreditoService notaCreditoService;
+    @Autowired
+    private FacturaService facturaService;
 
     // TODO definir un hola mundo de prueba de nota de credito
        // TODO definir listarNotaCredito
@@ -37,7 +40,9 @@ public class NotaCreditoController {
     @GetMapping("/crear")
     public String nuevoNotaCredito(Model model) {
         var notaCredito = new NotaCredito();
+        var listaFacturas =  facturaService.obtenerFacturas();
         model.addAttribute("notaCredito", notaCredito);
+        model.addAttribute("listaFacturas", listaFacturas);
         return "notaCredito/nuevoNotaCredito";
     }
 

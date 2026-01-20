@@ -3,9 +3,13 @@ package com.argentafact.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.hibernate.mapping.Join;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
 
@@ -16,10 +20,14 @@ public class NotaCredito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idNotaCredito;
-    
+
     private LocalDate fechaEmision;
     private BigDecimal monto;
     private String motivo;
+
+    @ManyToOne
+    @JoinColumn(name = "id_factura", nullable = false)
+    private Factura factura;
 
     public NotaCredito() {
     }
@@ -62,10 +70,18 @@ public class NotaCredito {
         this.motivo = motivo;
     }
 
+    public Factura getFactura() {
+        return factura;
+    }
+
+    public void setFactura(Factura factura) {
+        this.factura = factura;
+    }
+
     @Override
     public String toString() {
         return "NotaCredito [idNotaCredito=" + idNotaCredito + ", fechaEmision=" + fechaEmision + ", monto=" + monto
-                + ", motivo=" + motivo + "]";
+                + ", motivo=" + motivo + ", factura=" + factura.getIdFactura() + "]";
     }
 
 }
