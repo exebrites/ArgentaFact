@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
+
+<body>
+
+    <section layout:fragment="content">
+        <h1>Crear cliente</h1>
+        <div class="card">
+            <div class="card-body">
+                <form th:action="@{/clientes/}" method="post" th:object="${cliente}">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" th:field="*{nombre}" />
+                        <div th:if="${#fields.hasErrors('nombre')}" th:class="invalid-feedback">
+                            <div th:each="error : ${#fields.errors('nombre')}">
+                                <span th:text="${error}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellido" class="form-label">Apellido</label>
+                        <input type="text" class="form-control" id="apellido" name="apellido" th:field="*{apellido}" />
+                        <div th:if="${#fields.hasErrors('apellido')}" th:class="invalid-feedback">
+                            <div th:each="error : ${#fields.errors('apellido')}">
+                                <span th:text="${error}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cuit" class="form-label">CUIT</label>
+                        <input type="text" class="form-control" id="cuit" name="cuit" th:field="*{cuit}" />
+                        <div th:if="${#fields.hasErrors('cuit')}" th:class="invalid-feedback">
+                            <div th:each="error : ${#fields.errors('cuit')}">
+                                <span th:text="${error}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="condicionFiscal" class="form-label">Condición fiscal</label>
+                        <select class="form-select" id="condicionFiscal" name="condicionFiscal"
+                            th:field="*{condicionFiscal}">
+                            <option th:each="condicion : ${condicionesFiscales}" th:value="${condicion}"
+                                th:text="${condicion}"></option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">Crear</button>
+                </form>
+
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

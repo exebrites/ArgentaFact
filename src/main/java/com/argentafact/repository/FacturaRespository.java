@@ -3,11 +3,9 @@ package com.argentafact.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.argentafact.model.Cliente;
+import com.argentafact.model.Factura;
 
 @Repository
-public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-
-    Cliente findByIdCliente(Long id);
-
+public interface FacturaRespository extends JpaRepository <Factura,Long> {
+    
 }

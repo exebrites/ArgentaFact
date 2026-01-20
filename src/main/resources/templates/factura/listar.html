@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
+
+<head>
+    <title>Listado de facturas</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <h1>Listado de facturas</h1>
+        <a th:href="@{/facturas/crear}">crear factura</a>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nro. de factura</th>
+                        <th>Fecha de emisi n</th>
+                        <th>Tipo de factura</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="factura : ${facturas}">
+                        <td th:text="${factura.numeroFactura}"></td>
+                        <td th:text="${factura.fechaEmision}"></td>
+                        <td th:text="${factura.tipoFactura}"></td>
+                        <td th:text="${factura.total}"></td>
+                        <td th:text="${factura.estado}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</body>
