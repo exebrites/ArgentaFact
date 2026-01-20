@@ -9,6 +9,32 @@
         <div class="card">
             <div class="card-body">
                 <form th:action="@{/notaCredito/}" method="post" th:object="${notaCredito}">
+                    <div class="form-group">
+                        <label for="fechaEmision">Fecha de emisión</label>
+                        <input type="date" class="form-control" id="fechaEmision" name="fechaEmision"
+                            th:field="*{fechaEmision}">
+                    </div>
+                    <div class="form-group">
+                        <label for="monto">Monto</label>
+                        <input type="number" class="form-control" id="monto" name="monto" th:field="*{monto}">
+                    </div>
+                    <div class="form-group">
+                        <label for="motivo">Motivo</label>
+                        <select class="form-control" id="motivo" name="motivo" th:field="*{motivo}">
+                            <option value="">Seleccione un motivo</option>
+                            <option th:each="motivo : ${motivos}" th:value="${motivo}" th:text="${motivo}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="listaFacturas">Factura</label>
+                        <select class="form-control" id="listaFacturas" name="idFactura" th:field="*{factura}">
+                            <option value="">Seleccione una factura</option>
+                            <option th:each="factura : ${listaFacturas}" th:value="${factura.idFactura}"
+                                th:text="${factura.numeroFactura}">
+                            </option>
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-success">Crear</button>
                 </form>
 

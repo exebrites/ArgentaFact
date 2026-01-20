@@ -1,6 +1,26 @@
 package com.argentafact.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.argentafact.model.NotaCredito;
+import com.argentafact.repository.NotaCreditoRepository;
+
+@Service
 public class NotaCreditoService {
-    // TODO instanciar repositorio 
-    // TODO definir metodos para listar y guardar 
+
+    private final NotaCreditoRepository notaCreditoRepository;
+
+    public NotaCreditoService(NotaCreditoRepository notaCreditoRepository) {
+        this.notaCreditoRepository = notaCreditoRepository;
+    }
+
+    public List<NotaCredito> buscarTodas() {
+        return notaCreditoRepository.findAll();
+    }
+    public void guardarNotaCredito(NotaCredito notaCredito) {
+        notaCreditoRepository.save(notaCredito);
+    }
+
 }
