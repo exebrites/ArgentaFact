@@ -3,6 +3,7 @@ package com.argentafact.controller;
 import com.argentafact.model.DetalleFactura;
 import com.argentafact.model.Empresa;
 import com.argentafact.model.Factura;
+import com.argentafact.service.FacturaPdfGenerator;
 import com.argentafact.service.FacturaService;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -15,15 +16,20 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class PdfController {
 
-    @Autowired 
+    @Autowired
     private FacturaService facturaService;
+
     /**
      * Ejemplo 1: PDF básico con texto
      */
@@ -63,15 +69,17 @@ public class PdfController {
             document.add(new Paragraph("Tipo de factura: " + factura.getTipoFactura(), fontNormal));
             // datos del cliente
             document.add(new Paragraph("Datos de la cliente", fontTitulo));
-         
-            document.add(new Paragraph("Nombre del cliente: " + factura.getCliente().getNombre() + " " + factura.getCliente().getApellido(), fontNormal));
+
+            document.add(new Paragraph("Nombre del cliente: " + factura.getCliente().getNombre() + " "
+                    + factura.getCliente().getApellido(), fontNormal));
             document.add(new Paragraph("CUIT del cliente: " + factura.getCliente().getCuit(), fontNormal));
             document.add(new Paragraph("Dirección del cliente: " + factura.getCliente().getDireccion(), fontNormal));
             // datos del servicios prestados
             document.add(new Paragraph("Datos de servicios prestados", fontTitulo));
-         
+
             for (DetalleFactura detalleFactura : factura.getDetalleFacturas()) {
-                document.add(new Paragraph("Servicio: " + detalleFactura.getServicio().getNombreServicio(), fontNormal));
+                document.add(
+                        new Paragraph("Servicio: " + detalleFactura.getServicio().getNombreServicio(), fontNormal));
                 document.add(new Paragraph("Subtotal: " + detalleFactura.getSubtotal(), fontNormal));
             }
             System.out.println("PDF básico creado: DocumentoBasico.pdf");
@@ -86,17 +94,40 @@ public class PdfController {
     @GetMapping("/pdf/{id}")
     public String generarFactura(@ModelAttribute("id") Long id) {
 
-        // TODO : datos de la empresa
         var empresa = new Empresa("Empresa ficticia XXXX");
-        // TODO : datos de la factura
-        var factura = facturaService.obtenerFactura(id);
 
-        // TODO : datos del cliente
-        
-        // TODO : datos del servicios prestados
+        var factura = facturaService.obtenerFactura(id);
 
         crearPDFBasico(empresa, factura);
         return "hola";
+    }
+
+    // TODO generar PDF de factura con formato
+
+    @Autowired
+    private FacturaPdfGenerator pdfGenerator;
+
+    @GetMapping("/generar/{id}")
+    public ResponseEntity<byte[]> generarFacturaPdf(@PathVariable Long id) {
+        try {
+            // Ejemplo de creación de una factura de prueba
+            Factura factura = facturaService.obtenerFactura(id);
+ var empresa = new Empresa("Empresa ficticia XXXX");
+            byte[] pdfBytes = pdfGenerator.generarFacturaPdf(factura,empresa);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("filename", "factura-" + System.currentTimeMillis() + ".pdf");
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(pdfBytes);
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+
     }
 
 }

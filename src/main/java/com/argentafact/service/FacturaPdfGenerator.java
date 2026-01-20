@@ -1,0 +1,247 @@
+package com.argentafact.service;
+
+import com.argentafact.model.DetalleFactura;
+import com.argentafact.model.Empresa;
+import com.argentafact.model.Factura;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+import org.springframework.stereotype.Service;
+import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+@Service
+public class FacturaPdfGenerator {
+
+    private static final Font TITLE_FONT = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
+    private static final Font HEADER_FONT = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD);
+    private static final Font NORMAL_FONT = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL);
+    private static final Font BOLD_FONT = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD);
+
+    public byte[] generarFacturaPdf(Factura factura, Empresa empresa) throws DocumentException {
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+        PdfWriter.getInstance(document, baos);
+
+        document.open();
+
+        // Agregar contenido
+        agregarCabecera(document, factura);
+        agregarInfoEmpresa(document, factura, empresa);
+        agregarInfoCliente(document, factura);
+        agregarItems(document, factura);
+        agregarTotales(document, factura);
+
+        document.close();
+        return baos.toByteArray();
+    }
+
+    private void agregarCabecera(Document document, Factura factura) throws DocumentException {
+        PdfPTable table = new PdfPTable(3);
+        table.setWidthPercentage(100);
+
+        float[] columnWidths = { 2f, 1f, 2f };
+        table.setWidths(columnWidths);
+
+        // Columna izquierda: EMPRESA | X | FACTURA
+        PdfPCell cell = new PdfPCell(new Phrase("EMPRESA", HEADER_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("X", HEADER_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("FACTURA", HEADER_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        table.addCell(cell);
+
+        // Línea separadora
+        cell = new PdfPCell(new Phrase(" "));
+        cell.setBorder(Rectangle.BOTTOM);
+        cell.setColspan(3);
+        cell.setFixedHeight(2f);
+        table.addCell(cell);
+
+        document.add(table);
+        document.add(Chunk.NEWLINE);
+    }
+
+    private void agregarInfoEmpresa(Document document, Factura factura, Empresa empresa) throws DocumentException {
+        PdfPTable table = new PdfPTable(3);
+        table.setWidthPercentage(100);
+
+        float[] columnWidths = { 2f, 1f, 2f };
+        table.setWidths(columnWidths);
+
+        // RAZON SOCIAL
+        PdfPCell cell = new PdfPCell(new Phrase("RAZON SOCIAL " + empresa.getRazonSocial(), NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        // Celda vacía en el medio
+        cell = new PdfPCell(new Phrase(" ", NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        // NUMERO FACTURA
+        cell = new PdfPCell(new Phrase("NUMERO: " + factura.getNumeroFactura(),
+                NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        table.addCell(cell);
+
+        // RESPONSABLE INSCRIPTO
+        cell = new PdfPCell(new Phrase("RESPONSABLE INSCRIPTO ", NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        // Celda vacía
+        cell = new PdfPCell(new Phrase(" ", NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        // FECHA
+
+        cell = new PdfPCell(new Phrase("FECHA: " + factura.getFechaEmisionConFormato(), NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        table.addCell(cell);
+
+        // EMPRESA (si se necesita mostrar el nombre)
+        // if (factura.getEmpresa() != null) {
+        // cell = new PdfPCell(new Phrase(factura.getEmpresa(), NORMAL_FONT));
+        // cell.setBorder(Rectangle.NO_BORDER);
+        // cell.setColspan(3);
+        // table.addCell(cell);
+        document.add(table);
+        document.add(Chunk.NEWLINE);
+
+    }
+
+    private void agregarInfoCliente(Document document, Factura factura) throws DocumentException {
+        PdfPTable table = new PdfPTable(2);
+        table.setWidthPercentage(100);
+
+        // Columna CLIENTE
+        PdfPCell cell = new PdfPCell(new Phrase("CLIENTE", HEADER_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("DOMICILIO " + factura.getCliente().getDireccion(),
+                HEADER_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        // CUIT
+        cell = new PdfPCell(new Phrase("CUIT " + factura.getCliente().getCuit(), NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        // Información adicional domicilio (si se necesita)
+        cell = new PdfPCell(new Phrase("XXXX", NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        // CONDICION FISCAL
+        cell = new PdfPCell(new Phrase("CONDICION FISCAL " +
+                factura.getCliente().getCondicionFiscal(), NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setColspan(2);
+        table.addCell(cell);
+
+        document.add(table);
+        document.add(Chunk.NEWLINE);
+    }
+
+    private void agregarItems(Document document, Factura factura) throws DocumentException {
+        PdfPTable table = new PdfPTable(4);
+        table.setWidthPercentage(100);
+
+        float[] columnWidths = { 2f, 4f, 2f, 2f };
+        table.setWidths(columnWidths);
+
+        // Encabezados de la tabla de items
+        PdfPCell cell = new PdfPCell(new Phrase("NOMBRE", HEADER_FONT));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("DESCRIPCION", HEADER_FONT));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("PRECIO U.", HEADER_FONT));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("SUBTOTAL", HEADER_FONT));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        // Línea separadora debajo del encabezado
+        cell = new PdfPCell(new Phrase(" "));
+        cell.setBorder(Rectangle.BOTTOM);
+        cell.setColspan(4);
+        cell.setFixedHeight(2f);
+        table.addCell(cell);
+
+        // Items de la factura
+        for (DetalleFactura item : factura.getDetalleFacturas()) {
+            cell = new PdfPCell(new Phrase(item.getServicio().getNombreServicio(), NORMAL_FONT));
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Phrase(item.getServicio().getDescripcion(), NORMAL_FONT));
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Phrase(String.format("$%.2f",
+                    item.getServicio().getPrecio()), NORMAL_FONT));
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Phrase(String.format("$%.2f", item.getSubtotal()),
+                    NORMAL_FONT));
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            table.addCell(cell);
+        }
+
+        document.add(table);
+        document.add(Chunk.NEWLINE);
+    }
+
+    private void agregarTotales(Document document, Factura factura) throws DocumentException {
+        PdfPTable table = new PdfPTable(2);
+        table.setWidthPercentage(50);
+        table.setHorizontalAlignment(Element.ALIGN_RIGHT);
+
+        float[] columnWidths = { 1f, 1f };
+        table.setWidths(columnWidths);
+
+        // IVA
+        PdfPCell cell = new PdfPCell(new Phrase("IVA", HEADER_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(String.format("$%.2f", factura.getIva()),
+                BOLD_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        table.addCell(cell);
+
+        // TOTAL
+        cell = new PdfPCell(new Phrase("TOTAL", HEADER_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(String.format("$%.2f", factura.getTotalConIva()),
+                BOLD_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        table.addCell(cell);
+
+        document.add(table);
+    }
+
+}
