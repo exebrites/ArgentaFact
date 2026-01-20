@@ -7,5 +7,7 @@ import com.argentafact.model.Factura;
 
 @Repository
 public interface FacturaRespository extends JpaRepository <Factura,Long> {
+
+    Factura findByIdFactura(Long id);
     
 }

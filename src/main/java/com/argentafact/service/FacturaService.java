@@ -20,4 +20,7 @@ public class FacturaService {
     public void guardarFactura(Factura factura){
         facturaRespository.save(factura);
     }
+    public Factura obtenerFactura (Long id){
+        return facturaRespository.findByIdFactura(id);
+    }
 }

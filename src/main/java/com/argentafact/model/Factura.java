@@ -26,6 +26,7 @@ public class Factura {
     private TipoFactura tipoFactura;
     private BigDecimal total;
     private EstadoFactura estado;
+    // TODO agregar IVA
 
     @ManyToOne
     @JoinColumn(name = "id_cliente", nullable = false)
@@ -82,6 +83,12 @@ public class Factura {
         return fechaEmision;
     }
 
+    public String getFechaEmisionConFormato() {
+        var fecha = getFechaEmision();
+        return fecha != null ? String.format("%02d/%02d/%04d", fechaEmision.getDayOfMonth(),
+                fechaEmision.getMonthValue(), fechaEmision.getYear()) : "";
+    }
+
     public void setFechaEmision(LocalDate fechaEmision) {
         this.fechaEmision = fechaEmision;
     }
@@ -96,6 +103,9 @@ public class Factura {
 
     public BigDecimal getTotal() {
         return total;
+    }
+    public BigDecimal getTotalConIva(){
+        return getTotal().add(getIva());
     }
 
     public void setTotal(BigDecimal total) {
@@ -134,6 +144,9 @@ public class Factura {
         this.detalleFacturas = detalleFacturas;
     }
 
+    public BigDecimal getIva(){
+        return getTotal().multiply(BigDecimal.valueOf(0.21));
+    }
     @Override
     public String toString() {
         return "Factura [idFactura=" + idFactura + ", numeroFactura=" + numeroFactura + ", fechaEmision=" + fechaEmision
