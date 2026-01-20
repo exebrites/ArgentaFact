@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
+
+<head>
+    <section layout:fragment="content">
+        <h1>Ver cliente</h1>
+        <div class="card">
+            <div class="card-body">
+                <p>Nombre: <span th:text="${cliente.nombre}"></span></p>
+                <p>Apellido: <span th:text="${cliente.apellido}"></span></p>
+                <p>CUIT: <span th:text="${cliente.cuit}"></span></p>
+                <p>Condición fiscal: <span th:text="${cliente.condicionFiscal}"></span></p>
+                <p th:if="${cliente.direccion != null}">
+                    Dirección: <span th:text="${cliente.direccion}"></span>
+                </p>
+                <p th:unless="${cliente.direccion != null}">
+                    No se ha proporcionado una <strong>dirección</strong> para este cliente.
+                </p>
+                <p th:if="${cliente.telefono != null}">
+                    Teléfono: <span th:text="${cliente.telefono}"></span>
+                </p>
+                <p th:unless="${cliente.telefono != null}">
+                    No se ha proporcionado un <strong>teléfono</strong> para este cliente.
+                </p>
+            </div>
+            <div class="card-footer">
+                <a th:href="@{/clientes/}" class="btn btn-primary">Volver</a>
+                <a th:href="@{/clientes/{id}/editar(id=${cliente.idCliente})}" class="btn btn-warning">Editar cliente</a>
+            </div>
+        </div>
+    </section>
+</head>
+
+<body>

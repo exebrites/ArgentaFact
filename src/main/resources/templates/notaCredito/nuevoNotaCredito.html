@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
+
+<body>
+
+    <section layout:fragment="content">
+        <h1>Crear Nota de Credito</h1>
+        <div class="card">
+            <div class="card-body">
+                <form th:action="@{/notaCredito/}" method="post" th:object="${notaCredito}">
+                    <button type="submit" class="btn btn-success">Crear</button>
+                </form>
+
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
