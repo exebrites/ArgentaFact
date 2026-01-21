@@ -17,7 +17,7 @@
        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- CSS personalizado común -->
-    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/argentafact.css}">
 
     <!-- Espacio para CSS específico de cada vista -->
     <th:block layout:fragment="styles" />
@@ -51,7 +51,7 @@
                 <h6 class="text-muted">MENÚ</h6>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#"><i class="bi bi-speedometer2"></i> Panel de
+                        <a class="nav-link active" th:href="@{/}"><i class="bi bi-speedometer2"></i> Panel de
                             administración</a>
                     </li>
                     <li class="nav-item">

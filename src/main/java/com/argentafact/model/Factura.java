@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.argentafact.utils.DateFormatterUtil;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -154,6 +156,9 @@ public class Factura {
     }
     public void setBaja(boolean baja) {
         this.baja = baja;
+    }
+    public String getFechaFormateada(){
+        return DateFormatterUtil.format(fechaEmision);
     }
     @Override
     public String toString() {

@@ -3,37 +3,32 @@
     layout:decorate="~{layout/base}">
 
 <head>
-    <title>Empleados</title>
+    <title>Notas de credito</title>
 </head>
 
 <body>
+
     <section layout:fragment="content" class="p-4">
-        <h2 class="mb-4">Empleados</h2>
+        <h2 class="mb-4">Notas de credito</h2>
         <div class="card shadow-sm">
             <div class="card-header bg-white">
-                <a class="btn btn-primary btn-sm">Crear empleado</a>
+                <a th:href="@{/notaCredito/crear}" class="btn btn-primary btn-sm">Crear Nota de credito</a>
             </div>
             <div class="card-body p-0">
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th>Nombre</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="3" class="text-center">Acciones</th>
+                            <th>Fecha de emisión</th>
+                            <th>Monto</th>
+                            <th>Motivo</th>
+                            <th colspan="4" class="text-center">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr th:each="empleado : ${empleados}">
-                            <td th:text="${empleado.nombre}"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                    <tbody th:each="notaCredito : ${listaNotaCredito}">
+                        <tr>
+                            <td th:text="${notaCredito.getFechaFormateada()}"></td>
+                            <td th:text="${notaCredito.monto}"></td>
+                            <td th:text="${notaCredito.motivo}"></td>
                             <td><a class="btn btn-af-view btn-sm">Ver</a></td>
                             <td>
                                 <a class="btn btn-warning btn-sm">Editar</a>
@@ -41,12 +36,17 @@
                             <td>
                                 <a class="btn btn-danger btn-sm">Eliminar</a>
                             </td>
+                            <td><a th:href="@{/generar/notaCredito/{id}(id=${notaCredito.idNotaCredito})}"
+                                    class="btn btn-af-view btn-sm"> <i class="bi bi-file-earmark-pdf-fill"></i></a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
+
             </div>
         </div>
     </section>
+
 </body>
 
 </html>
