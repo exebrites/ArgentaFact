@@ -12,16 +12,12 @@ public class Alicuota {
     private Long idAlicuota;
 
     @Column(nullable = false)
-    private String nombre; 
-
-    @Column(nullable = false)
     private BigDecimal porcentaje; 
 
     public Alicuota() {
     }
 
-    public Alicuota(String nombre, BigDecimal porcentaje) {
-        this.nombre = nombre;
+    public Alicuota(BigDecimal porcentaje) {
         this.porcentaje = porcentaje;
     }
 
@@ -29,18 +25,6 @@ public class Alicuota {
 
     public Long getIdAlicuota() {
         return idAlicuota;
-    }
-
-    public void setIdAliquota(Long idAlicuota) {
-        this.idAlicuota = idAlicuota;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public BigDecimal getPorcentaje() {
