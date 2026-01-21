@@ -164,3 +164,6 @@ Comprobante "1" --> "1" HistoricoFiscal
 # Backlog de iteraciones​
 ​
 # Tareas
+
+### Diagrama de clases
+![Diagrama de clases](DiagramaClase-ArgentaFact.md)

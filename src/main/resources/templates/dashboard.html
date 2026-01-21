@@ -1,29 +1,167 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{layout/base}"> <!-- APUNTA A TU ARCHIVO BASE -->
+<html lang="es">
 
 <head>
-    <title>Página de Inicio</title>
-    <!-- Puedes añadir CSS específico para index aquí si usas layout:fragment="styles" -->
+    <meta charset="UTF-8">
+    <title>ArgentaFact | Dashboard</title>
+
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="bg-light">
 
-    <!-- ZONA CLAVE: Este contenido se inyecta en el fragmento "content" de la base -->
-    <section layout:fragment="content">
-        <h1>¡Bienvenido a la página de inicio!</h1>
-        <ul>
-            <li><a th:href="@{/clientes/}">gestion clientes</a></li>
+    <!-- HEADER -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary px-4">
+        <a class="navbar-brand fw-bold" href="#">
+            ArgentaFact
+        </a>
+
+        <div class="ms-auto d-flex align-items-center text-white">
+            <i class="bi bi-person-circle fs-5 me-2"></i>
+            <span class="me-3">Empleado</span>
+
+            <form action="/logout" method="post">
+                <button type="submit" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-box-arrow-right"></i> Salir
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- <li><a >gestion clientes</a></li>
             <li><a th:href="@{/facturas/}">gestion facturas</a></li>
             <li><a th:href="@{/empleados/}">gestion empleados</a></li>
             <li><a th:href="@{/servicios/}">gestion servicios</a></li>
-            <li><a th:href="@{/notaCredito/}">gestion nota de credito</a></li>
-            <!-- <li><a th:href="@{/nota_debito/}">gestion nota de debito</a></li> -->
+            <li><a th:href="@{/notaCredito/}">gestion nota de credito</a></li> -->
 
-        </ul>
+            <!-- SIDEBAR -->
+            <aside class="col-md-2 bg-white border-end vh-100 p-3">
+                <h6 class="text-muted">MENÚ</h6>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/clientes/}"><i class="bi bi-person"></i> Clientes</a>
+                    </li>
 
-    </section>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/empleados/}"><i class="bi bi-person-workspace"></i> Empleados</a>
+                    </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/servicios/}"><i class="bi bi-tools"></i> Servicios</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/notaCredito/}"><i class="bi bi-credit-card"></i> Nota de Crédito</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/facturas/}"><i class="bi bi-receipt"></i> Facturación</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-currency-exchange"></i> Pagos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-bar-chart"></i> Reportes</a>
+                    </li>
+                </ul>
+            </aside>
+
+            <!-- MAIN CONTENT -->
+            <main class="col-md-10 p-4">
+
+                <h2 class="mb-4">Dashboard</h2>
+
+                <!-- METRICS -->
+                <div class="row g-4 mb-4">
+
+                    <div class="col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h6 class="text-muted">Clientes</h6>
+                                <h3 class="fw-bold">128</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h6 class="text-muted">Facturas del mes</h6>
+                                <h3 class="fw-bold">56</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h6 class="text-muted">Pagos recibidos</h6>
+                                <h3 class="fw-bold">$ 1.250.000</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h6 class="text-muted">Facturas impagas</h6>
+                                <h3 class="fw-bold text-danger">12</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- TABLE -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Últimas facturas</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Cliente</th>
+                                    <th>Fecha</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>00125</td>
+                                    <td>Empresa ABC</td>
+                                    <td>20/01/2026</td>
+                                    <td>$ 250.000</td>
+                                    <td><span class="badge bg-success">Pagada</span></td>
+                                </tr>
+                                <tr>
+                                    <td>00126</td>
+                                    <td>Juan Pérez</td>
+                                    <td>21/01/2026</td>
+                                    <td>$ 85.000</td>
+                                    <td><span class="badge bg-warning text-dark">Pendiente</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
