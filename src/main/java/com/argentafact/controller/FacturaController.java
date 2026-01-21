@@ -1,9 +1,12 @@
 package com.argentafact.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.argentafact.model.DetalleDeFacturaFormulario;
@@ -12,6 +15,7 @@ import com.argentafact.model.EstadoFactura;
 import com.argentafact.model.Factura;
 import com.argentafact.model.FacturaSesion;
 import com.argentafact.model.Linea;
+import com.argentafact.model.NotaCredito;
 import com.argentafact.service.ClienteService;
 import com.argentafact.service.EmpleadoService;
 import com.argentafact.service.FacturaService;
@@ -48,9 +52,20 @@ public class FacturaController {
     }
 
     @GetMapping("/")
-    public String listarFacturas(Model model) {
-        var facturas = facturaService.obtenerFacturas();
-        model.addAttribute("facturas", facturas);
+
+    public String listarFacturas(
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "5") int tamano,
+            Model model) {
+
+        Page<Factura> paginaFactura = facturaService.buscarTodos(
+                PageRequest.of(pagina, tamano));
+
+        // Solo lo esencial al modelo
+        model.addAttribute("facturas", paginaFactura.getContent());
+        model.addAttribute("paginaActual", pagina);
+        model.addAttribute("totalPaginas", paginaFactura.getTotalPages());
+
         return "factura/listar";
     }
 
@@ -89,7 +104,7 @@ public class FacturaController {
         }
 
         // factura sesion representa los mismos campos que factura con la funcion de ser
-        // rederizable desde otra vista 
+        // rederizable desde otra vista
         facturaSesion.setNumeroFactura(factura.getNumeroFactura());
         facturaSesion.setFechaEmision(factura.getFechaEmision());
         facturaSesion.setTipoFactura(factura.getTipoFactura());
@@ -133,7 +148,7 @@ public class FacturaController {
 
     @GetMapping("/confirmarDatos")
     public String confirmarDatos(@ModelAttribute("facturaSesion") FacturaSesion facturaSesion) {
-        
+
         Factura factura = new Factura();
         factura.setNumeroFactura(facturaSesion.getNumeroFactura());
         factura.setFechaEmision(facturaSesion.getFechaEmision());
@@ -163,6 +178,5 @@ public class FacturaController {
     }
     // TODO : eliminar un servicio de detalle de factura
 
-
-    // TODO generar un archivo pdf de la factura 
+    // TODO generar un archivo pdf de la factura
 }
