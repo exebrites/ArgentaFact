@@ -8,14 +8,24 @@
 
 <body>
     <section layout:fragment="content">
-        <h1>Eliminar cliente</h1>
-        <div class="alert alert-danger">
-            <p>¿Estás seguro de que deseas eliminar al cliente <span th:text="${cliente.nombre}"> </span>?</p>
-            <form th:action="@{/clientes/{id}(id=${cliente.idCliente})}" th:method="delete">
-                <input type="submit" value="Eliminar" class="btn btn-danger">
-            </form>
-            <br>
-            <a th:href="@{/clientes/}" class="btn btn-primary">Cancelar</a>
+        <div class="card">
+            <div class="card-header">
+                <a th:href="@{/clientes/}" class="btn btn-af-secondary btn-sm">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
+            </div>
+            <div class="card-body">
+                <h1>Eliminar cliente</h1>
+                <div class="alert alert-danger">
+                    <p>¿Estás seguro de que deseas eliminar al cliente <span th:text="${cliente.nombre}"> </span>?</p>
+                    <form th:action="@{/clientes/{id}(id=${cliente.idCliente})}" th:method="delete">
+                        <input type="submit" value="Eliminar" class="btn btn-danger">
+                    </form>
+                    <br>
+                    <a th:href="@{/clientes/}" class="btn btn-primary">Cancelar</a>
+                </div>
+
+            </div>
         </div>
     </section>
 </body>

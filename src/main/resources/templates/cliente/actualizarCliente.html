@@ -11,8 +11,14 @@
     <div layout:fragment="content">
         <h1>Actualizar cliente</h1>
         <div class="card">
+            <div class="card-header">
+                <a th:href="@{/clientes/}" class="btn btn-af-secondary btn-sm">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
+            </div>
             <div class="card-body">
-                <form class="needs-validation" th:action="@{/clientes/{id}(id=${cliente.idCliente})}" th:method="put" th:object="${cliente}" novalidate>
+                <form class="needs-validation" th:action="@{/clientes/{id}(id=${cliente.idCliente})}" th:method="put"
+                    th:object="${cliente}" novalidate>
                     <!-- <input type="hidden" name="_method" value="put"> -->
                     <!-- resto del formulario -->
                     <div class="form-group">
@@ -24,7 +30,8 @@
                     </div>
                     <div class="form-group">
                         <label for="apellido">Apellido</label>
-                        <input type="text" name="apellido" id="apellido" class="form-control" th:field="*{apellido}" required>
+                        <input type="text" name="apellido" id="apellido" class="form-control" th:field="*{apellido}"
+                            required>
                         <div class="invalid-feedback">
                             El apellido es obligatorio
                         </div>
@@ -44,10 +51,11 @@
                         <label for="telefono">Telefono</label>
                         <input type="text" name="telefono" id="telefono" class="form-control" th:field="*{telefono}">
                     </div>
-                
+
                     <div class="form-group">
                         <label for="condicionFiscal">Condición Fiscal</label>
-                        <select name="condicionFiscal" id="condicionFiscal" class="form-control" th:field="*{condicionFiscal}" required>
+                        <select name="condicionFiscal" id="condicionFiscal" class="form-control"
+                            th:field="*{condicionFiscal}" required>
                             <option value="">Seleccione una opción</option>
                             <option th:each="condicion : ${condicionesFiscales}" th:value="${condicion}"
                                 th:text="${condicion}">
