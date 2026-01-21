@@ -2,6 +2,8 @@ package com.argentafact.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.argentafact.model.Cliente;
@@ -44,5 +46,9 @@ public class ClienteService {
     }
     public void eliminarClientePorId(Long id ){
         clienteRepository.deleteById(id);
+    }
+
+    public Page<Cliente> buscarTodos(PageRequest of) {
+        return clienteRepository.findAll(of);
     }
 }

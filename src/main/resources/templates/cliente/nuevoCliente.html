@@ -7,6 +7,11 @@
     <section layout:fragment="content">
         <h1>Crear cliente</h1>
         <div class="card">
+            <div class="card-header">
+                <a th:href="@{/clientes/}" class="btn btn-af-secondary btn-sm">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
+            </div>
             <div class="card-body">
                 <form th:action="@{/clientes/}" method="post" th:object="${cliente}">
                     <div class="mb-3">
