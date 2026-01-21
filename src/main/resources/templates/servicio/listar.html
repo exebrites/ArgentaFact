@@ -60,7 +60,7 @@
                                 <a class="btn btn-warning btn-sm">Editar</a>
                             </td>
                             <td>
-                                <a class="btn btn-danger btn-sm">Eliminar</a>
+                                <a th:href="@{/servicios/{id}/eliminar(id=${servicio.idServicio})}" class="btn btn-danger btn-sm">Eliminar</a>
                             </td>
                         </tr>
                     </tbody>

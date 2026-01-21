@@ -3,7 +3,9 @@ package com.argentafact.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -36,6 +38,24 @@ public class ServicioController {
     @PostMapping("/guardar")
     public String guardarServicio(Servicio servicio) {
         servicioService.guardar(servicio);
+        return "redirect:/servicios/";
+    }
+
+    @GetMapping("/{id}/eliminar")
+    public String eliminarServicio(@PathVariable Long id, Model model) {
+        var servicio = servicioService.findById(id);
+        model.addAttribute("servicio", servicio);
+        return "servicio/eliminarServicio";
+    }
+
+    @DeleteMapping("/{id}")
+    public String bajaServicio(@PathVariable Long id, Model model) {
+        try {
+            servicioService.eliminar(id);
+        } catch (Exception e) {
+            model.addAttribute("error", "Error al eliminar el servicio: " + e.getMessage());
+            return "servicio/eliminarServicio";
+        }
         return "redirect:/servicios/";
     }
 }

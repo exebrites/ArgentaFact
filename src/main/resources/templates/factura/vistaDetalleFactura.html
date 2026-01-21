@@ -8,21 +8,37 @@
 
 <body>
     <section layout:fragment="content">
-        <h1>Detalle de factura</h1>
-        <form th:action="@{/facturas/agregarDetalleFactura}" th:method="get">
+        <div class="card">
 
-            <div class="form-group">
-                <label for="servicios">Servicios</label>
-                <select class="js-example-basic-single form-control" id="servicios" name="idServicio">
-                    <option value="">Seleccione un servicio</option>
-                    <option th:each="servicio : ${servicios}" th:value="${servicio.idServicio}"
-                        th:text="${servicio.nombreServicio}">
-                    </option>
-                </select>
+            <div class="card-header">
+                <a th:href="@{/facturas/crear}" class="btn btn-af-secondary btn-sm">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
             </div>
-            <br>
-            <button type="submit" class="btn btn-primary">Agregar</button>
-        </form>
+            <div class="card-body">
+
+                <h1>Detalle de factura</h1>
+                <form th:action="@{/facturas/agregarDetalleFactura}" th:method="get">
+
+                    <div class="form-group">
+                        <label for="servicios">Servicios</label>
+                        <select class="js-example-basic-single form-control" id="servicios" name="idServicio">
+                            <option value="">Seleccione un servicio</option>
+                            <option th:each="servicio : ${servicios}" th:value="${servicio.idServicio}"
+                                th:text="${servicio.nombreServicio}">
+                            </option>
+                        </select>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Agregar</button>
+                </form>
+
+            </div>
+        </div>
+
+
+
+
         <script>
             $(document).ready(function () {
                 $('.js-example-basic-single').select2();
