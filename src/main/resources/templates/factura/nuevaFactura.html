@@ -20,12 +20,13 @@
             <div class="card-body">
 
                 <h1>Nueva Factura</h1>
-                <hr>
+              
                 <strong>Servicios</strong>
-                <a th:href="@{/facturas/detalleFactura}">Agregar servicio</a>
-                <p>Servicios prestados </p>
-
-                <a th:href="@{/facturas/limpiarDetalle}">Limpiar servicios</a>
+                <br>
+                <div class="d-flex justify-content-between">
+                    <a th:href="@{/facturas/detalleFactura}" class="btn btn-af-primary btn-sm" >Agregar servicio</a>
+                    <a th:href="@{/facturas/limpiarDetalle}" class="btn btn-af-delete btn-sm" >Limpiar servicios</a>
+                </div>
                 <div>
                     <table class="table">
                         <thead>
@@ -80,7 +81,7 @@
 
                     <br>
                     <br>
-                    <button type="submit" class="btn btn-primary">Continuar</button>
+                    <button type="submit" class="btn btn-af-primary btn-sm">Continuar</button>
                 </form>
             </div>
         </div>
