@@ -1,9 +1,12 @@
 package com.argentafact.model;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.time.LocalDate;
 
 import org.hibernate.mapping.Join;
+
+import com.argentafact.utils.DateFormatterUtil;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -77,7 +80,9 @@ public class NotaCredito {
     public void setFactura(Factura factura) {
         this.factura = factura;
     }
-
+    public String getFechaFormateada() {
+        return DateFormatterUtil.format(this.fechaEmision);
+    }
     @Override
     public String toString() {
         return "NotaCredito [idNotaCredito=" + idNotaCredito + ", fechaEmision=" + fechaEmision + ", monto=" + monto
