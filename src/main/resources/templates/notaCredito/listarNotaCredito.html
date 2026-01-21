@@ -45,6 +45,23 @@
 
             </div>
         </div>
+
+        <!-- Botones de navegación -->
+        <div class="btn-group d-flex justify-content-center">
+            <a th:href="@{/notaCredito/(pagina=0)}" class="btn btn-outline-secondary">Primera</a>
+
+            <a th:if="${paginaActual > 0}" th:href="@{/notaCredito/(pagina=${paginaActual - 1})}"
+                class="btn btn-outline-primary">←</a>
+
+            <button class="btn btn-primary" disabled>
+                <span th:text="${paginaActual + 1}"></span>
+            </button>
+
+            <a th:if="${paginaActual < totalPaginas - 1}" th:href="@{/notaCredito/(pagina=${paginaActual + 1})}"
+                class="btn btn-outline-primary">→</a>
+
+            <a th:href="@{/notaCredito/(pagina=${totalPaginas - 1})}" class="btn btn-outline-secondary">Última</a>
+        </div>
     </section>
 
 </body>

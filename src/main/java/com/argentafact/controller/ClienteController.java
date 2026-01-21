@@ -24,14 +24,8 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    // @GetMapping("/")
-    // public String listarClientes(Model model) {
-    // var clientes = clienteService.buscarTodos();
-    // model.addAttribute("clientes", clientes);
-    // return "cliente/listar";
-    // }
     @GetMapping("/")
-    public String listarProductos(
+    public String listarClientes(
             @RequestParam(defaultValue = "0") int pagina,
             @RequestParam(defaultValue = "5") int tamano,
             Model model) {
