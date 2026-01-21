@@ -3,8 +3,10 @@ package com.argentafact.controller;
 import com.argentafact.model.DetalleFactura;
 import com.argentafact.model.Empresa;
 import com.argentafact.model.Factura;
+import com.argentafact.model.NotaCredito;
 import com.argentafact.service.PdfService;
 import com.argentafact.service.FacturaService;
+import com.argentafact.service.NotaCreditoService;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
@@ -112,8 +114,8 @@ public class PdfController {
         try {
             // Ejemplo de creación de una factura de prueba
             Factura factura = facturaService.obtenerFactura(id);
- var empresa = new Empresa("Empresa ficticia XXXX");
-            byte[] pdfBytes = pdfGenerator.generarFacturaPdf(factura,empresa);
+            var empresa = new Empresa("Empresa ficticia XXXX");
+            byte[] pdfBytes = pdfGenerator.generarFacturaPdf(factura, empresa);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
@@ -127,7 +129,32 @@ public class PdfController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
-
     }
 
+    // TODO organizar Autowired
+    @Autowired
+    
+    private NotaCreditoService notaCreditoService;
+    @GetMapping("/generar/notaCredito/{id}")
+    public ResponseEntity<byte[]> generarNotaCreditoPdf(@PathVariable Long id) {
+        try {
+            // Ejemplo de creación de una factura de prueba
+            NotaCredito notaCredito = notaCreditoService.obtenerNotaCredito(id);
+
+            var empresa = new Empresa("Empresa ficticia XXXX");
+            byte[] pdfBytes = pdfGenerator.generarNotaCreditoPdf(notaCredito, empresa);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("filename", "notaCredito-" + System.currentTimeMillis() + ".pdf");
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(pdfBytes);
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

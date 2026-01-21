@@ -26,4 +26,8 @@ public class NotaCreditoService {
         
     }
 
+    public NotaCredito obtenerNotaCredito(Long id) {
+        return notaCreditoRepository.findByIdNotaCredito(id);
+    }
+
 }

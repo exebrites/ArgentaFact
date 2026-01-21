@@ -34,6 +34,7 @@
                             <td th:text="${notaCredito.getFechaFormateada()}"></td>
                             <td th:text="${notaCredito.monto}"></td>
                             <td th:text="${notaCredito.motivo}"></td>
+                            <td><a th:href="@{/generar/notaCredito/{id}(id=${notaCredito.idNotaCredito})}" class="btn btn-primary">Generar nota credito</a></td>
                             <!-- <td th:text="${notaCredito.estado}"></td> -->
                             <!-- <td><a th:href="@{/notaCredito/{id}(id=${notaCredito.idNotaCredito})}" class="btn btn-primary">Ver</a>
                             </td>
