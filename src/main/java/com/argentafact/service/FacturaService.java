@@ -23,4 +23,8 @@ public class FacturaService {
     public Factura obtenerFactura (Long id){
         return facturaRespository.findByIdFactura(id);
     }
+
+    public List<Factura> obtenerFacturasActivas() {
+        return facturaRespository.findByBajaFalse();
+    }
 }

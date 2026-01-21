@@ -20,7 +20,10 @@ public class NotaCreditoService {
         return notaCreditoRepository.findAll();
     }
     public void guardarNotaCredito(NotaCredito notaCredito) {
+        notaCredito.getFactura().setBaja(true);
         notaCreditoRepository.save(notaCredito);
+        // dar de baja la factura asociada
+        
     }
 
 }

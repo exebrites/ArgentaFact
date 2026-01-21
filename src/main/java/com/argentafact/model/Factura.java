@@ -27,6 +27,7 @@ public class Factura {
     private BigDecimal total;
     private EstadoFactura estado;
     // TODO agregar IVA
+    private boolean baja;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente", nullable = false)
@@ -61,6 +62,7 @@ public class Factura {
         this.tipoFactura = tipoFactura;
         this.total = total;
         this.estado = estado;
+        this.baja = false;
     }
 
     public Long getIdFactura() {
@@ -104,7 +106,8 @@ public class Factura {
     public BigDecimal getTotal() {
         return total;
     }
-    public BigDecimal getTotalConIva(){
+
+    public BigDecimal getTotalConIva() {
         return getTotal().add(getIva());
     }
 
@@ -144,9 +147,18 @@ public class Factura {
         this.detalleFacturas = detalleFacturas;
     }
 
-    public BigDecimal getIva(){
+    public BigDecimal getIva() {
         return getTotal().multiply(BigDecimal.valueOf(0.21));
     }
+
+    public boolean isBaja() {
+        return baja;
+    }
+
+    public void setBaja(boolean baja) {
+        this.baja = baja;
+    }
+
     @Override
     public String toString() {
         return "Factura [idFactura=" + idFactura + ", numeroFactura=" + numeroFactura + ", fechaEmision=" + fechaEmision
