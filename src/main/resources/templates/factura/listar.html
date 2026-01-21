@@ -44,5 +44,23 @@
                     </tbody>
                 </table>
             </div>
+
+
+            <!-- Botones de navegación -->
+            <div class="btn-group d-flex justify-content-center">
+                <a th:href="@{/facturas/(pagina=0)}" class="btn btn-outline-secondary">Primera</a>
+
+                <a th:if="${paginaActual > 0}" th:href="@{/facturas/(pagina=${paginaActual - 1})}"
+                    class="btn btn-outline-primary">←</a>
+
+                <button class="btn btn-primary" disabled>
+                    <span th:text="${paginaActual + 1}"></span>
+                </button>
+
+                <a th:if="${paginaActual < totalPaginas - 1}" th:href="@{/facturas/(pagina=${paginaActual + 1})}"
+                    class="btn btn-outline-primary">→</a>
+
+                <a th:href="@{/facturas/(pagina=${totalPaginas - 1})}" class="btn btn-outline-secondary">Última</a>
+            </div>
     </section>
 </body>
