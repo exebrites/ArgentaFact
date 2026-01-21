@@ -41,6 +41,7 @@ public class FacturaController {
     @Autowired
     private ServicioService servicioService;
 
+    // TODO : 1 DEFINIR SET DE DETALLE DE FACTURA 
     @ModelAttribute("detalle")
     public DetalleDeFacturaFormulario setUpDetalleFacturaFormulario() {
         return new DetalleDeFacturaFormulario();
@@ -69,6 +70,7 @@ public class FacturaController {
         return "factura/listar";
     }
 
+    // TODO : 2 DEFINIR CABERA CON SET 
     @GetMapping("/crear")
     public String nuevaFactura(
             @ModelAttribute("detalle") DetalleDeFacturaFormulario detalleFactura,
@@ -118,6 +120,7 @@ public class FacturaController {
         return "factura/previewFactura";
     }
 
+    // TODO 3 DEFINIR SET 
     @GetMapping("/detalleFactura")
     public String verDetalleProducto(@ModelAttribute("detalle") DetalleDeFacturaFormulario detalle, Model model) {
         var servicios = servicioService.buscarTodos();
@@ -125,6 +128,7 @@ public class FacturaController {
         return "factura/vistaDetalleFactura";
     }
 
+    // TODO 4 DEFINIR SET 
     @GetMapping("/agregarDetalleFactura")
     public String agregarDetalleFactura(@ModelAttribute("idServicio") Long idServicio,
             @ModelAttribute("detalle") DetalleDeFacturaFormulario detalle) {
@@ -137,6 +141,8 @@ public class FacturaController {
         linea.setDescripcion(servicio.getDescripcion());
         linea.setIdServicio(servicio.getIdServicio());
 
+
+        // TODO 5 VALIDAR SI YA FUE AGREGADO EL SERVICIO
         if (!detalle.estaSeleccionado(linea.getIdServicio())) {
 
             detalle.agregarServicio(linea);
