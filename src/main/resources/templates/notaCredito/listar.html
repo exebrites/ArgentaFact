@@ -14,7 +14,7 @@
         <h1>¡Bienvenido a la página de Notas de credito!</h1>
         <div class="card">
             <div class="card-header">
-                <a th:href="@{/notaCredito/crear}" class="btn btn-primary">Crear nuevo cliente </a>
+                <a th:href="@{/notaCredito/crear}" class="btn btn-primary">Crear nueva Nota de credito </a>
             </div>
             <div class="card-body">
                 <table class="table">
@@ -31,9 +31,10 @@
                     <tbody th:each="notaCredito : ${listaNotaCredito}">
                         <tr>
 
-                            <td th:text="${notaCredito.fechaEmision}"></td>
+                            <td th:text="${notaCredito.getFechaFormateada()}"></td>
                             <td th:text="${notaCredito.monto}"></td>
                             <td th:text="${notaCredito.motivo}"></td>
+                            <td><a th:href="@{/generar/notaCredito/{id}(id=${notaCredito.idNotaCredito})}" class="btn btn-primary">Generar nota credito</a></td>
                             <!-- <td th:text="${notaCredito.estado}"></td> -->
                             <!-- <td><a th:href="@{/notaCredito/{id}(id=${notaCredito.idNotaCredito})}" class="btn btn-primary">Ver</a>
                             </td>

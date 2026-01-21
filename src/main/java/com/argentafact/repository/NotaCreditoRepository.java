@@ -7,5 +7,7 @@ import com.argentafact.model.NotaCredito;
 
 @Repository
 public interface NotaCreditoRepository extends JpaRepository<NotaCredito, Long> {
+
+    NotaCredito findByIdNotaCredito(Long id);
     
 }
