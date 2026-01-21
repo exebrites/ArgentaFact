@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
-public class FacturaPdfGenerator {
+public class PdfService {
 
     private static final Font TITLE_FONT = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
     private static final Font HEADER_FONT = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD);

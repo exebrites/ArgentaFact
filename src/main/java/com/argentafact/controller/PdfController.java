@@ -3,7 +3,7 @@ package com.argentafact.controller;
 import com.argentafact.model.DetalleFactura;
 import com.argentafact.model.Empresa;
 import com.argentafact.model.Factura;
-import com.argentafact.service.FacturaPdfGenerator;
+import com.argentafact.service.PdfService;
 import com.argentafact.service.FacturaService;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -105,7 +105,7 @@ public class PdfController {
     // TODO generar PDF de factura con formato
 
     @Autowired
-    private FacturaPdfGenerator pdfGenerator;
+    private PdfService pdfGenerator;
 
     @GetMapping("/generar/{id}")
     public ResponseEntity<byte[]> generarFacturaPdf(@PathVariable Long id) {
