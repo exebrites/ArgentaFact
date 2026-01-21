@@ -7,33 +7,42 @@
 </head>
 
 <body>
-    <section layout:fragment="content">
-        <h1>Listado de facturas</h1>
-        <a th:href="@{/facturas/crear}">crear factura</a>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Nro. de factura</th>
-                        <th>Fecha de emisi n</th>
-                        <th>Tipo de factura</th>
-                        <th>Total</th>
-                        <th>Estado</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="factura : ${facturas}">
-                        <td th:text="${factura.numeroFactura}"></td>
-                        <td th:text="${factura.fechaEmision}"></td>
-                        <td th:text="${factura.tipoFactura}"></td>
-                        <td th:text="${factura.total}"></td>
-                        <td th:text="${factura.estado}"></td>
-                       
-                        <td><a th:href="@{/generar/{id}(id=${factura.idFactura})}">Nueva funcion Generar comprobante</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <section layout:fragment="content" class="p-4">
+        <h2 class="mb-4">Facturas</h2>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <a th:href="@{/facturas/crear}" class="btn btn-af-primary btn-sm">Crear factura</a>
+            </div>
+            <div class="card-body p-0">
+
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nro. de factura</th>
+                            <th>Fecha de emisión</th>
+                            <th>Tipo de factura</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th colspan="4" class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="factura : ${facturas}">
+                            <td th:text="${factura.numeroFactura}"></td>
+                            <td th:text="${factura.getFechaFormateada()}"></td>
+                            <td th:text="${factura.tipoFactura}"></td>
+                            <td th:text="${factura.total}"></td>
+                            <td th:text="${factura.estado}"></td>
+                            <td><a href="#" class="btn btn-af-view btn-sm">Ver</a></td>
+                            <td><a href="#" class="btn btn-af-edit btn-sm">Editar</a></td>
+                            <td><a href="#" class="btn btn-af-delete btn-sm">Eliminar</a></td>
+                            <td><a th:href="@{/generar/{id}(id=${factura.idFactura})}" class="btn btn-af-view btn-sm">
+                                    <i class="bi bi-file-earmark-pdf-fill"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
     </section>
 </body>

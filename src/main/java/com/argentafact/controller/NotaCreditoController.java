@@ -25,7 +25,7 @@ public class NotaCreditoController {
     public String listarNotaCredito(Model model) {
         var listaNotaCredito = notaCreditoService.buscarTodas();
         model.addAttribute("listaNotaCredito", listaNotaCredito);
-        return "notaCredito/listar";
+        return "notaCredito/listarNotaCredito";
     }
 
     @GetMapping("/crear")
