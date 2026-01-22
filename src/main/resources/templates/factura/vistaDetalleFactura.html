@@ -22,7 +22,7 @@
 
                     <div class="form-group">
                         <label for="servicios">Servicios</label>
-                        <select class="js-example-basic-single form-control" id="servicios" name="idServicio">
+                        <select class="js-example-basic-single form-control" id="servicios" name="idServicio" required>
                             <option value="">Seleccione un servicio</option>
                             <option th:each="servicio : ${servicios}" th:value="${servicio.idServicio}"
                                 th:text="${servicio.nombreServicio}">

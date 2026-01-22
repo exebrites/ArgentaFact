@@ -49,11 +49,7 @@ public class DetalleDeFacturaFormulario implements Serializable {
     }
 
     public boolean estaSeleccionado(Long id) {
-        for (Linea servicio : serviciosSeleccionados) {
-            if (servicio.getId() == id) {
-                return true;
-            }
-        }
+       
         return false;
     }
 
