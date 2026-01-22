@@ -7,62 +7,60 @@
 </head>
 
 <body>
-    <section layout:fragment="content">
-
-        <div class="card">
-            <div class="card-header">
+    <section layout:fragment="content" class="p-4">
+        <h2 class="mb-4">Previsualizar factura</h2>
+        <div class="card shadow-sm">
+            <div class="card-header  bg-white">
                 <a th:href="@{/facturas/crear}" class="btn btn-af-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> Volver
                 </a>
             </div>
 
-            <div class="card-body">
+            <div class="card-body p-1">
 
-                <h1>Previsualizar factura</h1>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Factura número: <span th:text="${facturaSesion.numeroFactura}"></span>
-                        </h5>
-                        <p class="card-text">Fecha de emisión: <span th:text="${facturaSesion.fechaEmision}"></span></p>
-                        <p class="card-text">Tipo de factura: <span th:text="${facturaSesion.tipoFactura}"></span></p>
-                        <p class="card-text">Total: <span th:text="${facturaSesion.total}"></span></p>
-                        <p class="card-text">Estado: <span th:text="${facturaSesion.estado}"></span></p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Datos del cliente</h5>
-                        <p class="card-text">Nombre: <span th:text="${facturaSesion.cliente.nombre}"></span></p>
-                        <p class="card-text">Apellido: <span th:text="${facturaSesion.cliente.apellido}"></span></p>
-                        <p class="card-text">CUIT: <span th:text="${facturaSesion.cliente.cuit}"></span></p>
-                        <p class="card-text">Condición fiscal: <span
-                                th:text="${facturaSesion.cliente.condicionFiscal}"></span></p>
-                        <p class="card-text">Dirección: <span th:text="${facturaSesion.cliente.direccion}"></span></p>
-                        <p class="card-text">Teléfono: <span th:text="${facturaSesion.cliente.telefono}"></span></p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Detalles de la factura</h5>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Nombre del servicio</th>
-                                    <th>Precio</th>
-                                    <th>Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody th:each="detalle : ${facturaSesion.detalleFacturas}">
-                                <tr>
-                                    <td th:text="${detalle.servicio.nombreServicio}"></td>
-                                    <td th:text="${detalle.servicio.precio}"></td>
-                                    <td th:text="${detalle.subtotal}"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <a th:href="@{/facturas/confirmarDatos}" class="btn btn-primary">Confirmar datos</a>
+                <h5 class="card-title">Factura número: <span th:text="${facturaSesion.numeroFactura}"></span>
+                </h5>
+                <ul>
+                    <li class="card-text">Fecha de emisión: <span th:text="${facturaSesion.getFechaFormato()}"></span>
+                    </li>
+                    <li class="card-text">Tipo de factura: <span th:text="${facturaSesion.tipoFactura}"></span></li>
+                    <li class="card-text">Total: <span th:text="${facturaSesion.total}"></span></li>
+                    <li class="card-text">Estado: <span th:text="${facturaSesion.estado}"></span></li>
+                </ul>
+
+                <hr>
+                <h5 class="card-title">Datos del cliente</h5>
+                <ul>
+                    <li class="card-text">Nombre: <span th:text="${facturaSesion.cliente.nombre}"></span></li>
+                    <li class="card-text">Apellido: <span th:text="${facturaSesion.cliente.apellido}"></span></li>
+                    <li class="card-text">CUIT: <span th:text="${facturaSesion.cliente.cuit}"></span></li>
+                    <li class="card-text">Condición fiscal: <span
+                            th:text="${facturaSesion.cliente.condicionFiscal}"></span>
+                    </li>
+                    <li class="card-text">Dirección: <span th:text="${facturaSesion.cliente.direccion}"></span></li>
+                    <li class="card-text">Teléfono: <span th:text="${facturaSesion.cliente.telefono}"></span></li>
+                </ul>
+
+                <hr>
+                <h5 class="card-title">Detalles de la factura</h5>
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nombre del servicio</th>
+                            <th>Precio</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody th:each="detalle : ${facturaSesion.detalleFacturas}">
+                        <tr>
+                            <td th:text="${detalle.servicio.nombreServicio}"></td>
+                            <td th:text="${detalle.servicio.precio}"></td>
+                            <td th:text="${detalle.subtotal}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+<br>
+                <a th:href="@{/facturas/confirmarDatos}" class="btn btn-af-primary btn-sm">Confirmar datos</a>
 
 
 

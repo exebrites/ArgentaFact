@@ -7,17 +7,18 @@
 </head>
 
 <body>
-    <section layout:fragment="content">
-        <div class="card">
+    <section layout:fragment="content" class="p-4">
+        <h2 class="mb-4">Detalle de factura</h2>
+        <div class="card shadow-sm">
 
-            <div class="card-header">
+            <div class="card-header bg-white">
                 <a th:href="@{/facturas/crear}" class="btn btn-af-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> Volver
                 </a>
             </div>
-            <div class="card-body">
+            <div class="card-body  p-1">
 
-                <h1>Detalle de factura</h1>
+
                 <form th:action="@{/facturas/agregarDetalleFactura}" th:method="get">
 
                     <div class="form-group">
@@ -30,7 +31,7 @@
                         </select>
                     </div>
                     <br>
-                    <button type="submit" class="btn btn-primary">Agregar</button>
+                    <button type="submit" class="btn btn-af-primary btn-sm">Agregar</button>
                 </form>
 
             </div>
