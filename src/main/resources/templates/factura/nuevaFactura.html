@@ -10,6 +10,11 @@
     <section layout:fragment="content">
 
         <div class="card">
+
+            <div th:if="${mensajeError}" class="alert alert-warning" role="alert">
+                <p th:text="${mensajeError}"></p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             <div class="card-header">
                 <div class="card-header">
                     <a th:href="@{/clientes/}" class="btn btn-af-secondary btn-sm">

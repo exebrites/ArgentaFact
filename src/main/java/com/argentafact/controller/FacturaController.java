@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.argentafact.model.DetalleDeFacturaFormulario;
 import com.argentafact.model.DetalleFactura;
@@ -41,7 +42,6 @@ public class FacturaController {
     @Autowired
     private ServicioService servicioService;
 
-    // TODO : 1 DEFINIR SET DE DETALLE DE FACTURA 
     @ModelAttribute("detalle")
     public DetalleDeFacturaFormulario setUpDetalleFacturaFormulario() {
         return new DetalleDeFacturaFormulario();
@@ -70,7 +70,6 @@ public class FacturaController {
         return "factura/listar";
     }
 
-    // TODO : 2 DEFINIR CABERA CON SET 
     @GetMapping("/crear")
     public String nuevaFactura(
             @ModelAttribute("detalle") DetalleDeFacturaFormulario detalleFactura,
@@ -120,7 +119,6 @@ public class FacturaController {
         return "factura/previewFactura";
     }
 
-    // TODO 3 DEFINIR SET 
     @GetMapping("/detalleFactura")
     public String verDetalleProducto(@ModelAttribute("detalle") DetalleDeFacturaFormulario detalle, Model model) {
         var servicios = servicioService.buscarTodos();
@@ -128,26 +126,25 @@ public class FacturaController {
         return "factura/vistaDetalleFactura";
     }
 
-    // TODO 4 DEFINIR SET 
     @GetMapping("/agregarDetalleFactura")
     public String agregarDetalleFactura(@ModelAttribute("idServicio") Long idServicio,
-            @ModelAttribute("detalle") DetalleDeFacturaFormulario detalle) {
+            @ModelAttribute("detalle") DetalleDeFacturaFormulario detalle, RedirectAttributes redirectAttributes) {
 
         var servicio = servicioService.findById(idServicio);
-
+        // TODO crear servicio de detalle de facturacion sesion
         var linea = new Linea();
         linea.setNombre(servicio.getNombreServicio());
         linea.setPrecio(servicio.getPrecio());
         linea.setDescripcion(servicio.getDescripcion());
         linea.setIdServicio(servicio.getIdServicio());
 
-
-        // TODO 5 VALIDAR SI YA FUE AGREGADO EL SERVICIO
-        if (!detalle.estaSeleccionado(linea.getIdServicio())) {
-
-            detalle.agregarServicio(linea);
-
+        for (Linea detalleLinea : detalle.getServiciosSeleccionados()) {
+            if (detalleLinea.getIdServicio() == idServicio) {
+                redirectAttributes.addFlashAttribute("mensajeError", "Este servicio ya fue agregado");
+                return "redirect:/facturas/crear";
+            }
         }
+        detalle.agregarServicio(linea);
 
         return "redirect:/facturas/crear";
     }
@@ -184,5 +181,4 @@ public class FacturaController {
     }
     // TODO : eliminar un servicio de detalle de factura
 
-    // TODO generar un archivo pdf de la factura
 }
