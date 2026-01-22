@@ -8,8 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.argentafact.model.CondicionFiscal;
 import com.argentafact.model.DetalleDeFacturaFormulario;
 import com.argentafact.model.DetalleFactura;
 import com.argentafact.model.EstadoFactura;
@@ -17,6 +19,7 @@ import com.argentafact.model.Factura;
 import com.argentafact.model.FacturaSesion;
 import com.argentafact.model.Linea;
 import com.argentafact.model.NotaCredito;
+import com.argentafact.model.TipoFactura;
 import com.argentafact.service.ClienteService;
 import com.argentafact.service.EmpleadoService;
 import com.argentafact.service.FacturaService;
@@ -88,12 +91,25 @@ public class FacturaController {
     @PostMapping("/")
     public String agregarFactura(@ModelAttribute("detalle") DetalleDeFacturaFormulario detalleFactura,
             @ModelAttribute("factura") Factura factura, Model model,
-            @ModelAttribute("facturaSesion") FacturaSesion facturaSesion) {
+            @ModelAttribute("facturaSesion") FacturaSesion facturaSesion, RedirectAttributes redirectAttributes) {
         // TODO : obtener empleado autenticado
         factura.setEmpleado(empleadoService.buscarTodos().get(0));
         factura.setNumeroFactura("123");
         factura.setTotal(detalleFactura.getTotal());
         factura.setEstado(EstadoFactura.PENDIENTE);
+
+        // TODO determinar el tipo de factura segun la condicion fiscal del cliente.
+        if ((factura.getCliente().getCondicionFiscal().equals(CondicionFiscal.RESPONSABLE_INSCRIPTO))
+                || (factura.getCliente().getCondicionFiscal().equals(CondicionFiscal.MONOTRIBUTISTA))) {
+            factura.setTipoFactura(TipoFactura.A);
+        } else {
+            factura.setTipoFactura(TipoFactura.B);
+        }
+        // control de detalle vacio
+        if (detalleFactura.getServiciosSeleccionados().isEmpty()) {
+            redirectAttributes.addFlashAttribute("mensajeError", "Debe agregar un servicio a  la factura");
+            return "redirect:/facturas/crear";
+        }
 
         DetalleFactura detalle = new DetalleFactura();
         for (var linea : detalleFactura.getServiciosSeleccionados()) {
@@ -150,22 +166,25 @@ public class FacturaController {
     }
 
     @GetMapping("/confirmarDatos")
-    public String confirmarDatos(@ModelAttribute("facturaSesion") FacturaSesion facturaSesion) {
+    public String confirmarDatos(@ModelAttribute("facturaSesion") FacturaSesion facturaSesion, SessionStatus status) {
 
         Factura factura = new Factura();
+
         factura.setNumeroFactura(facturaSesion.getNumeroFactura());
         factura.setFechaEmision(facturaSesion.getFechaEmision());
-        factura.setTipoFactura(facturaSesion.getTipoFactura());
         factura.setTotal(facturaSesion.getTotal());
         factura.setEstado(facturaSesion.getEstado());
         factura.setCliente(facturaSesion.getCliente());
         factura.setEmpleado(facturaSesion.getEmpleado());
         factura.setDetalleFacturas(facturaSesion.getDetalleFacturas());
+        factura.setTipoFactura(facturaSesion.getTipoFactura());
         // relacionar detalle con factura
         for (DetalleFactura detalle : facturaSesion.getDetalleFacturas()) {
             detalle.setFactura(factura);
         }
         facturaService.guardarFactura(factura);
+        // Esto limpia TODOS los atributos de @SessionAttributes
+        status.setComplete();
 
         return "redirect:/facturas/";
     }
