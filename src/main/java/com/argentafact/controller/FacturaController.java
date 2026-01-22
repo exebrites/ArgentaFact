@@ -18,7 +18,7 @@ import com.argentafact.model.EstadoFactura;
 import com.argentafact.model.Factura;
 import com.argentafact.model.FacturaSesion;
 import com.argentafact.model.Linea;
-import com.argentafact.model.NotaCredito;
+
 import com.argentafact.model.TipoFactura;
 import com.argentafact.service.ClienteService;
 import com.argentafact.service.EmpleadoService;
@@ -29,7 +29,7 @@ import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -98,7 +98,7 @@ public class FacturaController {
         factura.setTotal(detalleFactura.getTotal());
         factura.setEstado(EstadoFactura.PENDIENTE);
 
-        // TODO determinar el tipo de factura segun la condicion fiscal del cliente.
+        // determinar el tipo de factura segun la condicion fiscal del cliente.
         if ((factura.getCliente().getCondicionFiscal().equals(CondicionFiscal.RESPONSABLE_INSCRIPTO))
                 || (factura.getCliente().getCondicionFiscal().equals(CondicionFiscal.MONOTRIBUTISTA))) {
             factura.setTipoFactura(TipoFactura.A);
@@ -198,6 +198,14 @@ public class FacturaController {
 
         return "redirect:/facturas/crear";
     }
-    // TODO : eliminar un servicio de detalle de factura
+    // eliminar un servicio de detalle de factura
 
+    @GetMapping("/eliminarDetalle/{idServicio}")
+    public String eliminarDetalleFactura(@PathVariable Long idServicio,
+            @ModelAttribute("detalle") DetalleDeFacturaFormulario detalle, RedirectAttributes redirectAttributes) {
+
+        detalle.eliminarServicio(idServicio);
+
+        return "redirect:/facturas/crear";
+    }
 }
