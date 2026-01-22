@@ -111,8 +111,9 @@ public class FacturaController {
             return "redirect:/facturas/crear";
         }
 
-        DetalleFactura detalle = new DetalleFactura();
+        
         for (var linea : detalleFactura.getServiciosSeleccionados()) {
+            DetalleFactura detalle = new DetalleFactura();
             var servicio = servicioService.findById(linea.getIdServicio());
             detalle.setServicio(servicio);
             detalle.setFactura(factura);
