@@ -32,6 +32,7 @@ public class PdfController {
     @Autowired
     private FacturaService facturaService;
 
+    private final Empresa empresa = new Empresa();
     /**
      * Ejemplo 1: PDF básico con texto
      */
@@ -96,8 +97,7 @@ public class PdfController {
     @GetMapping("/pdf/{id}")
     public String generarFactura(@ModelAttribute("id") Long id) {
 
-        var empresa = new Empresa("Empresa ficticia XXXX");
-
+         
         var factura = facturaService.obtenerFactura(id);
 
         crearPDFBasico(empresa, factura);
@@ -114,7 +114,7 @@ public class PdfController {
         try {
             // Ejemplo de creación de una factura de prueba
             Factura factura = facturaService.obtenerFactura(id);
-            var empresa = new Empresa("Empresa ficticia XXXX");
+           
             byte[] pdfBytes = pdfGenerator.generarFacturaPdf(factura, empresa);
 
             HttpHeaders headers = new HttpHeaders();
@@ -141,7 +141,6 @@ public class PdfController {
             // Ejemplo de creación de una factura de prueba
             NotaCredito notaCredito = notaCreditoService.obtenerNotaCredito(id);
 
-            var empresa = new Empresa("Empresa ficticia XXXX");
             byte[] pdfBytes = pdfGenerator.generarNotaCreditoPdf(notaCredito, empresa);
 
             HttpHeaders headers = new HttpHeaders();

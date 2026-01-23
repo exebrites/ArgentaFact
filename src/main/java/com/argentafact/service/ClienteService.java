@@ -39,7 +39,7 @@ public class ClienteService {
                 clienteObtenida.setCuit(cliente.getCuit());
                 clienteObtenida.setDireccion(cliente.getDireccion());
                 clienteObtenida.setTelefono(cliente.getTelefono());
-                // clienteObtenida.setSaldo(cliente.getSaldo());
+                clienteObtenida.setLocalidad(cliente.getLocalidad());
                 clienteObtenida.setCondicionFiscal(cliente.getCondicionFiscal());
                 clienteRepository.save(clienteObtenida);
             });

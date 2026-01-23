@@ -94,7 +94,8 @@ public class FacturaController {
             @ModelAttribute("facturaSesion") FacturaSesion facturaSesion, RedirectAttributes redirectAttributes) {
         // TODO : obtener empleado autenticado
         factura.setEmpleado(empleadoService.buscarTodos().get(0));
-        factura.setNumeroFactura("123");
+        String nroFactura = facturaService.generarNumeroFactura();
+        factura.setNumeroFactura(nroFactura);
         factura.setTotal(detalleFactura.getTotal());
         factura.setEstado(EstadoFactura.PENDIENTE);
 
@@ -111,7 +112,6 @@ public class FacturaController {
             return "redirect:/facturas/crear";
         }
 
-        
         for (var linea : detalleFactura.getServiciosSeleccionados()) {
             DetalleFactura detalle = new DetalleFactura();
             var servicio = servicioService.findById(linea.getIdServicio());
