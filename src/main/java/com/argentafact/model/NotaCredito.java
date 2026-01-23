@@ -1,13 +1,8 @@
 package com.argentafact.model;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
-
-import org.hibernate.mapping.Join;
-
 import com.argentafact.utils.DateFormatterUtil;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -36,7 +31,7 @@ public class NotaCredito {
     }
 
     public NotaCredito(LocalDate fechaEmision, BigDecimal monto, String motivo) {
-        this.fechaEmision = fechaEmision;
+        this.fechaEmision = fechaEmision == null ? LocalDate.now() : fechaEmision;
         this.monto = monto;
         this.motivo = motivo;
     }
