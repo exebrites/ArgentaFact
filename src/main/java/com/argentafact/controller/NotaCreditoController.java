@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.argentafact.model.Cliente;
 import com.argentafact.model.NotaCredito;
 import com.argentafact.service.FacturaService;
 import com.argentafact.service.NotaCreditoService;
@@ -55,7 +54,8 @@ public class NotaCreditoController {
 
     @PostMapping("/")
     public String agregarNotaCredito(@ModelAttribute("notaCredito") NotaCredito notaCredito) {
-        // TODO: dar de baja la factura
+        // GENERAR NOTA DE CREDITO POR MONTO TOTAL DE LA FACTURA => CANCELAR FACTURA
+        notaCredito.setMonto(notaCredito.getFactura().getTotal());
         notaCreditoService.guardarNotaCredito(notaCredito);
         return "redirect:/notaCredito/";
     }
