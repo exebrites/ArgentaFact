@@ -83,6 +83,7 @@ public class NotaCredito {
     public String getFechaFormateada() {
         return DateFormatterUtil.format(this.fechaEmision);
     }
+    
     @Override
     public String toString() {
         return "NotaCredito [idNotaCredito=" + idNotaCredito + ", fechaEmision=" + fechaEmision + ", monto=" + monto

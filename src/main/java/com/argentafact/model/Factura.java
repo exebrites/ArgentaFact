@@ -160,6 +160,9 @@ public class Factura {
     public String getFechaFormateada(){
         return DateFormatterUtil.format(fechaEmision);
     }
+    public String getNumeroFacturaConMontoFormateado(){
+        return this.numeroFactura + " - $" + this.total;
+    }
     @Override
     public String toString() {
         return "Factura [idFactura=" + idFactura + ", numeroFactura=" + numeroFactura + ", fechaEmision=" + fechaEmision
