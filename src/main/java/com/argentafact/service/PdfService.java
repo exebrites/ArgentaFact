@@ -4,6 +4,7 @@ import com.argentafact.model.DetalleFactura;
 import com.argentafact.model.Empresa;
 import com.argentafact.model.Factura;
 import com.argentafact.model.NotaCredito;
+import com.argentafact.model.TipoFactura;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import org.springframework.stereotype.Service;
@@ -179,6 +180,10 @@ public class PdfService {
         cell = new PdfPCell(new Phrase(" ", NORMAL_FONT));
         cell.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell);
+           // CUIT
+        cell = new PdfPCell(new Phrase("RECEPTOR: " + factura.getCliente().getNombre() + " "+factura.getCliente().getApellido() , NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
 
         // CUIT
         cell = new PdfPCell(new Phrase("CUIT: " + factura.getCliente().getCuit(), NORMAL_FONT));
@@ -220,8 +225,7 @@ public class PdfService {
         cell.setBorder(Rectangle.NO_BORDER);
         cell.setColspan(2);
         table.addCell(cell);
-      
-      
+
         document.add(table);
         document.add(Chunk.NEWLINE);
     }
@@ -319,15 +323,19 @@ public class PdfService {
             table.addCell(cell);
         } else {
             // IVA
-            PdfPCell cell = new PdfPCell(new Phrase("IVA", HEADER_FONT));
-            cell.setBorder(Rectangle.NO_BORDER);
-            table.addCell(cell);
+            PdfPCell cell = new PdfPCell();
 
-            cell = new PdfPCell(new Phrase(String.format("$%.2f", factura.getIva()),
-                    BOLD_FONT));
-            cell.setBorder(Rectangle.NO_BORDER);
-            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            table.addCell(cell);
+            if (factura.getTipoFactura().equals(TipoFactura.A)) {
+                cell = new PdfPCell(new Phrase("IVA", HEADER_FONT));
+                cell.setBorder(Rectangle.NO_BORDER);
+                table.addCell(cell);
+
+                cell = new PdfPCell(new Phrase(String.format("$%.2f", factura.getIva()),
+                        BOLD_FONT));
+                cell.setBorder(Rectangle.NO_BORDER);
+                cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                table.addCell(cell);
+            }
 
             // TOTAL
             cell = new PdfPCell(new Phrase("TOTAL", HEADER_FONT));
