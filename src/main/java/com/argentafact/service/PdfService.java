@@ -8,8 +8,6 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Service
 public class PdfService {
@@ -49,8 +47,8 @@ public class PdfService {
         PdfPCell cell = new PdfPCell(new Phrase("EMPRESA", HEADER_FONT));
         cell.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell);
-
-        cell = new PdfPCell(new Phrase("X", HEADER_FONT));
+        var tipoFactura =  factura.getTipoFactura().toString();
+        cell = new PdfPCell(new Phrase(tipoFactura, HEADER_FONT));
         cell.setBorder(Rectangle.NO_BORDER);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
