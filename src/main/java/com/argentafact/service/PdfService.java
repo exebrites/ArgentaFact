@@ -175,24 +175,32 @@ public class PdfService {
         PdfPCell cell = new PdfPCell(new Phrase("CLIENTE", HEADER_FONT));
         cell.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell);
-
-        cell = new PdfPCell(new Phrase("DOMICILIO " + factura.getCliente().getDireccion(),
-                HEADER_FONT));
+        // Celda vacía en el medio
+        cell = new PdfPCell(new Phrase(" ", NORMAL_FONT));
         cell.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell);
 
         // CUIT
-        cell = new PdfPCell(new Phrase("CUIT " + factura.getCliente().getCuit(), NORMAL_FONT));
+        cell = new PdfPCell(new Phrase("CUIT: " + factura.getCliente().getCuit(), NORMAL_FONT));
         cell.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell);
 
         // Información adicional domicilio (si se necesita)
-        cell = new PdfPCell(new Phrase("XXXX", NORMAL_FONT));
+        cell = new PdfPCell(new Phrase("DOMICILIO: " + factura.getCliente().getDireccion(), NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+        // LOCALIDAD
+        cell = new PdfPCell(new Phrase("LOCALIDAD: " + factura.getCliente().getLocalidad(), NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        // TELEFONO
+        cell = new PdfPCell(new Phrase("TELEFONO: " + factura.getCliente().getTelefono(), NORMAL_FONT));
         cell.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell);
 
         // CONDICION FISCAL
-        cell = new PdfPCell(new Phrase("CONDICION FISCAL " +
+        cell = new PdfPCell(new Phrase("CONDICION FISCAL: " +
                 factura.getCliente().getCondicionFiscal(), NORMAL_FONT));
         cell.setBorder(Rectangle.NO_BORDER);
         cell.setColspan(2);
@@ -207,6 +215,13 @@ public class PdfService {
             table.addCell(cell);
         }
 
+        // Salto de línea
+        cell = new PdfPCell(new Phrase(" "));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setColspan(2);
+        table.addCell(cell);
+      
+      
         document.add(table);
         document.add(Chunk.NEWLINE);
     }
