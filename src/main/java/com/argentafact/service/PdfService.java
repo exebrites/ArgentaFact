@@ -47,7 +47,7 @@ public class PdfService {
         PdfPCell cell = new PdfPCell(new Phrase("EMPRESA", HEADER_FONT));
         cell.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell);
-        var tipoFactura =  factura.getTipoFactura().toString();
+        var tipoFactura = factura.getTipoFactura().toString();
         cell = new PdfPCell(new Phrase(tipoFactura, HEADER_FONT));
         cell.setBorder(Rectangle.NO_BORDER);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -77,7 +77,7 @@ public class PdfService {
         table.setWidths(columnWidths);
 
         // RAZON SOCIAL
-        PdfPCell cell = new PdfPCell(new Phrase("RAZON SOCIAL " + empresa.getRazonSocial(), NORMAL_FONT));
+        PdfPCell cell = new PdfPCell(new Phrase("RAZON SOCIAL: " + empresa.getRazonSocial(), NORMAL_FONT));
         cell.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell);
 
@@ -93,12 +93,12 @@ public class PdfService {
         cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         table.addCell(cell);
 
-        // RESPONSABLE INSCRIPTO
-        cell = new PdfPCell(new Phrase("RESPONSABLE INSCRIPTO ", NORMAL_FONT));
+        // DIRECCION DE EMPRESA
+        cell = new PdfPCell(new Phrase("DIRECCION: " + empresa.getDireccion(), NORMAL_FONT));
         cell.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell);
 
-        // Celda vacía
+        // Celda vacía en el medio
         cell = new PdfPCell(new Phrase(" ", NORMAL_FONT));
         cell.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell);
@@ -110,12 +110,57 @@ public class PdfService {
         cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         table.addCell(cell);
 
-        // EMPRESA (si se necesita mostrar el nombre)
-        // if (factura.getEmpresa() != null) {
-        // cell = new PdfPCell(new Phrase(factura.getEmpresa(), NORMAL_FONT));
-        // cell.setBorder(Rectangle.NO_BORDER);
-        // cell.setColspan(3);
-        // table.addCell(cell);
+        // CONTACTO: TELEFONO Y CORREO
+        cell = new PdfPCell(new Phrase("TELEFONO: " + empresa.getTelefono(), NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        // Celda vacía en el medio
+        cell = new PdfPCell(new Phrase(" ", NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        // Celda vacía en el medio
+        cell = new PdfPCell(new Phrase(" ", NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("CORREO ELECTRONICO: " + empresa.getCorreoElectronico(), NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        // Celda vacía en el medio
+        cell = new PdfPCell(new Phrase(" ", NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        // Celda vacía en el medio
+        cell = new PdfPCell(new Phrase(" ", NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        // RESPONSABLE INSCRIPTO
+        cell = new PdfPCell(new Phrase("CONDICION FISCAL: " + empresa.getCondicionFiscal(), NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        // Celda vacía en el medio
+        cell = new PdfPCell(new Phrase(" ", NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        // Celda vacía en el medio
+        cell = new PdfPCell(new Phrase(" ", NORMAL_FONT));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        // Línea separadora
+        cell = new PdfPCell(new Phrase(" "));
+        cell.setBorder(Rectangle.BOTTOM);
+        cell.setColspan(3);
+        cell.setFixedHeight(2f);
+        table.addCell(cell);
+
         document.add(table);
         document.add(Chunk.NEWLINE);
 
