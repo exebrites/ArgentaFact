@@ -1,7 +1,6 @@
 package com.argentafact.service;
 
- 
-import java.util.List;
+ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import com.argentafact.model.Empleado;
@@ -21,4 +20,9 @@ public class EmpleadoService {
     public List<Empleado> buscarTodos() {
         return empleadoRepository.findAll();
     }
+    
+    public Empleado buscarPorId(Long id) {
+        return empleadoRepository.findByIdEmpleado(id); 
+    }
+
 }

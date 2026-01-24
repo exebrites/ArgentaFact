@@ -144,7 +144,7 @@ Empleado "1" --> "*" Pago : pagos
 Empleado "1" --> "*" Comprobante : comprobantes 
 
 Cliente "1" --> "1" Cuenta
-Cliente "1" --> "*" Factura : facturas
+Cliente "1" --> "*" Factura : cliente
 Cliente "1" --> "*" Pago : pagos
 Cliente "1" --> "*" Comprobante  
 

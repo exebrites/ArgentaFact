@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+
+<head>
+    <title>Ver Histórico Fiscal</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+    <h1>Detalle del Histórico Fiscal</h1>
+    <div class="card">
+        <div class="card-body">
+            <p>ID Histórico: <span th:text="${historico.idHistorico}"></span></p>
+            <p>Fecha: <span th:text="${#temporals.format(historico.fechaOperacion, 'dd/MM/yyyy HH:mm')}"></span></p>
+            <p>Cliente: <span th:text="${historico.cliente.apellido + ', ' + historico.cliente.nombre}"></span></p>
+            <p>CUIT Cliente: <span th:text="${historico.cliente.cuit}"></span></p>
+            <p>Empleado: <span th:text="${historico.empleado.nombre}"></span></p>
+            <p>Tipo de Operación: <span th:text="${historico.tipoOperacion}"></span></p>
+            <p>Descripción: <span th:text="${historico.descripcion}"></span></p>
+            <p>Monto: <span th:text="${historico.monto}"></span></p>
+            <p>Condición Fiscal: <span th:text="${historico.condicionFiscal}"></span></p>
+        </div>
+
+        <div class="card-footer">
+            <a th:href="@{/historico}" class="btn btn-primary">Volver</a>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

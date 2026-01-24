@@ -13,32 +13,31 @@ import com.argentafact.model.Servicio;
 import com.argentafact.service.ServicioService;
 
 @Controller
-@RequestMapping("/servicios")
+@RequestMapping("/servicios/")
 public class ServicioController {
 
     @Autowired
     private ServicioService servicioService;
 
     // LISTAR servicios
-    @GetMapping("/")
+    @GetMapping
     public String listarServicios(Model model) {
-        var servicios = servicioService.buscarTodos();
-        model.addAttribute("servicios", servicios);
+        model.addAttribute("servicios", servicioService.buscarTodos());
         return "servicio/listar";
     }
 
-    // MOSTRAR formulario de alta
+    // FORMULARIO NUEVO
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("servicio", new Servicio());
         return "servicio/nuevo";
     }
 
-    // GUARDAR servicio
+    // GUARDAR
     @PostMapping("/guardar")
     public String guardarServicio(Servicio servicio) {
         servicioService.guardar(servicio);
-        return "redirect:/servicios/";
+        return "redirect:/servicios";
     }
 
     @GetMapping("/{id}/eliminar")
