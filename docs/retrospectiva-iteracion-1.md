@@ -1,0 +1,3 @@
+# Retrospectiva
+Se ha realizado la primera iteración a pesar de ciertos inconvenientes personales y un mal manejo de tiempo al momento de realizar  las actividades en los momentos necesarios para ver sus funcionamientos, errores y mejoras. Esto se pudo solucionar gracias a la comunicación, y una administración de horarios para realizar las actividades requeridas (Historias de Usuario).
+Se propone como plan un tiempo de comunicación, por cada día, para revisar lo hecho y lo que falta hacer, con el fin de mejorar en la próxima iteración, completando el MVP propuesto, además de un mejor entendimiento grupal.
