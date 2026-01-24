@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+
+<head>
+    <title>Cuentas</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+    <h1>Listado de Cuentas</h1>
+
+    <div class="card">
+        <div class="card-header">
+            <a th:href="@{/cuentas/nueva}" class="btn btn-primary">
+                Crear nueva cuenta
+            </a>
+        </div>
+
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>ID Cuenta</th>
+                    <th>Cliente</th>
+                    <th>Saldo</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cuenta : ${cuentas}">
+                    <td th:text="${cuenta.idCuenta}"></td>
+                    <td th:text="${cuenta.cliente.nombre + ' ' + cuenta.cliente.apellido}"></td>
+                    <td th:text="${cuenta.saldo}"></td>
+                    <td>
+                        <a th:href="@{/cuentas/{id}(id=${cuenta.idCuenta})}"
+                           class="btn btn-primary btn-sm">
+                            Ver
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

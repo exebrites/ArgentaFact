@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+
+<section layout:fragment="content">
+
+    <h1>Detalle del Servicio</h1>
+
+    <div class="card">
+        <div class="card-body">
+
+            <p><strong>ID:</strong>
+                <span th:text="${servicio.idServicio}"></span>
+            </p>
+
+            <p><strong>Nombre:</strong>
+                <span th:text="${servicio.nombreServicio}"></span>
+            </p>
+
+            <p><strong>Descripción:</strong>
+                <span th:text="${servicio.descripcion}"></span>
+            </p>
+
+            <p><strong>Precio:</strong>
+                <span th:text="${servicio.precio}"></span>
+            </p>
+
+            <a th:href="@{/servicios/}" class="btn btn-secondary">
+                Volver
+            </a>
+
+        </div>
+    </div>
+
+</section>
+</html>
