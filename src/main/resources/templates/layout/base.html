@@ -7,40 +7,110 @@
 
     <!-- Título dinámico -->
     <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">
-        Mi App
+        ArgentaFact | Panel de administración
     </title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- CSS personalizado común -->
-    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/argentafact.css}">
 
     <!-- Espacio para CSS específico de cada vista -->
     <th:block layout:fragment="styles" />
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+
 </head>
 
-<body>
+<body class="bg-light">
 
 
-    <div class="container-fluid p-0">
-        <!-- Header incluido -->
-        <header th:insert="~{partials/header :: header}"></header>
+    <!-- HEADER -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary px-4">
+        <a class="navbar-brand fw-bold" th:href="@{/}">
+            ArgentaFact
+        </a>
 
-        <!-- Contenido principal -->
-        <main class="container mt-4">
-            <div layout:fragment="content">
-                <!-- Contenido por defecto (solo se muestra si la vista hija no define el fragmento) -->
-                <div class="alert alert-warning">
-                    No se ha definido contenido para esta página.
+        <div class="ms-auto d-flex align-items-center text-white">
+            <i class="bi bi-person-circle fs-5 me-2"></i>
+            <span class="me-3">Empleado</span>
+
+            <form action="/logout" method="post">
+                <button type="submit" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-box-arrow-right"></i> Salir
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="container-fluid ">
+        <div class="row">
+            <!-- SIDEBAR -->
+            <aside class="col-md-2 bg-white border-end vh-100 p-3">
+                <h6 class="text-muted">MENÚ</h6>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/}"><i class="bi bi-speedometer2"></i> Panel de
+                            administración</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/clientes/}"><i class="bi bi-person"></i> Clientes</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/cuentas/}"><i class="bi bi-person-badge"></i> Cuentas</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/empleados/}"><i class="bi bi-person-workspace"></i>
+                            Empleados</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/servicios/}"><i class="bi bi-tools"></i> Servicios</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/notaCredito/}"><i class="bi bi-credit-card"></i> Nota de
+                            Crédito</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/facturas/}"><i class="bi bi-receipt"></i> Facturación</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-currency-exchange"></i> Pagos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-bar-chart"></i> Reportes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/historico/}"><i class="bi bi-archive-fill"></i> Historico</a>
+                    </li>
+                </ul>
+            </aside>
+
+
+
+            <!-- Contenido principal -->
+            <main class="col-md-10 p-4">
+                <div layout:fragment="content">
+                    <!-- Contenido por defecto (solo se muestra si la vista hija no define el fragmento) -->
+                    <div class="alert alert-warning">
+                        No se ha definido contenido para esta página.
+                    </div>
                 </div>
-            </div>
-        </main>
-
+            </main>
+        </div>
 
 
         <!-- Incluir footer -->
@@ -52,8 +122,9 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
 
-    <!-- jQuery (opcional) -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+
+ 
 
     <!-- Espacio para JS específico de cada vista -->
     <!-- <th:block layout:fragment="scripts" /> -->

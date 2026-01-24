@@ -7,23 +7,46 @@
 </head>
 
 <body>
-    <section layout:fragment="content">
-        <h1>Detalle de factura</h1>
-        <form th:action="@{/facturas/agregarDetalleFactura}" th:method="get">
+    <section layout:fragment="content" class="p-4">
+        <h2 class="mb-4">Detalle de factura</h2>
+        <div class="card shadow-sm">
 
-            <div class="form-group">
-                <label for="servicios">Servicios</label>
-                <select class="form-control" id="servicios" name="idServicio">
-                    <option value="">Seleccione un servicio</option>
-                    <option th:each="servicio : ${servicios}" th:value="${servicio.idServicio}"
-                        th:text="${servicio.nombreServicio}">
-                    </option>
-                </select>
+            <div class="card-header bg-white">
+                <a th:href="@{/facturas/crear}" class="btn btn-af-secondary btn-sm">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
             </div>
+            <div class="card-body  p-1">
 
-            <button type="submit" class="btn btn-primary">Agregar</button>
-        </form>
+
+                <form th:action="@{/facturas/agregarDetalleFactura}" th:method="get">
+
+                    <div class="form-group">
+                        <label for="servicios">Servicios</label>
+                        <select class="js-example-basic-single form-control" id="servicios" name="idServicio" required>
+                            <option value="">Seleccione un servicio</option>
+                            <option th:each="servicio : ${servicios}" th:value="${servicio.idServicio}"
+                                th:text="${servicio.nombreServicio}">
+                            </option>
+                        </select>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-af-primary btn-sm">Agregar</button>
+                </form>
+
+            </div>
+        </div>
+
+
+
+
+        <script>
+            $(document).ready(function () {
+                $('.js-example-basic-single').select2();
+            });
+        </script>
     </section>
+
 </body>
 
 </html>

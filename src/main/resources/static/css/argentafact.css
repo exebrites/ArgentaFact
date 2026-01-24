@@ -1,0 +1,62 @@
+/* ===== ArgentaFact Buttons ===== */
+
+.btn-af-primary {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.btn-af-primary:hover {
+    background-color: #0b5ed7;
+    color: #fff;
+}
+
+.btn-af-view {
+    background-color: #0dcaf0;
+    color: #fff;
+}
+
+.btn-af-view:hover {
+    background-color: #31d2f2;
+    color: #fff;
+}
+
+.btn-af-edit {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.btn-af-edit:hover {
+    background-color: #ffcd39;
+    color: #000;
+}
+
+.btn-af-delete {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-af-delete:hover {
+    background-color: #bb2d3b;
+    color: #fff;
+}
+
+.btn-af-secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.btn-af-secondary:hover {
+    background-color: #5c636a;
+    color: #fff;
+}
+
+.btn-af-logout {
+    background-color: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+}
+
+.btn-af-logout:hover {
+    background-color: #fff;
+    color: #0d6efd;
+}

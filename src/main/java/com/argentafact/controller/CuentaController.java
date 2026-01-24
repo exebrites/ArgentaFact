@@ -26,7 +26,7 @@ public class CuentaController {
     }
 
 
-    @GetMapping
+    @GetMapping({ "", "/" }) 
     public String listar(Model model) {
         model.addAttribute("cuentas", cuentaService.listarTodas());
         return "cuenta/listar";
@@ -42,7 +42,7 @@ public class CuentaController {
 
     @GetMapping("/nueva")
     public String nueva(Model model) {
-        model.addAttribute("clientes", clienteService.buscarTodos());
+        model.addAttribute("clientes", clienteService.buscarClientesSinCuenta());
         return "cuenta/nuevaCuenta";
     }
 

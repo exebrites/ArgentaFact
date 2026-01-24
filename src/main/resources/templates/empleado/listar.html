@@ -3,26 +3,50 @@
     layout:decorate="~{layout/base}">
 
 <head>
-    <title>Listado de facturas</title>
+    <title>Empleados</title>
 </head>
 
 <body>
-    <section layout:fragment="content">
-        <h1>Listado de facturas</h1>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="empleado : ${empleados}">
-                        <td th:text="${empleado.nombre}"></td>
-                    </tr>
-                </tbody>
-            </table>
+    <section layout:fragment="content" class="p-4">
+        <h2 class="mb-4">Empleados</h2>
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <a class="btn btn-primary btn-sm">Crear empleado</a>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nombre</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="3" class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="empleado : ${empleados}">
+                            <td th:text="${empleado.nombre}"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><a class="btn btn-af-view btn-sm">Ver</a></td>
+                            <td>
+                                <a class="btn btn-warning btn-sm">Editar</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger btn-sm">Eliminar</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
 </body>
+
+</html>

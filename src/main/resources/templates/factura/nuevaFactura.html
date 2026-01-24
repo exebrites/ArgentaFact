@@ -7,73 +7,88 @@
 </head>
 
 <body>
-    <section layout:fragment="content">
-        <h1>Nueva Factura</h1>
-        <hr>
-        <strong>Servicios</strong>
-        <a th:href="@{/facturas/detalleFactura}">Agregar servicio</a>
-        <p>Servicios prestados </p>
+    <section layout:fragment="content" class="p-4">
+        <h2 class="mb-4">Nueva Factura</h2>
+        <div class="card shadow-sm">
 
-        <a th:href="@{/facturas/limpiarDetalle}">Limpiar servicios</a>
-        <div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Producto</th>
-                        <th>Descripci n</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:if="${#lists.isEmpty(detalle.getServiciosSeleccionados())}">
-                        <td colspan="2">No hay servicios seleccionados</td>
-                    </tr>
-                    <tr th:each="servicio: ${detalle.getServiciosSeleccionados()}">
-                        <td><span th:text="${servicio.getIdServicio()}">Codigo de ejemplo</span></td>
-                        <td><span th:text="${servicio.getNombre()}">Nombre de ejemplo</span></td>
-                        <td><span th:text="${servicio.getDescripcion()}">Nombre de ejemplo</span></td>
-                        <td><a>Eliminar</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div th:if="${mensajeError}" class="alert alert-warning" role="alert">
+                <p th:text="${mensajeError}"></p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div class="card-header  bg-white">
+                <div class="card-header">
+                    <a th:href="@{/facturas/}" class="btn btn-af-secondary btn-sm">
+                        <i class="bi bi-arrow-left"></i> Volver
+                    </a>
+                </div>
+            </div>
+            <div class="card-body  p-1">
+                <strong>Servicios</strong>
+                <br>
+                <div class="d-flex justify-content-between">
+                    <a th:href="@{/facturas/detalleFactura}" class="btn btn-af-primary btn-sm">Agregar servicio</a>
+                    <a th:href="@{/facturas/limpiarDetalle}" class="btn btn-af-delete btn-sm">Limpiar servicios</a>
+                </div>
+                <div>
+                    <table class="table  table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Producto</th>
+                                <th>Descripción</th>
+                                <th colspan="1">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${#lists.isEmpty(detalle.getServiciosSeleccionados())}">
+                                <td colspan="4">No hay servicios seleccionados</td>
+                            </tr>
+                            <tr th:each="servicio: ${detalle.getServiciosSeleccionados()}">
+                                <td><span th:text="${servicio.getIdServicio()}">Codigo de ejemplo</span></td>
+                                <td><span th:text="${servicio.getNombre()}">Nombre de ejemplo</span></td>
+                                <td><span th:text="${servicio.getDescripcion()}">Nombre de ejemplo</span></td>
+                                <td><a th:href="@{/facturas/eliminarDetalle/{idServicio}(idServicio=${servicio.getIdServicio()})}"
+                                        class="btn btn-af-delete btn-sm">Eliminar</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+                <strong>Datos de factura</strong>
+                <form th:action="@{/facturas/}" th:method="post" th:object="${factura}">
+
+                    <div class="form-group">
+                        <label for="fechaEmision">Fecha de Emisión</label>
+                        <input type="date" class="form-control" th:field="*{fechaEmision}" required>
+                    </div>
+                    <br>
+
+                    <div class="form-group">
+                        <label for="cliente">Cliente</label>
+                        <select th:field="*{cliente}" class="js-example-basic-single form-control" required>
+                            <option value="">Seleccione un cliente</option>
+                            <option th:each="cliente : ${clientes}" th:value="${cliente.idCliente}"
+                                th:text="${cliente.nombre} + ' ' + ${cliente.apellido} + ' - ' + ${cliente.cuit}">
+                            </option>
+                        </select>
+                    </div>
+
+
+                    <br>
+                    <button type="submit" class="btn btn-af-primary btn-sm">Continuar</button>
+                </form>
+            </div>
         </div>
-        <hr>
-        <span>Datos de factura</span>
-        <form th:action="@{/facturas/}" th:method="post" th:object="${factura}">
-
-            <div class="form-group">
-                <label for="fechaEmision">Fecha de Emisi n</label>
-                <input type="date" class="form-control" th:field="*{fechaEmision}" required>
-            </div>
-            <div class="form-group">
-                <label for="tipoFactura">Tipo de Factura</label>
-                <select th:field="*{tipoFactura}" class="form-control" required>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="cliente">Cliente</label>
-                <select th:field="*{cliente}" class="form-control" required>
-                    <option value="">Seleccione un cliente</option>
-                    <option th:each="cliente : ${clientes}" th:value="${cliente.idCliente}"
-                        th:text="${cliente.nombre} + ' ' + ${cliente.apellido} + ' - ' + ${cliente.cuit}">
-                    </option>
-                </select>
-            </div>
-            <br>
-
-            <br>
-            <br>
-            <button type="submit" class="btn btn-primary">Continuar</button>
-        </form>
 
 
+        <script>
+            $(document).ready(function () {
+                $('.js-example-basic-single').select2();
+            });
+        </script>
     </section>
+
 </body>
 
 </html>

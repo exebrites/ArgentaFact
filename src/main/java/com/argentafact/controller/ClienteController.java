@@ -1,6 +1,8 @@
 package com.argentafact.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.argentafact.model.Cliente;
 import com.argentafact.model.CondicionFiscal;
@@ -22,9 +25,19 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping("/")
-    public String listarClientes(Model model) {
-        var clientes = clienteService.buscarTodos();
-        model.addAttribute("clientes", clientes);
+    public String listarClientes(
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "5") int tamano,
+            Model model) {
+
+        Page<Cliente> paginaClientes = clienteService.buscarTodos(
+                PageRequest.of(pagina, tamano));
+
+        // Solo lo esencial al modelo
+        model.addAttribute("clientes", paginaClientes.getContent());
+        model.addAttribute("paginaActual", pagina);
+        model.addAttribute("totalPaginas", paginaClientes.getTotalPages());
+
         return "cliente/listar";
     }
 

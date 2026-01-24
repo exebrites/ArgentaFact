@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.argentafact.utils.DateFormatterUtil;
  
 public class FacturaSesion {
 
@@ -83,6 +85,10 @@ public class FacturaSesion {
         this.detalleFacturas = detalleFacturas;
     }
 
+
+    public String getFechaFormato(){
+        return DateFormatterUtil.format(fechaEmision);
+    }
 
 
 

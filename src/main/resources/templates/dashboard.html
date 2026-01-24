@@ -7,25 +7,102 @@
     <!-- Puedes añadir CSS específico para index aquí si usas layout:fragment="styles" -->
 </head>
 
-<body>
+<body class="bg-light">
 
-    <!-- ZONA CLAVE: Este contenido se inyecta en el fragmento "content" de la base -->
-    <section layout:fragment="content">
-        <h1>¡Bienvenido a la página de inicio!</h1>
-        <ul>
-            <li><a th:href="@{/clientes/}">gestion clientes</a></li>
-            <li><a th:href="@{/cuentas/}">gestion cuentas</a></li>
-            <li><a th:href="@{/facturas/}">gestion facturas</a></li>
-            <li><a th:href="@{/empleados/}">gestion empleados</a></li>
-            <li><a th:href="@{/servicios/}">gestion servicios</a></li>
-            <li><a th:href="@{/historico/}">históricos</a></li>
-            <li><a th:href="@{/notaCredito/}">gestion nota de credito</a></li>
-            <!-- <li><a th:href="@{/nota_debito/}">gestion nota de debito</a></li> -->
 
-        </ul>
 
-    </section>
+    <div class="container-fluid">
+        <div class="row">
 
+
+
+            <!-- MAIN CONTENT -->
+            <section  layout:fragment="content">
+
+                <h2 class="mb-4">Panel de administración</h2>
+
+                <!-- METRICS -->
+                <div class="row g-4 mb-4">
+
+                    <div class="col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h6 class="text-muted">Clientes</h6>
+                                <h3 class="fw-bold">128</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h6 class="text-muted">Facturas del mes</h6>
+                                <h3 class="fw-bold">56</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h6 class="text-muted">Pagos recibidos</h6>
+                                <h3 class="fw-bold">$ 1.250.000</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h6 class="text-muted">Facturas impagas</h6>
+                                <h3 class="fw-bold text-danger">12</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- TABLE -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Últimas facturas</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Cliente</th>
+                                    <th>Fecha</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>00125</td>
+                                    <td>Empresa ABC</td>
+                                    <td>20/01/2026</td>
+                                    <td>$ 250.000</td>
+                                    <td><span class="badge bg-success">Pagada</span></td>
+                                </tr>
+                                <tr>
+                                    <td>00126</td>
+                                    <td>Juan Pérez</td>
+                                    <td>21/01/2026</td>
+                                    <td>$ 85.000</td>
+                                    <td><span class="badge bg-warning text-dark">Pendiente</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

@@ -24,6 +24,8 @@ public class Cliente {
     @Column(nullable = true)
     private Double saldo;
     private CondicionFiscal condicionFiscal;
+    @Column(nullable = true)
+    private String localidad;
 
     public Cliente() {
     }
@@ -31,10 +33,9 @@ public class Cliente {
     public Cliente(String nombre, String apellido, String cuit,
             CondicionFiscal condicionFiscal) {
 
-        this.nombre = nombre;
-        this.apellido = apellido;
+        this.nombre = nombre.toUpperCase().trim();
+        this.apellido = apellido.toUpperCase().trim();
         this.cuit = cuit;
-
         this.condicionFiscal = condicionFiscal;
     }
 
@@ -43,7 +44,8 @@ public class Cliente {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre.toUpperCase().trim();
+        ;
     }
 
     public Long getIdCliente() {
@@ -59,7 +61,7 @@ public class Cliente {
     }
 
     public void setApellido(String apellido) {
-        this.apellido = apellido;
+        this.apellido = apellido.toUpperCase().trim();
     }
 
     public String getCuit() {
@@ -100,6 +102,14 @@ public class Cliente {
 
     public void setCondicionFiscal(CondicionFiscal condicionFiscal) {
         this.condicionFiscal = condicionFiscal;
+    }
+
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
     }
 
     @Override

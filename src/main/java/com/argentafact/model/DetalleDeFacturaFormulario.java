@@ -37,7 +37,7 @@ public class DetalleDeFacturaFormulario implements Serializable {
     public void eliminarServicio(Long id) {
         Linea servicioAEliminar = null;
         for (Linea servicio : serviciosSeleccionados) {
-            if (servicio.getId() == id) {
+            if (servicio.getIdServicio() == id) {
                 servicioAEliminar = servicio;
                 break;
             }
@@ -49,11 +49,7 @@ public class DetalleDeFacturaFormulario implements Serializable {
     }
 
     public boolean estaSeleccionado(Long id) {
-        for (Linea servicio : serviciosSeleccionados) {
-            if (servicio.getId() == id) {
-                return true;
-            }
-        }
+
         return false;
     }
 

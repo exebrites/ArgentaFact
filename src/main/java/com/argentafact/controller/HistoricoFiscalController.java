@@ -16,7 +16,7 @@ public class HistoricoFiscalController {
         this.service = service;
     }
 
-    @GetMapping
+    @GetMapping ({ "", "/" })
     public String listar(Model model) {
         model.addAttribute("historicos", service.listarTodos());
         return "historico/listar";

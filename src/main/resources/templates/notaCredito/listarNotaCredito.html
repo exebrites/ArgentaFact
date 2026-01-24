@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
+
+<head>
+    <title>Notas de credito</title>
+</head>
+
+<body>
+
+    <section layout:fragment="content" class="p-4">
+        <h2 class="mb-4">Notas de credito</h2>
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <a th:href="@{/notaCredito/crear}" class="btn btn-primary btn-sm">Crear Nota de credito</a>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Fecha de emisión</th>
+                            <th>Monto</th>
+                            <th>Motivo</th>
+                            <th colspan="4" class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody th:each="notaCredito : ${listaNotaCredito}">
+                        <tr>
+                            <td th:text="${notaCredito.getFechaFormateada()}"></td>
+                            <td th:text="${notaCredito.monto}"></td>
+                            <td th:text="${notaCredito.motivo}"></td>
+                            <td><a class="btn btn-af-view btn-sm">Ver</a></td>
+                            <td>
+                                <a class="btn btn-warning btn-sm">Editar</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger btn-sm">Eliminar</a>
+                            </td>
+                            <td><a th:href="@{/generar/notaCredito/{id}(id=${notaCredito.idNotaCredito})}"
+                                    class="btn btn-af-view btn-sm"> <i class="bi bi-file-earmark-pdf-fill"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <!-- Botones de navegación -->
+        <div class="btn-group d-flex justify-content-center">
+            <a th:href="@{/notaCredito/(pagina=0)}" class="btn btn-outline-secondary">Primera</a>
+
+            <a th:if="${paginaActual > 0}" th:href="@{/notaCredito/(pagina=${paginaActual - 1})}"
+                class="btn btn-outline-primary">←</a>
+
+            <button class="btn btn-primary" disabled>
+                <span th:text="${paginaActual + 1}"></span>
+            </button>
+
+            <a th:if="${paginaActual < totalPaginas - 1}" th:href="@{/notaCredito/(pagina=${paginaActual + 1})}"
+                class="btn btn-outline-primary">→</a>
+
+            <a th:href="@{/notaCredito/(pagina=${totalPaginas - 1})}" class="btn btn-outline-secondary">Última</a>
+        </div>
+    </section>
+
+</body>
+
+</html>

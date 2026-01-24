@@ -1,17 +1,25 @@
 package com.argentafact.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.argentafact.model.CondicionFiscal;
 import com.argentafact.model.DetalleDeFacturaFormulario;
 import com.argentafact.model.DetalleFactura;
 import com.argentafact.model.EstadoFactura;
 import com.argentafact.model.Factura;
 import com.argentafact.model.FacturaSesion;
 import com.argentafact.model.Linea;
+
+import com.argentafact.model.TipoFactura;
 import com.argentafact.service.ClienteService;
 import com.argentafact.service.EmpleadoService;
 import com.argentafact.service.FacturaService;
@@ -21,7 +29,7 @@ import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -48,9 +56,20 @@ public class FacturaController {
     }
 
     @GetMapping("/")
-    public String listarFacturas(Model model) {
-        var facturas = facturaService.obtenerFacturas();
-        model.addAttribute("facturas", facturas);
+
+    public String listarFacturas(
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "5") int tamano,
+            Model model) {
+
+        Page<Factura> paginaFactura = facturaService.buscarTodos(
+                PageRequest.of(pagina, tamano));
+
+        // Solo lo esencial al modelo
+        model.addAttribute("facturas", paginaFactura.getContent());
+        model.addAttribute("paginaActual", pagina);
+        model.addAttribute("totalPaginas", paginaFactura.getTotalPages());
+
         return "factura/listar";
     }
 
@@ -72,15 +91,29 @@ public class FacturaController {
     @PostMapping("/")
     public String agregarFactura(@ModelAttribute("detalle") DetalleDeFacturaFormulario detalleFactura,
             @ModelAttribute("factura") Factura factura, Model model,
-            @ModelAttribute("facturaSesion") FacturaSesion facturaSesion) {
+            @ModelAttribute("facturaSesion") FacturaSesion facturaSesion, RedirectAttributes redirectAttributes) {
         // TODO : obtener empleado autenticado
         factura.setEmpleado(empleadoService.buscarTodos().get(0));
-        factura.setNumeroFactura("123");
+        String nroFactura = facturaService.generarNumeroFactura();
+        factura.setNumeroFactura(nroFactura);
         factura.setTotal(detalleFactura.getTotal());
         factura.setEstado(EstadoFactura.PENDIENTE);
 
-        DetalleFactura detalle = new DetalleFactura();
+        // determinar el tipo de factura segun la condicion fiscal del cliente.
+        if ((factura.getCliente().getCondicionFiscal().equals(CondicionFiscal.RESPONSABLE_INSCRIPTO))
+                || (factura.getCliente().getCondicionFiscal().equals(CondicionFiscal.MONOTRIBUTISTA))) {
+            factura.setTipoFactura(TipoFactura.A);
+        } else {
+            factura.setTipoFactura(TipoFactura.B);
+        }
+        // control de detalle vacio
+        if (detalleFactura.getServiciosSeleccionados().isEmpty()) {
+            redirectAttributes.addFlashAttribute("mensajeError", "Debe agregar un servicio a  la factura");
+            return "redirect:/facturas/crear";
+        }
+
         for (var linea : detalleFactura.getServiciosSeleccionados()) {
+            DetalleFactura detalle = new DetalleFactura();
             var servicio = servicioService.findById(linea.getIdServicio());
             detalle.setServicio(servicio);
             detalle.setFactura(factura);
@@ -89,7 +122,7 @@ public class FacturaController {
         }
 
         // factura sesion representa los mismos campos que factura con la funcion de ser
-        // rederizable desde otra vista 
+        // rederizable desde otra vista
         facturaSesion.setNumeroFactura(factura.getNumeroFactura());
         facturaSesion.setFechaEmision(factura.getFechaEmision());
         facturaSesion.setTipoFactura(factura.getTipoFactura());
@@ -112,42 +145,47 @@ public class FacturaController {
 
     @GetMapping("/agregarDetalleFactura")
     public String agregarDetalleFactura(@ModelAttribute("idServicio") Long idServicio,
-            @ModelAttribute("detalle") DetalleDeFacturaFormulario detalle) {
+            @ModelAttribute("detalle") DetalleDeFacturaFormulario detalle, RedirectAttributes redirectAttributes) {
 
         var servicio = servicioService.findById(idServicio);
-
+        // TODO crear servicio de detalle de facturacion sesion
         var linea = new Linea();
         linea.setNombre(servicio.getNombreServicio());
         linea.setPrecio(servicio.getPrecio());
         linea.setDescripcion(servicio.getDescripcion());
         linea.setIdServicio(servicio.getIdServicio());
 
-        if (!detalle.estaSeleccionado(linea.getIdServicio())) {
-
-            detalle.agregarServicio(linea);
-
+        for (Linea detalleLinea : detalle.getServiciosSeleccionados()) {
+            if (detalleLinea.getIdServicio() == idServicio) {
+                redirectAttributes.addFlashAttribute("mensajeError", "Este servicio ya fue agregado");
+                return "redirect:/facturas/crear";
+            }
         }
+        detalle.agregarServicio(linea);
 
         return "redirect:/facturas/crear";
     }
 
     @GetMapping("/confirmarDatos")
-    public String confirmarDatos(@ModelAttribute("facturaSesion") FacturaSesion facturaSesion) {
-        
+    public String confirmarDatos(@ModelAttribute("facturaSesion") FacturaSesion facturaSesion, SessionStatus status) {
+
         Factura factura = new Factura();
+
         factura.setNumeroFactura(facturaSesion.getNumeroFactura());
         factura.setFechaEmision(facturaSesion.getFechaEmision());
-        factura.setTipoFactura(facturaSesion.getTipoFactura());
         factura.setTotal(facturaSesion.getTotal());
         factura.setEstado(facturaSesion.getEstado());
         factura.setCliente(facturaSesion.getCliente());
         factura.setEmpleado(facturaSesion.getEmpleado());
         factura.setDetalleFacturas(facturaSesion.getDetalleFacturas());
+        factura.setTipoFactura(facturaSesion.getTipoFactura());
         // relacionar detalle con factura
         for (DetalleFactura detalle : facturaSesion.getDetalleFacturas()) {
             detalle.setFactura(factura);
         }
         facturaService.guardarFactura(factura);
+        // Esto limpia TODOS los atributos de @SessionAttributes
+        status.setComplete();
 
         return "redirect:/facturas/";
     }
@@ -161,8 +199,14 @@ public class FacturaController {
 
         return "redirect:/facturas/crear";
     }
-    // TODO : eliminar un servicio de detalle de factura
+    // eliminar un servicio de detalle de factura
 
+    @GetMapping("/eliminarDetalle/{idServicio}")
+    public String eliminarDetalleFactura(@PathVariable Long idServicio,
+            @ModelAttribute("detalle") DetalleDeFacturaFormulario detalle, RedirectAttributes redirectAttributes) {
 
-    // TODO generar un archivo pdf de la factura 
+        detalle.eliminarServicio(idServicio);
+
+        return "redirect:/facturas/crear";
+    }
 }
