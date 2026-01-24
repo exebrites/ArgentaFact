@@ -113,13 +113,13 @@
 
 # Tareas
 
-1. Establecer el entorno de desarrollo 
-2. Configurar el sistema de plantillas de thymeleaf con bootstrap
-3. Establecer la arquitectura del proyecto 
-4. Establecer javadoc
-5. ABM en general de factura
-6. Gestionar cliente 
-7. Gestionar servicios
-8. Gestionar cuenta
-9. Realizar nota de crédito 
-10. Registro histórico fiscal 
+1. Establecer el entorno de desarrollo - EXEQUIEL
+2. Configurar el sistema de plantillas de thymeleaf con bootstrap - EXEQUIEL
+3. Establecer la arquitectura del proyecto - EXEQUIEL 
+4. Establecer javadoc - EXEQUIEL
+5. ABM en general de factura - EXEQUIEL
+6. Gestionar cliente - EXEQUIEL 
+7. Gestionar servicios - FRANCO
+8. Gestionar cuenta - FRANCO
+9. Realizar nota de crédito - EXEQUIEL 
+10. Registro histórico fiscal - FRANCO 
