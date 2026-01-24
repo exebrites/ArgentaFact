@@ -1,145 +1,8 @@
 # Trabajo en equipo​
 ​
 # Diseño OO​
-```mermaid
-classDiagram
-  
-
-  class Empleado {
-  -idEmpleado: Long
-  -nombre: string
-  -email: string
-  -contraseña: string
-}
-
-class Cliente {
-  -idCliente: Long
-  -nombre: string
-  -apellido: string
-  -cuit: string
-  -direccion: string
-  -telefono: string
-  -saldo: decimal
-  -condicionFiscal: CondicionFiscal
-}
-
-class Servicio {
-  -idServicio: Long
-  -nombreServicio: string
-  -descripcion: string
-  -precio: decimal
-}
-
-class Factura {
-  -idFactura: Long
-  -numeroFactura: string
-  -fechaEmision: LocalDate
-  -tipoFactura: TipoFactura
-  -total: decimal
-  -estado: EstadoFactura
-  +emitir()
-  +anular()
-}
-
-class DetalleFactura {
-  -idDetalleFactura: Long
-  -cantidad: int
-  -precioUnitario: decimal
-  -subtotal: decimal
-}
-
-class Pago {
-  -idPago: Long
-  -fecha: date
-  -monto: decimal
-  -medioPago: TipoPago
-  -estadoPago: EstadoPago
-}
-
-class Comprobante {
-  -idComprobante: Long
-  -tipoComprobante: TipoComprobante
-  -archivo: string
-  +generarArchivo()
-}
-
-class HistoricoFiscal {
-  -idHistorico: Long
-  -fechaOperacion: date
-  -referenciaFactura: Factura
-  -referenciaEmpleado: Empleado
-  -referenciaCliente: Cliente
-}
-%% Enumeraciones
-class TipoFactura {
-    <<enumeration>>
-    A
-    B
-    C
-}
-
-class EstadoFactura {
-    <<enumeration>>
-    EMITIDA
-    PAGADA
-    PENDIENTE
-    PARCIALMENTE_PAGADA
-    ANULADA
-}
-
-class EstadoPago {
-    <<enumeration>>
-    REGISTRADO
-    ANULADO
-}
-
-class TipoPago {
-    <<enumeration>>
-    EFECTIVO
-    TRANSFERENCIA
-    TARJETA_CREDITO
-    TARJETA_DEBITO
-    CHEQUE
-    BILLETERA_VIRTUAL
-}
-
-class TipoComprobante {
-    <<enumeration>>
-    FACTURA
-    NOTA_CREDITO
-    NOTA_DEBITO
-    RECIBO
-}
-
-class CondicionFiscal {
-    <<enumeration>>
-    RESPONSABLE_INSCRIPTO
-    MONOTRIBUTISTA
-    EXENTO
-    CONSUMIDOR_FINAL
-}  
-%% Relaciones
-Empleado "1" --> "*" Factura : emite
-Empleado "1" --> "*" Pago : registra
-Empleado "1" --> "*" Comprobante : genera
-
-Cliente "1" --> "*" Factura
-Cliente "1" --> "*" Pago
-Cliente "1" --> "*" Comprobante : recibe
-
-Factura "1" --> "*" DetalleFactura
-DetalleFactura "*" --> "1" Servicio
-
-Factura "1" --> "*" Pago
-Pago "*" --> "1" Factura
-Pago "1" --> "1" HistoricoFiscal
-
-Factura "1" --> "*" Comprobante
-Factura "1" --> "1" HistoricoFiscal
-
-Comprobante "1" --> "1" HistoricoFiscal
-
-```
+### Diagrama de clases
+![Diagrama de clases](DiagramaClase-ArgentaFact.md)
 
 # Wireframe y caso de uso​
 
@@ -162,8 +25,101 @@ Comprobante "1" --> "1" HistoricoFiscal
 
 
 # Backlog de iteraciones​
-​
+
+
+## Requisitos
+### Historias de Usuario
+
+
+
+| Campo             | Valor                                                                                    |
+|-------------------|------------------------------------------------------------------------------------------|
+| ID                | HU1                                                                                      |
+| TÍTULO            | FACTURAR VENTAS                                                                          |
+| PRIORIDAD         | Debe tener                                                                               |
+| TIEMPO ESTIMADO (DÍAS) | 5                                                                                        |
+| HISTORIA DE USUARIO | COMO empleado PUEDO facturar las ventas realizadas a un cliente PARA rendir cuentas al ente tributario (ARCA), PARA tener un registro de las operaciones |
+
+
+| Campo             | Valor                                                                                    |
+|-------------------|------------------------------------------------------------------------------------------|
+| ID                | HU2                                                                                      |
+| TÍTULO            | ANULAR FACTURA                                                                           |
+| PRIORIDAD         | Debe tener                                                                               |
+| TIEMPO ESTIMADO (DÍAS) | 3                                                                                        |
+| HISTORIA DE USUARIO | COMO empleado PUEDO anular una factura existente PARA corregir errores de facturación o registrar devoluciones. |
+
+
+| Campo             | Valor                                                                                    |
+|-------------------|------------------------------------------------------------------------------------------|
+| ID                | HU3                                                                                      |
+| TÍTULO            | GENERAR NOTAS DE CRÉDITO                                                                 |
+| PRIORIDAD         | Debe tener                                                                               |
+| TIEMPO ESTIMADO (DÍAS) | 2                                                                                        |
+| HISTORIA DE USUARIO | COMO empleado PUEDO generar una Nota de Crédito asociada a la factura anulada PARA mantener la coherencia contable y fiscal, PARA certificar la anulación de una factura. |
+ 
+
+---
+
+| Campo             | Valor                                                                                    |
+|-------------------|------------------------------------------------------------------------------------------|
+| ID                | HU9                                                                                      |
+| TÍTULO            | GESTIONAR CLIENTES                                                                       |
+| PRIORIDAD         | Debe tener                                                                               |
+| TIEMPO ESTIMADO (DÍAS) | 2                                                                                        |
+| HISTORIA DE USUARIO | COMO empleado PUEDO crear, editar y eliminar clientes PARA registrar los clientes de la empresa y mantener actualizada la información de los clientes. |
+
+| Campo             | Valor                                                                                    |
+|-------------------|------------------------------------------------------------------------------------------|
+| ID                | HU10                                                                                     |
+| TÍTULO            | CONOCER CONDICION FISCAL                                                                 |
+| PRIORIDAD         | Debe tener                                                                               |
+| TIEMPO ESTIMADO (DÍAS) | 2                                                                                        |
+| HISTORIA DE USUARIO | COMO empleado PUEDO conocer la condición fiscal de cada cliente PARA generar un tipo de factura segun su condicion fiscal |
+
+ 
+| Campo             | Valor                                                                                    |
+|-------------------|------------------------------------------------------------------------------------------|
+| ID                | HU11                                                                                     |
+| TÍTULO            | GESTIONAR CUENTA                                                                         |
+| PRIORIDAD         | Debe tener                                                                               |
+| TIEMPO ESTIMADO (DÍAS) | 2                                                                                        |
+| HISTORIA DE USUARIO | COMO empleado PUEDO crear, editar y eliminar una cuenta de un cliente PARA registrar el saldo del cliente |
+ 
+
+ 
+
+| Campo             | Valor                                                                                    |
+|-------------------|------------------------------------------------------------------------------------------|
+| ID                | HU15                                                                                     |
+| TÍTULO            | GESTIONAR SERVICIOS                                                                      |
+| PRIORIDAD         | Debe tener                                                                               |
+| TIEMPO ESTIMADO (DÍAS) | 2                                                                                        |
+| HISTORIA DE USUARIO | COMO empleado PUEDO crear, editar y eliminar servicios de la empresa PARA dar a conocer las prestaciones a los clientes y PARA mantener consistente los servicios prestados en los comprobantes de venta. |
+
+
+ 
+
+
+ | Campo             | Valor                                                                                    |
+|-------------------|------------------------------------------------------------------------------------------|
+| ID                | HU17                                                                                     |
+| TÍTULO            | REGISTRAR HISTORICO FISCAL                                                               |
+| PRIORIDAD         | Debe tener                                                                               |
+| TIEMPO ESTIMADO (DÍAS) | 3                                                                                        |
+| HISTORIA DE USUARIO | COMO empleado DESEO llevar el registro de cada operación realizada en empresa PARA generar un histórico fiscal. |
+ 
+
+
 # Tareas
 
-### Diagrama de clases
-![Diagrama de clases](DiagramaClase-ArgentaFact.md)
+1. Establecer el entorno de desarrollo 
+2. Configurar el sistema de plantillas de thymeleaf con bootstrap
+3. Establecer la arquitectura del proyecto 
+4. Establecer javadoc
+5. ABM en general de factura
+6. Gestionar cliente 
+7. Gestionar servicios
+8. Gestionar cuenta
+9. Realizar nota de crédito 
+10. Registro histórico fiscal 
