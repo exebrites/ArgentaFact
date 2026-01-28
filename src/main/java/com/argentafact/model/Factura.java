@@ -28,6 +28,9 @@ public class Factura {
     private TipoFactura tipoFactura;
     private BigDecimal total;
     private EstadoFactura estado;
+
+    private BigDecimal saldoPendiente;
+
     // TODO agregar IVA
     private boolean baja;
     
@@ -63,8 +66,9 @@ public class Factura {
         this.fechaEmision = fechaEmision;
         this.tipoFactura = tipoFactura;
         this.total = total;
-        this.estado = estado;
+        this.estado = EstadoFactura.PENDIENTE;
         this.baja = false;
+        this.saldoPendiente = total;
     }
 
     public Long getIdFactura() {
@@ -120,6 +124,14 @@ public class Factura {
         return estado;
     }
 
+    public BigDecimal getSaldoPendiente() {
+        return saldoPendiente; 
+    }
+
+    public void setSaldoPendiente(BigDecimal saldoPendiente) {
+        this.saldoPendiente = saldoPendiente;
+    }
+
     public void setEstado(EstadoFactura estado) {
         this.estado = estado;
     }
@@ -163,6 +175,33 @@ public class Factura {
     public String getNumeroFacturaConMontoFormateado(){
         return this.numeroFactura + " - $" + this.total;
     }
+
+    public void aplicarPago(BigDecimal monto) {
+        if (estado == EstadoFactura.ANULADA) {
+            throw new IllegalStateException("Factura anulada");
+        }
+
+        if (monto.compareTo(saldoPendiente) > 0) {
+            throw new IllegalArgumentException("Monto excede saldo");
+        }
+
+        saldoPendiente = saldoPendiente.subtract(monto);
+
+        if (saldoPendiente.compareTo(BigDecimal.ZERO) == 0) {
+            estado = EstadoFactura.PAGADA;
+        } else {
+            estado = EstadoFactura.PARCIALMENTE_PAGADA;
+        }
+    }
+
+    public boolean tieneSaldoPendiente() {
+        return saldoPendiente != null && saldoPendiente.compareTo(BigDecimal.ZERO) > 0;
+    }
+
+    public boolean estaActiva() {   
+        return estado != EstadoFactura.ANULADA && !baja;
+    }
+
     @Override
     public String toString() {
         return "Factura [idFactura=" + idFactura + ", numeroFactura=" + numeroFactura + ", fechaEmision=" + fechaEmision
