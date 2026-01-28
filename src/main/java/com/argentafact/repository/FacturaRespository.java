@@ -1,5 +1,6 @@
 package com.argentafact.repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
  
@@ -16,5 +17,7 @@ public interface FacturaRespository extends JpaRepository <Factura,Long> {
     List<Factura> findByBajaFalse();
 
     Factura findTopByOrderByIdFacturaDesc();
+    
+    List<Factura> findBySaldoPendienteGreaterThan(BigDecimal monto);
     
 }

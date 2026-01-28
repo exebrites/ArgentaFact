@@ -1,17 +1,20 @@
 package com.argentafact.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.argentafact.model.Empresa;
+import com.argentafact.model.EstadoFactura;
 import com.argentafact.model.Factura;
 import com.argentafact.repository.FacturaRespository;
 
 @Service
 public class FacturaService {
+
     private final FacturaRespository facturaRespository;
 
     public FacturaService(FacturaRespository facturaRespository) {
@@ -22,8 +25,16 @@ public class FacturaService {
         return facturaRespository.findAll();
     }
 
-    public void guardarFactura(Factura factura) {
-        facturaRespository.save(factura);
+    public Factura guardarFactura(Factura factura) {
+        if (factura.getSaldoPendiente() == null) {
+            factura.setSaldoPendiente(factura.getTotal());
+        }
+
+        if (factura.getEstado() == null) {
+            factura.setEstado(EstadoFactura.PENDIENTE);
+        }
+
+        return facturaRespository.save(factura);
     }
 
     public Factura obtenerFactura(Long id) {
@@ -40,30 +51,23 @@ public class FacturaService {
 
     private Long obtenerIdUltimaFactura() {
         Factura ultimaFactura = facturaRespository.findTopByOrderByIdFacturaDesc();
-
-        // Verificar si hay facturas en la base de datos
-        if (ultimaFactura == null) {
-            return null; // o return 0L; según prefieras
-        }
-
-        return ultimaFactura.getIdFactura();
+        return ultimaFactura != null ? ultimaFactura.getIdFactura() : null;
     }
 
     public String generarNumeroFactura() {
-        // generar numero de factura secuencialmente
         var puntoVenta = new Empresa().getPuntoVenta();
-
-        // Obtener el identificador de la ultima factura creada
         Long idUltimaFactura = this.obtenerIdUltimaFactura();
 
-        // Manejar el caso cuando no hay facturas
-        int numero;
-        if (idUltimaFactura == null) {
-            numero = 1; // Primera factura
-        } else {
-            numero = idUltimaFactura.intValue() + 1;
-        }
+        int numero = (idUltimaFactura == null) ? 1 : idUltimaFactura.intValue() + 1;
 
         return String.format("%04d-%08d", puntoVenta, numero);
+    }
+
+    public List<Factura> obtenerFacturasConSaldoPendiente() {
+        return facturaRespository.findAll()
+                .stream()
+                .filter(Factura::tieneSaldoPendiente)
+                .filter(Factura::estaActiva)
+                .collect(Collectors.toList());
     }
 }

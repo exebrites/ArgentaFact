@@ -21,8 +21,7 @@ public class Cliente {
     private String direccion;
     @Column(nullable = true)
     private String telefono;
-    @Column(nullable = true)
-    private Double saldo;
+
     private CondicionFiscal condicionFiscal;
     @Column(nullable = true)
     private String localidad;
@@ -88,14 +87,6 @@ public class Cliente {
         this.telefono = telefono;
     }
 
-    public Double getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(Double saldo) {
-        this.saldo = saldo;
-    }
-
     public CondicionFiscal getCondicionFiscal() {
         return condicionFiscal;
     }
@@ -115,7 +106,7 @@ public class Cliente {
     @Override
     public String toString() {
         return "Cliente [idCliente=" + idCliente + ", nombre=" + nombre + ", apellido=" + apellido + ", cuil=" + cuit
-                + ", direccion=" + direccion + ", telefono=" + telefono + ", saldo=" + saldo + ", condicionFiscal="
+                + ", direccion=" + direccion + ", telefono=" + telefono + ", condicionFiscal="
                 + condicionFiscal + "]";
     }
 

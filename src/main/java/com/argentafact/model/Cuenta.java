@@ -15,7 +15,7 @@ public class Cuenta {
     private BigDecimal saldo = BigDecimal.ZERO;
 
     @OneToOne
-    @JoinColumn(name = "idCliente",nullable = false, unique = true)
+    @JoinColumn(name = "idCliente", nullable = false, unique = true)
     private Cliente cliente;
 
     protected Cuenta() {}
@@ -37,6 +37,10 @@ public class Cuenta {
         return cliente;
     }
 
+    public void registrarPago(BigDecimal monto) {
+        debitar(monto);
+    }
+
     public void acreditar(BigDecimal monto) {
         validarMonto(monto);
         this.saldo = this.saldo.add(monto);
@@ -44,11 +48,6 @@ public class Cuenta {
 
     public void debitar(BigDecimal monto) {
         validarMonto(monto);
-
-        if (this.saldo.compareTo(monto) < 0) {
-            throw new RuntimeException("Saldo insuficiente");
-        }
-
         this.saldo = this.saldo.subtract(monto);
     }
 

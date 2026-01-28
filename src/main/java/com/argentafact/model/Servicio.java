@@ -11,8 +11,6 @@ import java.math.BigDecimal;
 @Table(name = "servicios")
 public class Servicio {
     @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idServicio;
     private String nombreServicio;
@@ -53,6 +51,7 @@ public class Servicio {
     public void setPrecio(BigDecimal precio) {
         this.precio = precio;
     }
+    
     @Override
     public String toString() {
         return "Servicio [idServicio=" + idServicio + ", nombreServicio=" + nombreServicio + ", descripcion="
