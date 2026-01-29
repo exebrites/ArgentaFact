@@ -40,10 +40,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:if="${#lists.isEmpty(detalle.getServiciosSeleccionados())}">
+                            <tr th:if="${#lists.isEmpty(detalleFactura.getServiciosSeleccionados())}">
                                 <td colspan="4">No hay servicios seleccionados</td>
                             </tr>
-                            <tr th:each="servicio: ${detalle.getServiciosSeleccionados()}">
+                            <tr th:each="servicio: ${detalleFactura.getServiciosSeleccionados()}">
                                 <td><span th:text="${servicio.getIdServicio()}">Codigo de ejemplo</span></td>
                                 <td><span th:text="${servicio.getNombre()}">Nombre de ejemplo</span></td>
                                 <td><span th:text="${servicio.getDescripcion()}">Nombre de ejemplo</span></td>

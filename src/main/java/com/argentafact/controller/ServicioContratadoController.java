@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.argentafact.model.CondicionFiscal;
@@ -63,7 +64,7 @@ public class ServicioContratadoController {
     @PostMapping("/")
     public String agregarFactura(@ModelAttribute("detalle") DetalleServicioContratado detalle,
             @ModelAttribute("servicioContratado") ServicioContratado servicioContratado, Model model,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes, SessionStatus status) {
 
         // control de detalle vacio
         if (detalle.getServiciosSeleccionados().isEmpty()) {
@@ -78,8 +79,9 @@ public class ServicioContratadoController {
             var nuevoServicioContratado = new ServicioContratado(cliente, servicio);
             servicioContratadoService.guardar(nuevoServicioContratado);
         }
+        status.setComplete();
 
-        return "servicioContratado/listar";
+        return "redirect:/servicioContratado/";
     }
 
     @GetMapping("/detalleServicioContratado")
