@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequestMapping("/facturas")
-@SessionAttributes({ "detalle", "facturaSesion" })
+@SessionAttributes({ "detalleFactura", "facturaSesion" })
 public class FacturaController {
     @Autowired
     private FacturaService facturaService;
@@ -45,7 +45,7 @@ public class FacturaController {
     @Autowired
     private ServicioService servicioService;
 
-    @ModelAttribute("detalle")
+    @ModelAttribute("detalleFactura")
     public DetalleDeFacturaFormulario setUpDetalleFacturaFormulario() {
         return new DetalleDeFacturaFormulario();
     }
@@ -75,7 +75,7 @@ public class FacturaController {
 
     @GetMapping("/crear")
     public String nuevaFactura(
-            @ModelAttribute("detalle") DetalleDeFacturaFormulario detalleFactura,
+            @ModelAttribute("detalleFactura") DetalleDeFacturaFormulario detalleFactura,
             Model model) {
 
         Factura factura = new Factura();
@@ -89,7 +89,7 @@ public class FacturaController {
     }
 
     @PostMapping("/")
-    public String agregarFactura(@ModelAttribute("detalle") DetalleDeFacturaFormulario detalleFactura,
+    public String agregarFactura(@ModelAttribute("detalleFactura") DetalleDeFacturaFormulario detalleFactura,
             @ModelAttribute("factura") Factura factura, Model model,
             @ModelAttribute("facturaSesion") FacturaSesion facturaSesion, RedirectAttributes redirectAttributes) {
         // TODO : obtener empleado autenticado
@@ -137,7 +137,7 @@ public class FacturaController {
     }
 
     @GetMapping("/detalleFactura")
-    public String verDetalleProducto(@ModelAttribute("detalle") DetalleDeFacturaFormulario detalle, Model model) {
+    public String verDetalleProducto(@ModelAttribute("detalleFactura") DetalleDeFacturaFormulario detalle, Model model) {
         var servicios = servicioService.buscarTodos();
         model.addAttribute("servicios", servicios);
         return "factura/vistaDetalleFactura";
@@ -145,7 +145,7 @@ public class FacturaController {
 
     @GetMapping("/agregarDetalleFactura")
     public String agregarDetalleFactura(@ModelAttribute("idServicio") Long idServicio,
-            @ModelAttribute("detalle") DetalleDeFacturaFormulario detalle, RedirectAttributes redirectAttributes) {
+            @ModelAttribute("detalleFactura") DetalleDeFacturaFormulario detalle, RedirectAttributes redirectAttributes) {
 
         var servicio = servicioService.findById(idServicio);
         // TODO crear servicio de detalle de facturacion sesion
@@ -192,7 +192,7 @@ public class FacturaController {
 
     @GetMapping("/limpiarDetalle")
     public String eliminarLinea(
-            @ModelAttribute("detalle") DetalleDeFacturaFormulario detalleFactura,
+            @ModelAttribute("detalleFactura") DetalleDeFacturaFormulario detalleFactura,
             HttpSession session) {
 
         detalleFactura.limpiar();
@@ -203,7 +203,7 @@ public class FacturaController {
 
     @GetMapping("/eliminarDetalle/{idServicio}")
     public String eliminarDetalleFactura(@PathVariable Long idServicio,
-            @ModelAttribute("detalle") DetalleDeFacturaFormulario detalle, RedirectAttributes redirectAttributes) {
+            @ModelAttribute("detalleFactura") DetalleDeFacturaFormulario detalle, RedirectAttributes redirectAttributes) {
 
         detalle.eliminarServicio(idServicio);
 

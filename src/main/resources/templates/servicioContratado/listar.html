@@ -11,5 +11,26 @@
         <h2 class="mb-4">Contratar servicio</h2>
         <a th:href="@{/servicioContratado/crear}">Crear contrato</a>
 
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Cliente</th>
+                    <th>Servicio</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="servicioContratado : ${serviciosContratados}">
+                    <td th:text="${servicioContratado.getId()}"></td>
+                    <th th:text="${servicioContratado.getCliente().getNombre()}"></th>
+                    <th th:text="${servicioContratado.getServicio().getNombreServicio()}"></th>
+                    <td th:text="${servicioContratado.getPrecioAcordado()}"></td>
+                    <td>Ver</td>
+
+                </tr>
+            </tbody>
+        </table>
     </section>
 </body>
