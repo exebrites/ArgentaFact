@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
+
+<head>
+    <title>Nuevo Servicio contratado</title>
+</head>
+
+<body>
+    <section layout:fragment="content" class="p-4">
+        <h2 class="mb-4">Nuevo Servicio contratado</h2>
+        <div class="card shadow-sm">
+
+            <div th:if="${mensajeError}" class="alert alert-warning" role="alert">
+                <p th:text="${mensajeError}"></p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div class="card-header  bg-white">
+                <div class="card-header">
+                    <a th:href="@{/servicioContratado/}" class="btn btn-af-secondary btn-sm">
+                        <i class="bi bi-arrow-left"></i> Volver
+                    </a>
+                </div>
+            </div>
+            <div class="card-body  p-1">
+                <strong>Servicios</strong>
+                <br>
+                <div class="d-flex justify-content-between">
+                    <a th:href="@{/servicioContratado/detalleServicioContratado}"
+                        class="btn btn-af-primary btn-sm">Agregar servicio</a>
+                    <!-- <a th:href="@{/facturas/limpiarDetalle}" class="btn btn-af-delete btn-sm">Limpiar servicios</a> -->
+                </div>
+                <div>
+                    <table class="table  table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Producto</th>
+                                <th>Descripción</th>
+                                <th>Subtotal</th>
+                                <th colspan="1">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${#lists.isEmpty(detalle.getServiciosSeleccionados())}">
+                                <td colspan="4">No hay servicios seleccionados</td>
+                            </tr>
+                            <tr th:each="servicio: ${detalle.getServiciosSeleccionados()}">
+                                <td><span th:text="${servicio.getIdServicio()}">Codigo de ejemplo</span></td>
+                                <td><span th:text="${servicio.getNombre()}">Nombre de ejemplo</span></td>
+                                <td><span th:text="${servicio.getDescripcion()}">Nombre de ejemplo</span></td>
+                                <td><span th:text="${servicio.getPrecio()}">Nombre de ejemplo</span></td>
+                                <td><a th:href="@{/facturas/eliminarDetalle/{idServicio}(idServicio=${servicio.getIdServicio()})}"
+                                        class="btn btn-af-delete btn-sm">Eliminar</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th colspan="3">Total:</th>
+                                <th th:text="${detalle.getTotal()}">Total</th>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+                <hr>
+            
+                <form th:action="@{/servicioContratado/}" th:method="post" th:object="${servicioContratado}">
+
+
+                    <div class="form-group">
+                        <label for="cliente">Cliente</label>
+                        <select th:field="*{cliente}" class="js-example-basic-single form-control" required>
+                            <option value="">Seleccione un cliente</option>
+                            <option th:each="cliente : ${clientes}" th:value="${cliente.idCliente}"
+                                th:text="${cliente.nombre} + ' ' + ${cliente.apellido} + ' - ' + ${cliente.cuit}">
+                            </option>
+                        </select>
+                    </div>
+
+ 
+                    <br>  
+                    <button type="submit" class="btn btn-af-primary btn-sm">Continuar</button>
+                </form>
+            </div>
+        </div>
+
+
+        <script>
+            $(document).ready(function () {
+                $('.js-example-basic-single').select2();
+            });
+        </script>
+    </section>
+
+</body>
+
+</html>
