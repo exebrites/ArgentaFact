@@ -23,7 +23,7 @@
             </thead>
             <tbody>
                 <tr th:each="servicioContratado : ${serviciosContratados}">
-                    <td th:text="${servicioContratado.getId()}"></td>
+                    <td th:text="${servicioContratado.getIdServicioContratado()}"></td>
                     <th th:text="${servicioContratado.getCliente().getNombre()}"></th>
                     <th th:text="${servicioContratado.getServicio().getNombreServicio()}"></th>
                     <td th:text="${servicioContratado.getPrecioAcordado()}"></td>

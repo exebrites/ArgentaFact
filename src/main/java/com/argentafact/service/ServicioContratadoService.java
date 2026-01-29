@@ -1,6 +1,7 @@
 package com.argentafact.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,10 @@ public class ServicioContratadoService {
 
     public List<ServicioContratado> buscarTodos() {
         return this.servicioContratadoRepository.findAll();
+    }
+
+
+    public ServicioContratado findByIdServicioContratado(Long servicioContratado_id) {
+        return this.servicioContratadoRepository.findByIdServicioContratado(servicioContratado_id);
     }
 }

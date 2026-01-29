@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
+
+<head>
+    <title>Listado de facturas</title>
+</head>
+
+<body>
+    <section layout:fragment="content" class="p-4">
+        <h2 class="mb-4">facturar Servicio Contratado</h2>
+      <form th:action="@{/facturas/facturarServicioContratado}" th:method="post">
+          <div class="form-group">
+            <label for="servicioContratado">Servicio Contratado</label>
+            <select name="servicioContratado_id" class="js-example-basic-single form-control" required>
+                <option value="">Seleccione un servicio contratado</option>
+                <option th:each="servicioContratado : ${servicioContratados}" th:value="${servicioContratado.idServicioContratado}"
+                    th:text="${servicioContratado.getCliente().getNombre()} + ' ' + ${servicioContratado.getCliente().getApellido()} + ' - ' + ${servicioContratado.getCliente().getCuit()}+ ' - ' + ${servicioContratado.getServicio().getNombreServicio()}">
+                </option>
+            </select>
+        </div>
+        <button type="submit">Enviar</button>
+      </form>
+        <script>
+            $(document).ready(function () {
+                $('.js-example-basic-single').select2();
+            });
+        </script>
+    </section>
+
+
+</body>

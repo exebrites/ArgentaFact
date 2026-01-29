@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 public class ServicioContratado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idServicioContratado;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente", nullable = false)
@@ -34,20 +34,13 @@ public class ServicioContratado {
     // periodicidad (mensual, anual)
     public ServicioContratado() {
     }
+
     public ServicioContratado(Cliente cliente, Servicio servicio) {
         this.cliente = cliente;
         this.servicio = servicio;
         this.fechaAlta = LocalDate.now();
         this.estado = EstadoServicioContratado.ACTIVO;
         this.precioAcordado = servicio.getPrecio();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Cliente getCliente() {
@@ -98,10 +91,18 @@ public class ServicioContratado {
         this.precioAcordado = precioAcordado;
     }
 
+    public Long getIdServicioContratado() {
+        return idServicioContratado;
+    }
+
+    public void setIdServicioContratado(Long idServicioContratado) {
+        this.idServicioContratado = idServicioContratado;
+    }
+
     @Override
     public String toString() {
         return "ServicioContratado{" +
-                "id=" + id +
+                "id=" + idServicioContratado +
                 ", servicio=" + servicio.getIdServicio() +
                 ", cliente=" + cliente.getIdCliente() +
                 ", fechaAlta=" + fechaAlta +
