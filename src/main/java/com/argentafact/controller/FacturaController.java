@@ -1,5 +1,7 @@
 package com.argentafact.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +25,7 @@ import com.argentafact.model.TipoFactura;
 import com.argentafact.service.ClienteService;
 import com.argentafact.service.EmpleadoService;
 import com.argentafact.service.FacturaService;
+import com.argentafact.service.ServicioContratadoService;
 import com.argentafact.service.ServicioService;
 
 import jakarta.servlet.http.HttpSession;
@@ -31,6 +34,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequestMapping("/facturas")
@@ -44,6 +48,8 @@ public class FacturaController {
     private ClienteService clienteService;
     @Autowired
     private ServicioService servicioService;
+    @Autowired
+    private ServicioContratadoService servicioContratadoService;
 
     @ModelAttribute("detalleFactura")
     public DetalleDeFacturaFormulario setUpDetalleFacturaFormulario() {
@@ -137,7 +143,8 @@ public class FacturaController {
     }
 
     @GetMapping("/detalleFactura")
-    public String verDetalleProducto(@ModelAttribute("detalleFactura") DetalleDeFacturaFormulario detalle, Model model) {
+    public String verDetalleProducto(@ModelAttribute("detalleFactura") DetalleDeFacturaFormulario detalle,
+            Model model) {
         var servicios = servicioService.buscarTodos();
         model.addAttribute("servicios", servicios);
         return "factura/vistaDetalleFactura";
@@ -145,7 +152,8 @@ public class FacturaController {
 
     @GetMapping("/agregarDetalleFactura")
     public String agregarDetalleFactura(@ModelAttribute("idServicio") Long idServicio,
-            @ModelAttribute("detalleFactura") DetalleDeFacturaFormulario detalle, RedirectAttributes redirectAttributes) {
+            @ModelAttribute("detalleFactura") DetalleDeFacturaFormulario detalle,
+            RedirectAttributes redirectAttributes) {
 
         var servicio = servicioService.findById(idServicio);
         // TODO crear servicio de detalle de facturacion sesion
@@ -203,10 +211,48 @@ public class FacturaController {
 
     @GetMapping("/eliminarDetalle/{idServicio}")
     public String eliminarDetalleFactura(@PathVariable Long idServicio,
-            @ModelAttribute("detalleFactura") DetalleDeFacturaFormulario detalle, RedirectAttributes redirectAttributes) {
+            @ModelAttribute("detalleFactura") DetalleDeFacturaFormulario detalle,
+            RedirectAttributes redirectAttributes) {
 
         detalle.eliminarServicio(idServicio);
 
         return "redirect:/facturas/crear";
     }
+
+    @GetMapping("/facturarServicioContratado")
+    public String facturarServicioContratado(Model model) {
+        var servicioContratados = servicioContratadoService.buscarTodos();
+        model.addAttribute("servicioContratados", servicioContratados);
+        return "factura/facturarServicioContratado";
+    }
+
+    @PostMapping("/facturarServicioContratado")
+    public String postMethodName(@ModelAttribute("servicioContratado_id") Long servicioContratado_id) {
+        var servicioContratado = servicioContratadoService.findByIdServicioContratado(servicioContratado_id);
+        // facturar
+        var factura = new Factura();
+        factura.setEmpleado(empleadoService.buscarTodos().get(0));
+        String nroFactura = facturaService.generarNumeroFactura();
+        factura.setNumeroFactura(nroFactura);
+        factura.setTotal(servicioContratado.getPrecioAcordado());
+        factura.setEstado(EstadoFactura.PENDIENTE);
+        factura.setCliente(servicioContratado.getCliente());
+        factura.setFechaEmision(LocalDate.now());
+        // // determinar el tipo de factura segun la condicion fiscal del cliente.
+        if ((servicioContratado.getCliente().getCondicionFiscal().equals(CondicionFiscal.RESPONSABLE_INSCRIPTO))
+                || (factura.getCliente().getCondicionFiscal().equals(CondicionFiscal.MONOTRIBUTISTA))) {
+            factura.setTipoFactura(TipoFactura.A);
+        } else {
+            factura.setTipoFactura(TipoFactura.B);
+        }
+
+        // generar los detalles de factura
+        var detalleFactura = new DetalleFactura(factura, servicioContratado.getServicio(),
+                servicioContratado.getPrecioAcordado());
+
+        factura.AgregarDetalle(detalleFactura);
+        facturaService.guardarFactura(factura);
+        return "redirect:/facturas/";
+    }
+
 }

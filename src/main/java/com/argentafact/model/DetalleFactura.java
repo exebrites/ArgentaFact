@@ -31,6 +31,11 @@ public class DetalleFactura {
     public DetalleFactura() {
     }
 
+    public DetalleFactura(Factura factura, Servicio servicio, BigDecimal subtotal){
+        this.factura = factura;
+        this.servicio = servicio;
+        this.subtotal =  subtotal;
+    }
     public Long getIdDetalleFactura() {
         return idDetalleFactura;
     }
