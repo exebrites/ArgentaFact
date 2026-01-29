@@ -45,7 +45,9 @@ public class ServicioContratadoController {
     }
 
     @GetMapping("/")
-    public String listarServiciosContratados() {
+    public String listarServiciosContratados(Model model) {
+        var serviciosContratados = servicioContratadoService.buscarTodos();
+        model.addAttribute("serviciosContratados", serviciosContratados);
         return "servicioContratado/listar";
     }
 
