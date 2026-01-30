@@ -1,34 +1,38 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{layout/base}">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
 
 <head>
-    <title>Eliminar cliente</title>
+    <title>Eliminar servicio</title>
 </head>
 
 <body>
-    <section layout:fragment="content">
-        <div th:if="${not #isEmpty(error)}" class="alert alert-danger" role="alert">
-            <p th:text="${error}"></p>
-        </div>
-        <div class="card">
-            <div class="card-header">
+<section layout:fragment="content">
 
-            </div>
-            <div class="card-body">
-                <h1>Eliminar cliente</h1>
-                <div class="alert alert-danger">
-                    <p>¿Estás seguro de que deseas eliminar al servicio <span th:text="${servicio.getNombreServicio()}">
-                        </span>?</p>
-                    <form th:action="@{/servicios/{id}(id=${servicio.idServicio})}" th:method="delete">
-                        <input type="submit" value="Eliminar" class="btn btn-danger">
-                    </form>
-                    <br>
-                    <a th:href="@{/servicios/}" class="btn btn-primary">Cancelar</a>
-                </div>
+    <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h1>Eliminar servicio</h1>
+
+            <div class="alert alert-danger">
+                <p>
+                    ¿Estás seguro de que deseas eliminar el servicio
+                    <strong th:text="${servicio.nombreServicio}"></strong>?
+                </p>
+
+                <form th:action="@{/servicios/{id}(id=${servicio.idServicio})}" method="post">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <a th:href="@{/servicios/}" class="btn btn-secondary">Cancelar</a>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
+
+</section>
 </body>
-
 </html>

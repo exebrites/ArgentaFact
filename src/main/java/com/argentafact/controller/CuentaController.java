@@ -26,7 +26,7 @@ public class CuentaController {
     }
 
 
-    @GetMapping({ "", "/" }) 
+    @GetMapping({ "" }) 
     public String listar(Model model) {
         model.addAttribute("cuentas", cuentaService.listarTodas());
         return "cuenta/listar";

@@ -14,14 +14,13 @@
     <div class="card">
         <div class="card-body">
             <p>ID Histórico: <span th:text="${historico.idHistorico}"></span></p>
-            <p>Fecha: <span th:text="${#temporals.format(historico.fechaOperacion, 'dd/MM/yyyy HH:mm')}"></span></p>
+            <span th:text="${fechaOperacionFormateada}"></span>
             <p>Cliente: <span th:text="${historico.cliente.apellido + ', ' + historico.cliente.nombre}"></span></p>
             <p>CUIT Cliente: <span th:text="${historico.cliente.cuit}"></span></p>
             <p>Empleado: <span th:text="${historico.empleado.nombre}"></span></p>
             <p>Tipo de Operación: <span th:text="${historico.tipoOperacion}"></span></p>
             <p>Descripción: <span th:text="${historico.descripcion}"></span></p>
-            <p>Monto: <span th:text="${historico.monto}"></span></p>
-            <p>Condición Fiscal: <span th:text="${historico.condicionFiscal}"></span></p>
+            <p>Condición Fiscal: <span th:text="${historico.cliente.condicionFiscal}"></span></p>
         </div>
 
         <div class="card-footer">

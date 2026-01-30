@@ -24,9 +24,7 @@ public class ClienteService {
 
     public List<Cliente> buscarTodos() {
         return clienteRepository.findAll();
-    }
-
-    
+    }  
 
     public void guardar(Cliente cliente) {
         clienteRepository.save(cliente);

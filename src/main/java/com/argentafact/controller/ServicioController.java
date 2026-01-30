@@ -20,7 +20,7 @@ public class ServicioController {
     private ServicioService servicioService;
 
     // LISTAR servicios
-    @GetMapping
+    @GetMapping ({ "", "/" })
     public String listarServicios(Model model) {
         model.addAttribute("servicios", servicioService.buscarTodos());
         return "servicio/listar";
