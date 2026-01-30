@@ -37,7 +37,7 @@ public class ServicioController {
     @PostMapping("/guardar")
     public String guardarServicio(Servicio servicio) {
         servicioService.guardar(servicio);
-        return "redirect:/servicios";
+        return "redirect:/servicios/";
     }
 
     @GetMapping("/{id}/eliminar")
