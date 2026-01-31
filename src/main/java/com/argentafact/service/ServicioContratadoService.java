@@ -1,10 +1,13 @@
 package com.argentafact.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.argentafact.model.EstadoServicioContratado;
 import com.argentafact.model.ServicioContratado;
 import com.argentafact.repository.ServicioContratadoRepository;
 
@@ -24,8 +27,23 @@ public class ServicioContratadoService {
         return this.servicioContratadoRepository.findAll();
     }
 
-
     public ServicioContratado findByIdServicioContratado(Long servicioContratado_id) {
         return this.servicioContratadoRepository.findByIdServicioContratado(servicioContratado_id);
+    }
+
+    public List<ServicioContratado> obtenerServiciosContratadosActivosDelMesActual() {
+        var serviciosActuales = this.buscarTodos();
+        LocalDate fechaActual = LocalDate.now();
+        // filtrar por servicios activos
+        // filtrar por mes actual
+        List<ServicioContratado> serviciosAFacturar = new ArrayList<>();
+        for (var servicioContratado : serviciosActuales) {
+            if (servicioContratado.getEstado() == EstadoServicioContratado.ACTIVO) {
+                if (servicioContratado.getFechaAlta().getMonth() == fechaActual.getMonth()) {
+                    serviciosAFacturar.add(servicioContratado);
+                }
+            }
+        }
+        return serviciosAFacturar;
     }
 }

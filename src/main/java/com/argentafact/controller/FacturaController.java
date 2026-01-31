@@ -227,7 +227,7 @@ public class FacturaController {
     }
 
     @PostMapping("/facturarServicioContratado")
-    public String postMethodName(@ModelAttribute("servicioContratado_id") Long servicioContratado_id) {
+    public String guardarFacturaPorServicio(@ModelAttribute("servicioContratado_id") Long servicioContratado_id) {
         var servicioContratado = servicioContratadoService.findByIdServicioContratado(servicioContratado_id);
         // facturar
         var factura = new Factura();
