@@ -70,4 +70,9 @@ public class FacturaService {
                 .filter(Factura::estaActiva)
                 .collect(Collectors.toList());
     }
+
+    public Object obtenerFacturasDelMesActual() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'obtenerFacturasDelMesActual'");
+    }
 }
