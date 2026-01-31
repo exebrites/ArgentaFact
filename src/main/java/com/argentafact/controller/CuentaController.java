@@ -10,19 +10,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.argentafact.service.ClienteService;
+import com.argentafact.service.FacturaService;
 import com.argentafact.service.CuentaService;
 
 @Controller
 @RequestMapping("/cuentas/")
 public class CuentaController {
 
+    private final FacturaService facturaService;
     private final CuentaService cuentaService;
     private final ClienteService clienteService;
 
     public CuentaController(CuentaService cuentaService,
-                            ClienteService clienteService) {
+                            ClienteService clienteService,
+                            FacturaService facturaService) {
         this.cuentaService = cuentaService;
         this.clienteService = clienteService;
+        this.facturaService = facturaService;
     }
 
 
@@ -35,10 +39,14 @@ public class CuentaController {
 
     @GetMapping("/{id}")
     public String ver(@PathVariable Long id, Model model) {
-        model.addAttribute("cuenta", cuentaService.obtenerPorId(id));
+
+    var cuenta = cuentaService.obtenerPorId(id);
+    var saldoPendiente = 
+        facturaService.calcularSaldoPendienteCliente(cuenta.getCliente().getIdCliente());
+        model.addAttribute("cuenta", cuenta);
+        model.addAttribute("saldoPendiente", saldoPendiente);
         return "cuenta/verCuenta";
     }
-
 
     @GetMapping("/nueva")
     public String nueva(Model model) {

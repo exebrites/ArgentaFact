@@ -2,23 +2,28 @@ package com.argentafact.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.math.BigDecimal;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.argentafact.model.Empresa;
-import com.argentafact.model.EstadoFactura;
-import com.argentafact.model.Factura;
+import com.argentafact.model.*;
+import com.argentafact.repository.CuentaRepository;
 import com.argentafact.repository.FacturaRespository;
 
 @Service
+@Transactional
 public class FacturaService {
 
     private final FacturaRespository facturaRespository;
+    private final CuentaRepository cuentaRepository;
 
-    public FacturaService(FacturaRespository facturaRespository) {
+    public FacturaService(FacturaRespository facturaRespository,
+                          CuentaRepository cuentaRepository) {
         this.facturaRespository = facturaRespository;
+        this.cuentaRepository = cuentaRepository;
     }
 
     public List<Factura> obtenerFacturas() {
@@ -26,6 +31,7 @@ public class FacturaService {
     }
 
     public Factura guardarFactura(Factura factura) {
+
         if (factura.getSaldoPendiente() == null) {
             factura.setSaldoPendiente(factura.getTotal());
         }
@@ -34,7 +40,26 @@ public class FacturaService {
             factura.setEstado(EstadoFactura.PENDIENTE);
         }
 
-        return facturaRespository.save(factura);
+        Factura facturaGuardada = facturaRespository.save(factura);
+
+        Cuenta cuenta = cuentaRepository
+                .findByClienteIdCliente(factura.getCliente().getIdCliente())
+                .orElseThrow(() -> new IllegalStateException("El cliente no posee cuenta"));
+
+        cuenta.acreditar(factura.getTotal());
+        cuentaRepository.save(cuenta);
+
+        return facturaGuardada;
+    }
+
+    public BigDecimal calcularSaldoPendienteCliente(Long idCliente) {
+        return facturaRespository.findAll()
+            .stream()
+            .filter(Factura::estaActiva)
+            .filter(Factura::tieneSaldoPendiente)
+            .filter(f -> f.getCliente().getIdCliente().equals(idCliente))
+            .map(Factura::getSaldoPendiente)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public Factura obtenerFactura(Long id) {
@@ -69,10 +94,5 @@ public class FacturaService {
                 .filter(Factura::tieneSaldoPendiente)
                 .filter(Factura::estaActiva)
                 .collect(Collectors.toList());
-    }
-
-    public Object obtenerFacturasDelMesActual() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'obtenerFacturasDelMesActual'");
     }
 }

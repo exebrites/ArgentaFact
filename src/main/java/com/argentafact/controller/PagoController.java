@@ -54,20 +54,31 @@ public String mostrarFormulario(Model model) {
 
     @PostMapping("/registrar")
     public String registrarPago(@RequestParam Long idFactura,
-                                @RequestParam BigDecimal monto,
-                                @RequestParam TipoPago tipoPago,
-                                RedirectAttributes redirectAttributes) {
+                            @RequestParam BigDecimal monto,
+                            @RequestParam TipoPago tipoPago,
+                            RedirectAttributes redirectAttributes) {
 
         Empleado empleado = empleadoRepository.findAll()
             .stream()
             .findFirst()
             .orElseThrow(() -> new IllegalStateException("No hay empleados registrados"));
 
-        pagoService.registrarPago(idFactura, monto, tipoPago, empleado);
+        try {
+            pagoService.registrarPago(idFactura, monto, tipoPago, empleado);
 
-        redirectAttributes.addFlashAttribute(
-                "mensaje", "Pago registrado correctamente");
+            redirectAttributes.addFlashAttribute(
+                    "mensaje", "Pago registrado correctamente");
+            return "redirect:/pagos/";
 
-        return "redirect:/pagos/";
+        } catch (IllegalArgumentException e) {
+
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/pagos/nuevo";
+
+        } catch (IllegalStateException e) {
+
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/pagos/nuevo";
+        }
     }
 }

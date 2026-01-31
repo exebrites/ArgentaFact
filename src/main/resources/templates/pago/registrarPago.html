@@ -30,6 +30,20 @@
 
         <div class="card-body">
 
+            <!-- Mensaje de error -->
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            
+            <!-- Mensaje de éxito -->
+            <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill"></i>
+                <span th:text="${mensaje}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
             <form th:action="@{/pagos/registrar}" method="post">
 
                 <!-- ID Factura -->
