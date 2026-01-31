@@ -17,23 +17,23 @@ public class EmpleadoController {
     @Autowired
     private EmpleadoService empleadoService;
 
-    // TODO listar empleados 
+    // listar empleados
     @GetMapping("/")
     public String guardarEmpleado(Model model) {
-        var empleados =  empleadoService.buscarTodos();
+        var empleados = empleadoService.buscarTodos();
         model.addAttribute("empleados", empleados);
         return "empleado/listar";
     }
 
-
-    // TODO nuevo empleado con vista 
+    // nuevo empleado con vista
     @GetMapping(("/nuevoEmpleado"))
     public String nuevoEmpleado(Model model) {
         Empleado empleado = new Empleado();
         model.addAttribute("empleado", empleado);
         return "empleado/nuevoEmpleado";
     }
-    // TODO  agreagar empleado 
+
+    // agreagar empleado
     @PostMapping("/")
     public String agregarEmpleado(@ModelAttribute("empleado") Empleado empleado) {
         empleadoService.guardar(empleado);
