@@ -7,7 +7,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.argentafact.model.DetalleFactura;
 import com.argentafact.model.EstadoServicioContratado;
+import com.argentafact.model.Factura;
 import com.argentafact.model.ServicioContratado;
 import com.argentafact.repository.ServicioContratadoRepository;
 
@@ -45,5 +47,45 @@ public class ServicioContratadoService {
             }
         }
         return serviciosAFacturar;
+    }
+
+    public List<ServicioContratado> obtenerServiciosAFacturar(List<ServicioContratado> serviciosActuales,
+            List<Factura> facturasDelMes) {
+        // filtrar los servicios que no tengan facturas en el mes actual
+        // iterar sobre facturas del mes
+        // iterar sobre servicioContratoMes
+        // si el cliente de la factura coincide con el cliente del servicio continuar
+        // iterar sobre detalles de factura
+        // obtener el id del servicio en el detalle de factura y comparar con el
+        // servicio contratado
+        // si el id del servicio contratado no esta en los detalles de factura, facturar
+        // ese servicio
+        List<ServicioContratado> serviciosAFacturar = new ArrayList<>();
+        for (Factura factura : facturasDelMes) {
+            for (ServicioContratado servicioContrato : serviciosActuales) {
+                if (factura.getCliente().getIdCliente() == servicioContrato.getCliente().getIdCliente()) {
+                    boolean encontrado = false;
+                    for (DetalleFactura detalle : factura.getDetalleFacturas()) {
+                        if (detalle.getServicio().getIdServicio() == servicioContrato.getServicio().getIdServicio()) {
+                            encontrado = true;
+                            break;
+                        }
+                    }
+                    if (!encontrado) {
+                        // serviciosAFacturar.add(servicioContrato);
+                        // TODO generar factura para este servicio
+                        System.out.println("Generando factura para el servicio: " +
+                                servicioContrato.getServicio().getNombreServicio());
+                        serviciosAFacturar.add(servicioContrato);
+                    }
+                }
+            }
+        }
+        if (serviciosAFacturar.isEmpty()) {
+            serviciosAFacturar = serviciosActuales;
+        }
+
+        return serviciosAFacturar;
+
     }
 }

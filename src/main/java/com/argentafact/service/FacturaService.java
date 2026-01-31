@@ -1,8 +1,10 @@
 package com.argentafact.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +23,7 @@ public class FacturaService {
     private final CuentaRepository cuentaRepository;
 
     public FacturaService(FacturaRespository facturaRespository,
-                          CuentaRepository cuentaRepository) {
+            CuentaRepository cuentaRepository) {
         this.facturaRespository = facturaRespository;
         this.cuentaRepository = cuentaRepository;
     }
@@ -54,12 +56,12 @@ public class FacturaService {
 
     public BigDecimal calcularSaldoPendienteCliente(Long idCliente) {
         return facturaRespository.findAll()
-            .stream()
-            .filter(Factura::estaActiva)
-            .filter(Factura::tieneSaldoPendiente)
-            .filter(f -> f.getCliente().getIdCliente().equals(idCliente))
-            .map(Factura::getSaldoPendiente)
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .stream()
+                .filter(Factura::estaActiva)
+                .filter(Factura::tieneSaldoPendiente)
+                .filter(f -> f.getCliente().getIdCliente().equals(idCliente))
+                .map(Factura::getSaldoPendiente)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public Factura obtenerFactura(Long id) {
@@ -94,5 +96,68 @@ public class FacturaService {
                 .filter(Factura::tieneSaldoPendiente)
                 .filter(Factura::estaActiva)
                 .collect(Collectors.toList());
+    }
+
+    public List<Factura> obtenerFacturasDelMesActual() {
+
+        var facturas = this.obtenerFacturas();
+        LocalDate mesActual = LocalDate.now();
+        List<Factura> facturaActuales = new ArrayList<>();
+        for (var factura : facturas) {
+            if (factura.getFechaEmision().getMonth() == mesActual.getMonth()) {
+                facturaActuales.add(factura);
+            }
+        }
+        return facturaActuales;
+    }
+
+    public void generarFacturasMasivas(List<ServicioContratado> serviciosAFacturar, List<Empleado> empleados) {
+        
+        // obtener los clientes únicos de los servicios a facturar
+        List<Cliente> clientes = new ArrayList<>();
+        for (ServicioContratado servicioContratado : serviciosAFacturar) {
+            if (!clientes.contains(servicioContratado.getCliente())) {
+                clientes.add(servicioContratado.getCliente());
+            }
+        }
+
+        // generar facturas para cada cliente
+        for (Cliente cliente : clientes) {
+            // crear factura
+            Factura factura = new Factura();
+            factura.setCliente(cliente);
+            factura.setEmpleado(empleados.get(0));
+            String nroFactura = this.generarNumeroFactura();
+            factura.setNumeroFactura(nroFactura);
+            factura.setEstado(EstadoFactura.PENDIENTE);
+            factura.setFechaEmision(LocalDate.now());
+            BigDecimal totalServicos = BigDecimal.ZERO;
+
+            // // // determinar el tipo de factura segun la condicion fiscal del cliente.
+            if ((cliente.getCondicionFiscal().equals(CondicionFiscal.RESPONSABLE_INSCRIPTO))
+                    ||
+                    (factura.getCliente().getCondicionFiscal().equals(CondicionFiscal.MONOTRIBUTISTA))) {
+                factura.setTipoFactura(TipoFactura.A);
+            } else {
+                factura.setTipoFactura(TipoFactura.B);
+            }
+            // crear detalle de factura
+            for (ServicioContratado servicioContratado : serviciosAFacturar) {
+                if (cliente.getIdCliente() != servicioContratado.getCliente().getIdCliente()) {
+                    continue;
+                }
+
+                var detalleFactura = new DetalleFactura(factura,
+                        servicioContratado.getServicio(),
+                        servicioContratado.getPrecioAcordado());
+
+                factura.AgregarDetalle(detalleFactura);
+                totalServicos = totalServicos.add(servicioContratado.getPrecioAcordado());
+            }
+            factura.setTotal(totalServicos);
+            this.guardarFactura(factura);
+        }
+
+
     }
 }
