@@ -98,6 +98,11 @@ public class FacturaService {
                 .collect(Collectors.toList());
     }
 
+    public List<Factura> obtenerFacturasPorCliente(Long idCliente) {
+        
+        return facturaRespository.findByClienteIdClienteAndBajaFalse(idCliente);
+    }
+
     public List<Factura> obtenerFacturasDelMesActual() {
 
         var facturas = this.obtenerFacturas();

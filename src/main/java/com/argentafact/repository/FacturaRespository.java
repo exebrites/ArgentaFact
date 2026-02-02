@@ -20,4 +20,5 @@ public interface FacturaRespository extends JpaRepository <Factura,Long> {
     
     List<Factura> findBySaldoPendienteGreaterThan(BigDecimal monto);
     
+    List<Factura> findByClienteIdClienteAndBajaFalse(Long idCliente);
 }

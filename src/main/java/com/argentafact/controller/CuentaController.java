@@ -38,15 +38,20 @@ public class CuentaController {
 
 
     @GetMapping("/{id}")
-    public String ver(@PathVariable Long id, Model model) {
+public String ver(@PathVariable Long id, Model model) {
 
     var cuenta = cuentaService.obtenerPorId(id);
-    var saldoPendiente = 
-        facturaService.calcularSaldoPendienteCliente(cuenta.getCliente().getIdCliente());
-        model.addAttribute("cuenta", cuenta);
-        model.addAttribute("saldoPendiente", saldoPendiente);
-        return "cuenta/verCuenta";
-    }
+    var cliente = cuenta.getCliente();
+    var facturas = facturaService.obtenerFacturasPorCliente(cliente.getIdCliente());
+    var saldoPendiente = facturaService.calcularSaldoPendienteCliente(cliente.getIdCliente());
+
+    model.addAttribute("cuenta", cuenta);
+    model.addAttribute("cliente", cliente);
+    model.addAttribute("facturas", facturas);
+    model.addAttribute("saldoPendiente", saldoPendiente);
+
+    return "cuenta/verCuenta";
+}
 
     @GetMapping("/nueva")
     public String nueva(Model model) {
