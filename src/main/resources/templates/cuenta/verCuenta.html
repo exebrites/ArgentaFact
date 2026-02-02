@@ -4,37 +4,86 @@
       layout:decorate="~{layout/base}">
 
 <head>
-    <title>Detalle Cuenta</title>
+    <title>Estado de Cuenta</title>
 </head>
 
 <body>
 
 <section layout:fragment="content">
-    <h1>Detalle de Cuenta</h1>
+    <h1>Estado de Cuenta</h1>
 
-    <div class="card">
+    <!-- DATOS DEL CLIENTE -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <strong>Datos del Cliente</strong>
+        </div>
         <div class="card-body">
+            <p><strong>Nombre:</strong>
+                <span th:text="${cliente.nombre + ' ' + cliente.apellido}"></span>
+            </p>
+            <p><strong>CUIT:</strong>
+                <span th:text="${cliente.cuit}"></span>
+            </p>
+            <p><strong>Condición Fiscal:</strong>
+                <span th:text="${cliente.condicionFiscal}"></span>
+            </p>
+        </div>
+    </div>
 
-            <p>
-                <strong>ID Cuenta:</strong>
+    <!-- DATOS DE LA CUENTA -->
+    <div class="card mb-3">
+        <div class="card-header">
+            <strong>Cuenta</strong>
+        </div>
+        <div class="card-body">
+            <p><strong>ID Cuenta:</strong>
                 <span th:text="${cuenta.idCuenta}"></span>
             </p>
-
-            <p>
-                <strong>Cliente:</strong>
-                <span th:text="${cuenta.cliente.nombre + ' ' + cuenta.cliente.apellido}"></span>
+            <p><strong>Saldo Contable:</strong>
+                $<span th:text="${cuenta.saldo}"></span>
             </p>
-
-            <p>
-                <strong>Saldo actual:</strong>
-                <span th:text="${cuenta.saldo}"></span>
+            <p><strong>Saldo Pendiente:</strong>
+                $<span th:text="${saldoPendiente}"></span>
             </p>
+        </div>
+    </div>
 
+    <!-- FACTURAS -->
+    <div class="card">
+        <div class="card-header">
+            <strong>Facturas del Cliente</strong>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th>Número</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Saldo Pendiente</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="factura : ${facturas}">
+                        <td th:text="${factura.numeroFactura}"></td>
+                        <td th:text="${factura.fechaFormateada}"></td>
+                        <td th:text="${factura.total}"></td>
+                        <td th:text="${factura.saldoPendiente}"></td>
+                        <td th:text="${factura.estado}"></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(facturas)}">
+                        <td colspan="5" class="text-center">
+                            No existen facturas registradas
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
     <a th:href="@{/cuentas/}" class="btn btn-secondary mt-3">
-        Volver al listado
+        Volver
     </a>
 </section>
 
