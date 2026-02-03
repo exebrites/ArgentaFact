@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import com.argentafact.model.*;
 import com.argentafact.repository.FacturaRespository;
@@ -56,7 +58,7 @@ public class PagoService {
         facturaRespository.save(factura);
 
         Long idCliente = factura.getCliente().getIdCliente();
-        
+
         Cuenta cuenta = cuentaRepository.findByClienteIdCliente(idCliente)
                 .orElseThrow(() -> new IllegalStateException("El cliente no posee cuenta"));
 
@@ -64,18 +66,23 @@ public class PagoService {
         cuentaRepository.save(cuenta);
 
         HistoricoFiscal historico = new HistoricoFiscal(
-        LocalDate.now(),
-        empleado,
-        factura.getCliente(),
-        "REGISTRO_PAGO",
-        "Pago registrado sobre la factura N° "
-                + factura.getNumeroFactura()
-                + " por un monto de $"
-                + monto);
-        
-                historicoFiscalRepository.save(historico);
+                LocalDate.now(),
+                empleado,
+                factura.getCliente(),
+                "REGISTRO_PAGO",
+                "Pago registrado sobre la factura N° "
+                        + factura.getNumeroFactura()
+                        + " por un monto de $"
+                        + monto);
+
+        historicoFiscalRepository.save(historico);
     }
+
     public List<Pago> listarPagos() {
-           return pagoRepository.findAll();
-     }
+        return pagoRepository.findAll();
+    }
+
+    public Page<Pago> listarPagos(PageRequest of) {
+        return pagoRepository.findAll(of);
+    }
 }

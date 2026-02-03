@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import com.argentafact.model.Servicio;
 import com.argentafact.service.ServicioService;
@@ -19,10 +23,20 @@ public class ServicioController {
     @Autowired
     private ServicioService servicioService;
 
-    // LISTAR servicios
-    @GetMapping ({ "", "/" })
-    public String listarServicios(Model model) {
-        model.addAttribute("servicios", servicioService.buscarTodos());
+    // LISTAR servicios (PAGINADO)
+    @GetMapping({ "", "/" })
+    public String listarServicios(
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "5") int tamano,
+            Model model) {
+
+        Page<Servicio> paginaServicio = servicioService.buscarTodos(
+                PageRequest.of(pagina, tamano));
+
+        model.addAttribute("servicios", paginaServicio.getContent());
+        model.addAttribute("paginaActual", pagina);
+        model.addAttribute("totalPaginas", paginaServicio.getTotalPages());
+
         return "servicio/listar";
     }
 

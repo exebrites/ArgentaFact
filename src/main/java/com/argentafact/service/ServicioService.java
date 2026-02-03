@@ -3,6 +3,8 @@ package com.argentafact.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import com.argentafact.model.Servicio;
 import com.argentafact.repository.ServicioRepository;
@@ -23,12 +25,16 @@ public class ServicioService {
     public void eliminar(Long id) {
         servicioRepository.deleteById(id);
     }
+    
     public List<Servicio> buscarTodos() {
         return servicioRepository.findAll();
     }
 
-    public Servicio findById(Long id) {
+    public Page<Servicio> buscarTodos(PageRequest of) {
+        return servicioRepository.findAll(of);
+    }
 
+    public Servicio findById(Long id) {
         return servicioRepository.findByIdServicio(id);
     }
 }

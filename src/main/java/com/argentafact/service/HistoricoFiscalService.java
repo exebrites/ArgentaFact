@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 
 import com.argentafact.model.Cliente;
 import com.argentafact.model.Empleado;
@@ -55,4 +58,9 @@ public class HistoricoFiscalService {
                         "Histórico fiscal no encontrado (id=" + idHistorico + ")"
                 ));
     }
+    
+    public Page<HistoricoFiscal> buscarTodos(PageRequest pageRequest) {
+        return historicoRepository.findAll(pageRequest);
+    }
+
 }

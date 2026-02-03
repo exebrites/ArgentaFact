@@ -5,6 +5,9 @@ import java.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 
 import com.argentafact.model.HistoricoFiscal;
 import com.argentafact.service.HistoricoFiscalService;
@@ -19,11 +22,21 @@ public class HistoricoFiscalController {
         this.service = service;
     }
 
-    @GetMapping ({ "", "/" })
-    public String listar(Model model) {
-        model.addAttribute("historicos", service.listarTodos());
+    @GetMapping({ "", "/" })
+    public String listar(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
+
+        Page<HistoricoFiscal> historicosPage = service.buscarTodos(PageRequest.of(page, size));
+
+        model.addAttribute("historicos", historicosPage.getContent());
+        model.addAttribute("paginaActual", page);
+        model.addAttribute("totalPaginas", historicosPage.getTotalPages());
+
         return "historico/listar";
     }
+
 
     @GetMapping("/{id}")
     public String ver(@PathVariable Long id, Model model) {

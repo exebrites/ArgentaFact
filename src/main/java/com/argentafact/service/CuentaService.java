@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import com.argentafact.model.Cliente;
 import com.argentafact.model.Cuenta;
@@ -62,5 +64,9 @@ public class CuentaService {
         if (monto.compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException("El monto debe ser positivo");
         }
+    }
+
+    public Page<Cuenta> listarTodas(PageRequest of) {
+        return cuentaRepository.findAll(of);
     }
 }
