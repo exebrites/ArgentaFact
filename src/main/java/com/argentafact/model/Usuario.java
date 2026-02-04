@@ -2,6 +2,10 @@ package com.argentafact.model;
 
 import jakarta.persistence.*;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
@@ -9,9 +13,13 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "El nombre de usuario es obligatorio")
+    @Size(min = 3, max = 50, message = "El usuario debe tener entre 3 y 50 caracteres")
     @Column(unique = true, nullable = false, length = 50)
     private String username;
 
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
     @Column(nullable = false)
     private String password;
 
@@ -19,16 +27,27 @@ public class Usuario {
     private boolean activo = true;
 
     // Campos adicionales opcionales
+    @NotBlank(message = "El nombre es obligatorio")
+    @Size(min = 2, max = 100, message = "El nombre debe tener entre 2 y 100 caracteres")
     private String nombre;
+    @NotBlank(message = "El email es obligatorio")
+    @Email(message = "Ingrese un email válido")
+    @Column(unique = true, nullable = false)
     private String email;
+
+    // ⚠️ IMPORTANTE: Sin @NotBlank aquí // La validación se hace en el controlador
+    @Transient // No se guarda en BD private
+    String confirmarPassword;
 
     // Constructores
     public Usuario() {
     }
 
-    public Usuario(String username, String password) {
+    public Usuario(String username, String password, String nombre, String email) {
         this.username = username;
         this.password = password;
+        this.nombre = nombre;
+        this.email = email;
         this.activo = true;
     }
 
@@ -57,12 +76,12 @@ public class Usuario {
         this.password = password;
     }
 
-    public boolean isActivo() {
-        return activo;
+    public String getConfirmarPassword() {
+        return confirmarPassword;
     }
 
-    public void setActivo(boolean activo) {
-        this.activo = activo;
+    public void setConfirmarPassword(String confirmarPassword) {
+        this.confirmarPassword = confirmarPassword;
     }
 
     public String getNombre() {
@@ -79,5 +98,13 @@ public class Usuario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 }

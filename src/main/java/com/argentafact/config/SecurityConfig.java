@@ -11,27 +11,20 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    /**
-     * Encoder de contraseñas
-     */
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /**
-     * Configuración de seguridad
-     * Spring Boot automáticamente:
-     * 1. Detecta el UserDetailsService (CustomUserDetailsService)
-     * 2. Detecta el PasswordEncoder
-     * 3. Crea y configura el DaoAuthenticationProvider
-     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login", "/error").permitAll()
+                        // Rutas públicas (sin autenticación)
+                        .requestMatchers("/login", "/register", "/error").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
+                        // Todas las demás rutas requieren autenticación
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
