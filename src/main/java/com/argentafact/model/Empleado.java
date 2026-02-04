@@ -144,4 +144,11 @@ public class Empleado {
     public String getNombreCompleto() {
         return nombre + " " + apellido;
     }
+    
+    @Override
+    public String toString() {
+        return "Empleado [idEmpleado=" + idEmpleado + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni
+                + ", email=" + email + ", telefono=" + telefono + ", fechaIngreso=" + fechaIngreso + ", departamento="
+                + departamento + ", cargo=" + cargo + "]";
+    }
 }
