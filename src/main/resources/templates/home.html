@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Sistema</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Bienvenido al Sistema</h1>
+            <div class="user-info">
+                <span>Usuario: <strong th:text="${username}"></strong></span>
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="btn-logout">Cerrar Sesión</button>
+                </form>
+            </div>
+        </header>
+
+        <main>
+            <h2>Página Principal</h2>
+            <p>Has iniciado sesión correctamente en el sistema.</p>
+
+            <!-- Contenido protegido de tu aplicación -->
+            <div class="content">
+                <p>Aquí va el contenido de tu aplicación...</p>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
