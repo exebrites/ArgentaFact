@@ -45,7 +45,7 @@ public class AuthController {
     public String home(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("username", auth.getName());
-        return "home";
+        return "dashboard";
     }
 
     /**
