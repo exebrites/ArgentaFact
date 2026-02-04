@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/base}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
 
 <head>
     <title>Pagos</title>
@@ -9,91 +8,90 @@
 
 <body>
 
-<section layout:fragment="content">
+    <section layout:fragment="content">
 
-    <h1>Listado de Pagos</h1>
+        <h1>Listado de Pagos</h1>
 
-    <div class="card">
+        <div class="card">
 
-        <div class="card-header">
-            <a th:href="@{/pagos/nuevo}"
-               class="btn btn-primary">
-                Registrar pago
-            </a>
+            <div class="card-header">
+                <a th:href="@{/pagos/nuevo}" class="btn btn-primary">
+                    Registrar pago
+                </a>
+            </div>
+
+            <div class="card-body">
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Fecha</th>
+                            <th>Cliente</th>
+                            <th>Factura</th>
+                            <th>Monto</th>
+                            <th>Tipo de pago</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr th:each="pago : ${pagos}">
+                            <td th:text="${pago.idPago}"></td>
+
+                            <td th:text="${#temporals.format(pago.fecha, 'dd/MM/yyyy')}"></td>
+
+                            <td th:text="${pago.factura.cliente.nombre + ' ' + pago.factura.cliente.apellido}"></td>
+
+                            <td th:text="${pago.factura.numeroFactura}"></td>
+
+                            <td th:text="${pago.monto}"></td>
+
+                            <td th:text="${pago.tipoPago}"></td>
+
+                            <td>
+                                <span class="badge bg-success" th:if="${pago.estadoPago.name() == 'REGISTRADO'}">
+                                    Registrado
+                                </span>
+
+                                <span class="badge bg-secondary" th:if="${pago.estadoPago.name() != 'REGISTRADO'}"
+                                    th:text="${pago.estadoPago}">
+                                </span>
+                            </td>
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(pagos)}">
+                            <td colspan="7" class="text-center text-muted">
+                                No hay pagos registrados
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
         </div>
 
-        <div class="card-body">
+        <!-- Botones de navegación -->
+        <div class="btn-group d-flex justify-content-center">
+            <a th:href="@{/facturas/(pagina=0)}" class="btn btn-outline-secondary">Primera</a>
 
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Fecha</th>
-                    <th>Cliente</th>
-                    <th>Factura</th>
-                    <th>Monto</th>
-                    <th>Tipo de pago</th>
-                    <th>Estado</th>
-                </tr>
-                </thead>
+            <a th:if="${paginaActual > 0}" th:href="@{/facturas/(pagina=${paginaActual - 1})}"
+                class="btn btn-outline-primary">←</a>
 
-                <tbody>
+            <button class="btn btn-primary" disabled>
+                <span th:text="${paginaActual + 1}"></span>
+            </button>
 
-                <tr th:each="pago : ${pagos}">
-                    <td th:text="${pago.idPago}"></td>
+            <a th:if="${paginaActual < totalPaginas - 1}" th:href="@{/facturas/(pagina=${paginaActual + 1})}"
+                class="btn btn-outline-primary">→</a>
 
-                    <td th:text="${#temporals.format(pago.fecha, 'dd/MM/yyyy')}"></td>
-
-                    <td th:text="${pago.factura.cliente.nombre + ' ' + pago.factura.cliente.apellido}"></td>
-
-                    <td th:text="${pago.factura.numeroFactura}"></td>
-
-                    <td th:text="${pago.monto}"></td>
-
-                    <td th:text="${pago.tipoPago}"></td>
-
-                    <td>
-                        <span class="badge bg-success"
-                              th:if="${pago.estadoPago.name() == 'REGISTRADO'}">
-                            Registrado
-                        </span>
-
-                        <span class="badge bg-secondary"
-                              th:if="${pago.estadoPago.name() != 'REGISTRADO'}"
-                              th:text="${pago.estadoPago}">
-                        </span>
-                    </td>
-                </tr>
-
-                <tr th:if="${#lists.isEmpty(pagos)}">
-                    <td colspan="7" class="text-center text-muted">
-                        No hay pagos registrados
-                    </td>
-                </tr>
-
-                </tbody>
-            </table>
-
+            <a th:href="@{/facturas/(pagina=${totalPaginas - 1})}" class="btn btn-outline-secondary">Última</a>
         </div>
-    </div>
-    <!-- Botones de navegación -->
-    <div class="btn-group d-flex justify-content-center mt-3">
-    
-        <a th:href="@{/pagos/(pagina=0)}" class="btn btn-outline-secondary">
-            Primera
-        </a>
-    
-        <button class="btn btn-primary" disabled>
-            <span th:text="${paginaActual + 1}"></span>
-        </button>
-    
-        <a th:href="@{/pagos/(pagina=${totalPaginas - 1})}" class="btn btn-outline-secondary">
-            Última
-        </a>
-    
-    </div>
 
-</section>
+    </section>
 
 </body>
+
 </html>

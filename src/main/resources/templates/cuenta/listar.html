@@ -23,7 +23,6 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>ID Cuenta</th>
                     <th>Cliente</th>
                     <th>Saldo</th>
                     <th></th>
@@ -42,30 +41,22 @@
                 </tr>
                 </tbody>
             </table>
+            
             <!-- Botones de navegación -->
-            <div class="btn-group d-flex justify-content-center mt-3">
-            
-                <a th:href="@{/cuentas/(pagina=0)}" class="btn btn-outline-secondary">
-                    Primera
-                </a>
-            
-                <a th:if="${paginaActual > 0}" th:href="@{/cuentas/(pagina=${paginaActual - 1})}" class="btn btn-outline-primary">
-                    ←
-                </a>
-            
+            <div class="btn-group d-flex justify-content-center">
+                <a th:href="@{/facturas/(pagina=0)}" class="btn btn-outline-secondary">Primera</a>
+
+                <a th:if="${paginaActual > 0}" th:href="@{/facturas/(pagina=${paginaActual - 1})}"
+                    class="btn btn-outline-primary">←</a>
+
                 <button class="btn btn-primary" disabled>
                     <span th:text="${paginaActual + 1}"></span>
                 </button>
-            
-                <a th:if="${paginaActual < totalPaginas - 1}" th:href="@{/cuentas/(pagina=${paginaActual + 1})}"
-                    class="btn btn-outline-primary">
-                    →
-                </a>
-            
-                <a th:href="@{/cuentas/(pagina=${totalPaginas - 1})}" class="btn btn-outline-secondary">
-                    Última
-                </a>
-            
+
+                <a th:if="${paginaActual < totalPaginas - 1}" th:href="@{/facturas/(pagina=${paginaActual + 1})}"
+                    class="btn btn-outline-primary">→</a>
+
+                <a th:href="@{/facturas/(pagina=${totalPaginas - 1})}" class="btn btn-outline-secondary">Última</a>
             </div>
         </div>
     </div>

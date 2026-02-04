@@ -107,13 +107,6 @@ class TipoPago {
     BILLETERA_VIRTUAL
 }
 
-class Comprobante {
-  -idComprobante: Long
-  -tipoComprobante: TipoComprobante
-  -archivo: string
-  +generarArchivo()
-}
-
 class TipoComprobante {
     <<enumeration>>
     FACTURA
@@ -141,12 +134,10 @@ class HistoricoFiscal {
 %% Relaciones
 Empleado "1" --> "*" Factura : facturas
 Empleado "1" --> "*" Pago : pagos
-Empleado "1" --> "*" Comprobante : comprobantes 
 
 Cliente "1" --> "1" Cuenta
 Cliente "1" --> "*" Factura : cliente
-Cliente "1" --> "*" Pago : pagos
-Cliente "1" --> "*" Comprobante  
+Cliente "1" --> "*" Pago : pagos 
 
 Factura "1" --> "*" DetalleFactura : detalles
 DetalleFactura "*" --> "1" Servicio : servicio
@@ -154,11 +145,6 @@ DetalleFactura "*" --> "1" Servicio : servicio
 Factura "1" --> "*" Pago : pagos
 Pago "*" --> "1" Factura
 Pago "1" --> "1" HistoricoFiscal
-
-Comprobante "1" <|-- "*" Factura
-Comprobante "1" <|-- "*" NotaCredito
-Comprobante "1" <|-- "*" NotaDebito
-Comprobante "1" --> "1" HistoricoFiscal
 
 Factura "1" --> "*" NotaCredito : notasCredito
 Factura "1" --> "*" NotaDebito : notasDebito

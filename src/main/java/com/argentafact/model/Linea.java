@@ -2,8 +2,6 @@ package com.argentafact.model;
 
 import java.math.BigDecimal;
 
- 
-
 public class Linea {
 
     private int id;
