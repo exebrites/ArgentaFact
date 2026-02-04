@@ -2,7 +2,6 @@ package com.argentafact.model;
 
 import java.math.BigDecimal;
  
-
 public class LineaServicioContratado {
 
     private Long idServicio;
