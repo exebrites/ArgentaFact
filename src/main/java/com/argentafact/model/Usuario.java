@@ -1,55 +1,49 @@
 package com.argentafact.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank(message = "El nombre de usuario es obligatorio")
-    @Size(min = 3, max = 50, message = "El usuario debe tener entre 3 y 50 caracteres")
-    @Column(unique = true, nullable = false, length = 50)
+    
+    @NotBlank(message = "El username es obligatorio")
+    @Size(min = 4, max = 20, message = "El username debe tener entre 4 y 20 caracteres")
+    @Pattern(regexp = "^[a-zA-Z0-9._-]+$", message = "Username solo puede contener letras, números, puntos, guiones y guiones bajos")
+    @Column(nullable = false, unique = true, length = 20)
     private String username;
-
+    
     @NotBlank(message = "La contraseña es obligatoria")
-    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
+    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
     @Column(nullable = false)
     private String password;
-
-    @Column(nullable = false)
-    private boolean activo = true;
-
-    // Campos adicionales opcionales
-    @NotBlank(message = "El nombre es obligatorio")
-    @Size(min = 2, max = 100, message = "El nombre debe tener entre 2 y 100 caracteres")
-    private String nombre;
+    
+    // Campo transient solo para validación en formulario
+    @Transient
+    private String confirmarPassword;
+    
     @NotBlank(message = "El email es obligatorio")
-    @Email(message = "Ingrese un email válido")
-    @Column(unique = true, nullable = false)
+    @Email(message = "Email inválido")
+    @Column(nullable = false, unique = true, length = 100)
     private String email;
-
-    // ⚠️ IMPORTANTE: Sin @NotBlank aquí // La validación se hace en el controlador
-    @Transient // No se guarda en BD private
-    String confirmarPassword;
-
+    
+    @Column(nullable = false)
+    private Boolean activo = true;
+    
+    // Relación bidireccional 1:1 con Empleado
+    // El lado "owner" de la relación (quien tiene la FK)
+    @OneToOne
+    @JoinColumn(name = "empleado_id", nullable = false, unique = true)
+    private Empleado empleado;
+    
     // Constructores
     public Usuario() {
     }
-
-    public Usuario(String username, String password, String nombre, String email) {
-        this.username = username;
-        this.password = password;
-        this.nombre = nombre;
-        this.email = email;
-        this.activo = true;
-    }
-
+    
     // Getters y Setters
     public Long getId() {
         return id;
@@ -83,14 +77,6 @@ public class Usuario {
         this.confirmarPassword = confirmarPassword;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -99,11 +85,19 @@ public class Usuario {
         this.email = email;
     }
 
-    public boolean isActivo() {
+    public Boolean isActivo() {
         return activo;
     }
 
-    public void setActivo(boolean activo) {
+    public void setActivo(Boolean activo) {
         this.activo = activo;
+    }
+
+    public Empleado getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
     }
 }
