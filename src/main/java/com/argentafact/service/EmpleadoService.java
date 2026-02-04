@@ -44,39 +44,7 @@ public class EmpleadoService {
 
     public void registrarEmpleadoConUsuario(Empleado empleado, Usuario usuario) {
 
-        // 1. Validaciones de negocio - Empleado
-        if (empleadoRepository.existsByDni(empleado.getDni())) {
-            throw new IllegalArgumentException("Ya existe un empleado con el DNI: " + empleado.getDni());
-        }
-
-        if (empleadoRepository.existsByEmail(empleado.getEmail())) {
-            throw new IllegalArgumentException("Ya existe un empleado con el email: " + empleado.getEmail());
-        }
-
-        // 2. Validaciones de negocio - Usuario
-        if (usuarioRepository.existsByUsername(usuario.getUsername())) {
-            throw new IllegalArgumentException("El username '" + usuario.getUsername() + "' ya está en uso");
-        }
-
-        if (usuarioRepository.existsByEmail(usuario.getEmail())) {
-            throw new IllegalArgumentException("El email de usuario ya está registrado");
-        }
-
-        // 3. Validar confirmación de contraseña
-        if (!usuario.getPassword().equals(usuario.getConfirmarPassword())) {
-            throw new IllegalArgumentException("Las contraseñas no coinciden");
-        }
-
-        // 4. Encriptar contraseña
-        String passwordEncriptada = passwordEncoder.encode(usuario.getPassword());
-        usuario.setPassword(passwordEncriptada);
-
-        // 5. Establecer relación bidireccional
-        empleado.setUsuario(usuario);
-        // El método setUsuario de Empleado ya establece la relación inversa
-
-        // 6. Guardar (CASCADE persiste también Usuario)
-        empleadoRepository.save(empleado);
+       
     }
 
     /**

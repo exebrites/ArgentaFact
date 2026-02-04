@@ -100,4 +100,11 @@ public class Usuario {
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
     }
+    
+    // toString
+    @Override
+    public String toString() {
+        return "Usuario [id=" + id + ", username=" + username + ", email=" + email + ", activo=" + activo + "]";
+    }
+
 }
