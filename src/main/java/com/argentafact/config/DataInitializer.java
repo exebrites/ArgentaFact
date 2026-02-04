@@ -5,42 +5,73 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.argentafact.model.Empleado;
 import com.argentafact.model.Usuario;
+import com.argentafact.repository.EmpleadoRepository;
 import com.argentafact.repository.UsuarioRepository;
+
+import java.time.LocalDate;
 
 @Configuration
 public class DataInitializer {
-
+    
     /**
-     * Crea usuarios de prueba al iniciar la aplicación
+     * Crea empleados con usuarios de prueba al iniciar la aplicación
+     * Respeta la relación obligatoria 1:1 entre Empleado y Usuario
      */
     @Bean
-    CommandLineRunner initDatabase(UsuarioRepository repository,
+    CommandLineRunner initDatabase(
+            EmpleadoRepository empleadoRepository,
+            UsuarioRepository usuarioRepository,
             PasswordEncoder passwordEncoder) {
+        
         return args -> {
-            // Verificar si ya existen usuarios
-            if (repository.count() == 0) {
-                // Crear usuario admin
-                Usuario admin = new Usuario();
-                admin.setUsername("admin");
-                admin.setPassword(passwordEncoder.encode("admin123"));
-                admin.setNombre("Administrador");
-                admin.setEmail("admin@sistema.com");
-                admin.setActivo(true);
-                repository.save(admin);
-
-                // Crear usuario de prueba
-                Usuario user = new Usuario();
-                user.setUsername("usuario");
-                user.setPassword(passwordEncoder.encode("usuario123"));
-                user.setNombre("Usuario de Prueba");
-                user.setEmail("usuario@sistema.com");
-                user.setActivo(true);
-                repository.save(user);
-
-                System.out.println("Usuarios de prueba creados:");
-                System.out.println("- admin / admin123");
-                System.out.println("- usuario / usuario123");
+            // Verificar si ya existen empleados
+            if (empleadoRepository.count() == 0) {
+                
+                System.out.println("========================================");
+                System.out.println("Creando empleados de prueba...");
+                System.out.println("========================================");
+                
+                // ============================================
+                // EMPLEADO 1: ADMINISTRADOR
+                // ============================================
+                Empleado empleadoAdmin = new Empleado();
+                empleadoAdmin.setNombre("Carlos");
+                empleadoAdmin.setApellido("Rodríguez");
+                empleadoAdmin.setDni("12345678");
+                empleadoAdmin.setEmail("carlos.rodriguez@argentafact.com");
+                empleadoAdmin.setTelefono("1123456789");
+                empleadoAdmin.setDepartamento("Administración");
+                empleadoAdmin.setCargo("Administrador de Sistemas");
+                empleadoAdmin.setFechaIngreso(LocalDate.of(2020, 1, 15));
+                
+                Usuario usuarioAdmin = new Usuario();
+                usuarioAdmin.setUsername("admin");
+                usuarioAdmin.setPassword(passwordEncoder.encode("admin123"));
+                usuarioAdmin.setEmail("admin@argentafact.com");
+                usuarioAdmin.setActivo(true);
+                
+                // Establecer relación bidireccional
+                empleadoAdmin.setUsuario(usuarioAdmin);
+                
+                // Guardar (CASCADE persiste el Usuario automáticamente)
+                empleadoRepository.save(empleadoAdmin);
+                
+              
+                
+                // ============================================
+                // RESUMEN
+                // ============================================
+                System.out.println("\n✅ Empleados de prueba creados exitosamente:");
+                System.out.println("----------------------------------------");
+                System.out.println("1. Admin:      admin / admin123");
+                System.out.println("   Empleado:   Carlos Rodríguez (DNI: 12345678)");
+                System.out.println("   Cargo:      Administrador de Sistemas");
+            
+                
+            } else {
+                System.out.println("⚠️  Base de datos ya contiene empleados. No se crean datos de prueba.");
             }
         };
     }
