@@ -43,9 +43,10 @@
 
         <div class="ms-auto d-flex align-items-center text-white">
             <i class="bi bi-person-circle fs-5 me-2"></i>
-            <span class="me-3">Empleado</span>
+            <span>Usuario: <strong th:text="${username}"></strong></span>
+            <span class="mx-2">|</span>
 
-            <form action="/logout" method="post">
+            <form th:action="@{/logout}" method="post">
                 <button type="submit" class="btn btn-outline-light btn-sm">
                     <i class="bi bi-box-arrow-right"></i> Salir
                 </button>
@@ -64,7 +65,7 @@
                             administración</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/servicioContratado/}"><i class="bi bi-speedometer2"></i>
+                        <a class="nav-link active" th:href="@{/servicioContratado/}"> <i class="bi bi-cart-plus"></i>
                             Contratar servicio</a>
                     </li>
 
@@ -95,11 +96,12 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/pagos/}"><i class="bi bi-currency-exchange"></i> Pagos</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-bar-chart"></i> Reportes</a>
-                    </li>
+                  
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/historico/}"><i class="bi bi-archive-fill"></i> Historico</a>
+                    </li>
+                      <li class="nav-item">
+                        <a class="nav-link" th:href="@{/register}"><i class="bi bi-person-plus"></i> usuarios</a>
                     </li>
                 </ul>
             </aside>
