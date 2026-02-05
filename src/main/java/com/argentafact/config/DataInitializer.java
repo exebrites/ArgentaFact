@@ -54,6 +54,7 @@ public class DataInitializer {
                 
                 // Establecer relación bidireccional
                 empleadoAdmin.setUsuario(usuarioAdmin);
+                usuarioAdmin.setEmpleado(empleadoAdmin);
                 
                 // Guardar (CASCADE persiste el Usuario automáticamente)
                 empleadoRepository.save(empleadoAdmin);
