@@ -32,5 +32,24 @@
                 </tr>
             </tbody>
         </table>
+
+
+         <!-- Botones de navegación -->
+        <div class="btn-group d-flex justify-content-center">
+            <a th:href="@{/servicioContratado/(pagina=0)}" class="btn btn-outline-secondary">Primera</a>
+
+            <a th:if="${paginaActual > 0}" th:href="@{/servicioContratado/(pagina=${paginaActual - 1})}"
+                class="btn btn-outline-primary">←</a>
+
+            <button class="btn btn-primary" disabled>
+                <span th:text="${paginaActual + 1}"></span>
+            </button>
+
+            <a th:if="${paginaActual < totalPaginas - 1}" th:href="@{/servicioContratado/(pagina=${paginaActual + 1})}"
+                class="btn btn-outline-primary">→</a>
+
+            <a th:href="@{/servicioContratado/(pagina=${totalPaginas - 1})}" class="btn btn-outline-secondary">Última</a>
+        </div>
+
     </section>
 </body>
