@@ -47,17 +47,19 @@
             <form th:action="@{/pagos/registrar}" method="post">
 
                 <!-- ID Factura -->
-                <select name="idFactura" class="form-select" required>
-                    <option value="" disabled selected>Seleccione una factura</option>
-    
-                    <option th:each="factura : ${facturasPendientes}"
-                        th:value="${factura.idFactura}"
-                        th:text="${factura.numeroFactura + ' - $' + factura.saldoPendiente}">
+                <select name="idFactura" class="form-select js-factura-select" required>
+                
+                    <option value="">Seleccione una factura</option>
+                
+                    <option th:each="factura : ${facturasPendientes}" th:value="${factura.idFactura}" th:text="${factura.cliente.nombre + ' ' + factura.cliente.apellido 
+                                      + ' — Factura ' + factura.numeroFactura 
+                                      + ' — $' + factura.saldoPendiente}">
                     </option>
-
+                
                     <option th:if="${#lists.isEmpty(facturasPendientes)}" disabled>
                         No hay facturas pendientes
                     </option>
+                
                 </select>
 
                 <div class="row g-3">
@@ -114,6 +116,15 @@
         </div>
     </div>
 
+    <script>
+        $(document).ready(function () {
+            $('.js-factura-select').select2({
+                width: '100%',
+                placeholder: 'Buscar por cliente, factura o monto',
+                allowClear: true
+            });
+        });
+    </script>
 </section>
 
 </body>
