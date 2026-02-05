@@ -1,7 +1,7 @@
 package com.argentafact.service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -66,7 +66,7 @@ public class PagoService {
         cuentaRepository.save(cuenta);
 
         HistoricoFiscal historico = new HistoricoFiscal(
-                LocalDate.now(),
+                LocalDateTime.now(),
                 empleado,
                 factura.getCliente(),
                 "REGISTRO_PAGO",
