@@ -3,6 +3,8 @@ package com.argentafact.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.argentafact.utils.DateFormatterUtil;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -97,6 +99,10 @@ public class ServicioContratado {
 
     public void setIdServicioContratado(Long idServicioContratado) {
         this.idServicioContratado = idServicioContratado;
+    }
+
+    public String getFechaAltaFormateada() {
+        return DateFormatterUtil.format(fechaAlta);
     }
 
     @Override
