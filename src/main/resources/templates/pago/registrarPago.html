@@ -90,9 +90,9 @@
                             <option value="" disabled selected>
                                 Seleccione un medio de pago
                             </option>
-                            <option th:each="tp : ${tiposPago}"
+                            <option th:each="tp : ${tiposPago}" 
                                     th:value="${tp}"
-                                    th:text="${tp}">
+                                    th:text="${tp.descripcion}">
                             </option>
                         </select>
                     </div>
