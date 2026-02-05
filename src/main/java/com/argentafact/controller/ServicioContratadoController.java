@@ -1,29 +1,22 @@
 package com.argentafact.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.argentafact.model.CondicionFiscal;
-import com.argentafact.model.DetalleDeFacturaFormulario;
-import com.argentafact.model.DetalleFactura;
 import com.argentafact.model.DetalleServicioContratado;
-import com.argentafact.model.EstadoFactura;
-import com.argentafact.model.Factura;
-import com.argentafact.model.FacturaSesion;
-import com.argentafact.model.Linea;
 import com.argentafact.model.LineaServicioContratado;
 import com.argentafact.model.ServicioContratado;
-import com.argentafact.model.TipoFactura;
 import com.argentafact.service.ClienteService;
 import com.argentafact.service.ServicioContratadoService;
 import com.argentafact.service.ServicioService;
 
-import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,9 +39,17 @@ public class ServicioContratadoController {
     }
 
     @GetMapping("/")
-    public String listarServiciosContratados(Model model) {
-        var serviciosContratados = servicioContratadoService.buscarTodos();
-        model.addAttribute("serviciosContratados", serviciosContratados);
+    public String listarServiciosContratados(
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "5") int tamano,
+            Model model) {
+
+        Page<ServicioContratado> paginaClientes = servicioContratadoService.buscarTodos(PageRequest.of(pagina, tamano));
+      
+        model.addAttribute("serviciosContratados", paginaClientes.getContent());
+        model.addAttribute("paginaActual", pagina);
+        model.addAttribute("totalPaginas", paginaClientes.getTotalPages());
+         
         return "servicioContratado/listar";
     }
 
