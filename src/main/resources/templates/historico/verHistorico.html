@@ -11,6 +11,11 @@
 
 <section layout:fragment="content">
     <h1>Detalle del Histórico Fiscal</h1>
+    <div class="mb-3">
+        <a th:href="@{/cuentas/}" class="btn btn-af-secondary btn-sm">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+        </div>
     <div class="card">
         <div class="card-body">
             <p>ID Histórico: <span th:text="${historico.idHistorico}"></span></p>
@@ -21,10 +26,6 @@
             <p>Tipo de Operación: <span th:text="${historico.tipoOperacion}"></span></p>
             <p>Descripción: <span th:text="${historico.descripcion}"></span></p>
             <p>Condición Fiscal: <span th:text="${historico.cliente.condicionFiscal}"></span></p>
-        </div>
-
-        <div class="card-footer">
-            <a th:href="@{/historico}" class="btn btn-primary">Volver</a>
         </div>
     </div>
 </section>

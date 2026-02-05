@@ -9,20 +9,45 @@
 <body>
 
     <section layout:fragment="content">
+
         <h1>Crear Cuenta</h1>
 
         <div class="mb-3">
-            <label class="form-label">Cliente</label>
+            <a th:href="@{/cuentas/}" class="btn btn-af-secondary btn-sm">
+                <i class="bi bi-arrow-left"></i> Volver
+            </a>
+        </div>
 
-            <select class="js-example-basic-single form-control" id="cliente" name="idCliente" required>
+        <div class="card">
+            <div class="card-body">
 
-                <option value="">Seleccione un cliente</option>
+                <form th:action="@{/cuentas/guardar}" method="post">
 
-                <option th:each="cliente : ${clientes}" th:value="${cliente.idCliente}"
-                    th:text="${cliente.idCliente + ' - ' + cliente.nombre + ' ' + cliente.apellido}">
-                </option>
+                    <div class="mb-3">
+                        <label class="form-label">Cliente</label>
 
-            </select>
+                        <select class="js-example-basic-single form-control" id="cliente" name="idCliente" required>
+
+                            <option value="">Seleccione un cliente</option>
+
+                            <option th:each="cliente : ${clientes}" th:value="${cliente.idCliente}"
+                                th:text="${cliente.idCliente + ' - ' + cliente.nombre + ' ' + cliente.apellido}">
+                            </option>
+
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-success mt-3">
+                        Crear cuenta
+                    </button>
+
+                    <a th:href="@{/cuentas/}" class="btn btn-secondary mt-3">
+                        Cancelar
+                    </a>
+
+                </form>
+
+            </div>
         </div>
 
         <script>
@@ -30,8 +55,9 @@
                 $('.js-example-basic-single').select2();
             });
         </script>
-        </div>
+
     </section>
+
 
 </body>
 

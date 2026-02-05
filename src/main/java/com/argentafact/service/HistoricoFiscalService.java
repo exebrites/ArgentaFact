@@ -1,6 +1,6 @@
 package com.argentafact.service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class HistoricoFiscalService {
         Cliente cliente = clienteService.buscarPorId(idCliente);
 
         HistoricoFiscal historico = new HistoricoFiscal(
-                LocalDate.now(),
+                LocalDateTime.now(),
                 empleado,
                 cliente,
                 tipoOperacion,

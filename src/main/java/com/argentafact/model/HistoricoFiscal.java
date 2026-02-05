@@ -1,6 +1,6 @@
 package com.argentafact.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 
@@ -13,7 +13,7 @@ public class HistoricoFiscal {
     private Long idHistorico;
 
     @Column(nullable = false)
-    private LocalDate fechaOperacion;
+    private LocalDateTime fechaOperacion;
 
     @ManyToOne
     @JoinColumn(name = "idEmpleado")
@@ -31,7 +31,7 @@ public class HistoricoFiscal {
 
     protected HistoricoFiscal() {}
 
-    public HistoricoFiscal(LocalDate fechaOperacion,
+    public HistoricoFiscal(LocalDateTime fechaOperacion,
                            Empleado empleado,
                            Cliente cliente,
                            String tipoOperacion,
@@ -48,7 +48,7 @@ public class HistoricoFiscal {
         return idHistorico;
     }
 
-    public LocalDate getFechaOperacion() {
+    public LocalDateTime getFechaOperacion() {
         return fechaOperacion;
     }
 
