@@ -116,7 +116,7 @@ public class FacturaService {
         return facturaActuales;
     }
 
-    public void generarFacturasMasivas(List<ServicioContratado> serviciosAFacturar, List<Empleado> empleados) {
+    public void generarFacturasMasivas(List<ServicioContratado> serviciosAFacturar, Empleado empleado) {
         
         // obtener los clientes únicos de los servicios a facturar
         List<Cliente> clientes = new ArrayList<>();
@@ -131,7 +131,7 @@ public class FacturaService {
             // crear factura
             Factura factura = new Factura();
             factura.setCliente(cliente);
-            factura.setEmpleado(empleados.get(0));
+            factura.setEmpleado(empleado);
             String nroFactura = this.generarNumeroFactura();
             factura.setNumeroFactura(nroFactura);
             factura.setEstado(EstadoFactura.PENDIENTE);

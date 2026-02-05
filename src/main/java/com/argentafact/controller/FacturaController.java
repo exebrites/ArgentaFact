@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +19,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.argentafact.model.CondicionFiscal;
 import com.argentafact.model.DetalleDeFacturaFormulario;
 import com.argentafact.model.DetalleFactura;
+import com.argentafact.model.Empleado;
 import com.argentafact.model.EstadoFactura;
 import com.argentafact.model.Factura;
 import com.argentafact.model.FacturaSesion;
 import com.argentafact.model.Linea;
 
 import com.argentafact.model.TipoFactura;
+import com.argentafact.model.Usuario;
+import com.argentafact.repository.UsuarioRepository;
 import com.argentafact.service.ClienteService;
 import com.argentafact.service.EmpleadoService;
 import com.argentafact.service.FacturaService;
@@ -49,7 +55,8 @@ public class FacturaController {
     private ServicioService servicioService;
     @Autowired
     private ServicioContratadoService servicioContratadoService;
-
+    @Autowired
+    private UsuarioRepository usuarioRepository;
     @ModelAttribute("detalleFactura")
     public DetalleDeFacturaFormulario setUpDetalleFacturaFormulario() {
         return new DetalleDeFacturaFormulario();
@@ -97,8 +104,19 @@ public class FacturaController {
     public String agregarFactura(@ModelAttribute("detalleFactura") DetalleDeFacturaFormulario detalleFactura,
             @ModelAttribute("factura") Factura factura, Model model,
             @ModelAttribute("facturaSesion") FacturaSesion facturaSesion, RedirectAttributes redirectAttributes) {
-        // TODO : obtener empleado autenticado
-        factura.setEmpleado(empleadoService.buscarTodos().get(0));
+        //  obtener empleado autenticado
+
+
+       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        // 2. Buscar el usuario en la BD
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+        // 3. Obtener el empleado relacionado
+        Empleado empleado = usuario.getEmpleado();
+        factura.setEmpleado(empleado);
         String nroFactura = facturaService.generarNumeroFactura();
         factura.setNumeroFactura(nroFactura);
         factura.setTotal(detalleFactura.getTotal());
@@ -230,7 +248,18 @@ public class FacturaController {
         var servicioContratado = servicioContratadoService.findByIdServicioContratado(servicioContratado_id);
         // facturar
         var factura = new Factura();
-        factura.setEmpleado(empleadoService.buscarTodos().get(0));
+        //   obtener empleado autenticado
+        // 1. Obtener el username del usuario autenticado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        // 2. Buscar el usuario en la BD
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+        // 3. Obtener el empleado relacionado
+        Empleado empleado = usuario.getEmpleado();
+        factura.setEmpleado(empleado);
         String nroFactura = facturaService.generarNumeroFactura();
         factura.setNumeroFactura(nroFactura);
         factura.setTotal(servicioContratado.getPrecioAcordado());
