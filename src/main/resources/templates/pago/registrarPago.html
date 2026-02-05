@@ -12,11 +12,11 @@
 <section layout:fragment="content">
 
     <!-- Título -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0">
+        <h2 class="mb-3">
             <i class="bi bi-currency-exchange"></i> Registrar Pago
         </h2>
-        <a th:href="@{/pagos/}" class="btn btn-outline-secondary">
+    <div class="mb-3">
+        <a th:href="@{/clientes/}" class="btn btn-af-secondary btn-sm">
             <i class="bi bi-arrow-left"></i> Volver
         </a>
     </div>
@@ -90,9 +90,9 @@
                             <option value="" disabled selected>
                                 Seleccione un medio de pago
                             </option>
-                            <option th:each="tp : ${tiposPago}"
+                            <option th:each="tp : ${tiposPago}" 
                                     th:value="${tp}"
-                                    th:text="${tp}">
+                                    th:text="${tp.descripcion}">
                             </option>
                         </select>
                     </div>
@@ -101,12 +101,12 @@
 
                 <!-- Botones -->
                 <div class="mt-4 d-flex justify-content-end gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        Registrar Pago
+                    </button>
                     <a th:href="@{/pagos/}" class="btn btn-secondary">
                         Cancelar
                     </a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-check-circle"></i> Registrar Pago
-                    </button>
                 </div>
 
             </form>

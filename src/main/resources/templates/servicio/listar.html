@@ -40,8 +40,8 @@
                     <thead class="table-light">
                         <tr>
                             <th>Nombre</th>
+                            <th>Descripcion</th>
                             <th>Precio</th>
-                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -51,8 +51,8 @@
                     <tbody>
                         <tr th:each="servicio : ${servicios}">
                             <td th:text="${servicio.nombreServicio}"></td>
+                            <td th:text="${servicio.descripcion}"></td>
                             <td th:text="${servicio.precio}"></td>
-
                             <td></td>
                             <td></td>
                             <td></td>
@@ -67,7 +67,7 @@
                     </tbody>
                 </table>
             </div>
-            <!-- Botones de navegación -->
+
             <!-- Botones de navegación -->
             <div class="btn-group d-flex justify-content-center">
                 <a th:href="@{/facturas/(pagina=0)}" class="btn btn-outline-secondary">Primera</a>
