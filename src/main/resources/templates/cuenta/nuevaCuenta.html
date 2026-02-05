@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/base}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
 
 <head>
     <title>Nueva Cuenta</title>
@@ -9,35 +8,31 @@
 
 <body>
 
-<section layout:fragment="content">
-    <h1>Crear Cuenta</h1>
+    <section layout:fragment="content">
+        <h1>Crear Cuenta</h1>
 
-    <div class="card">
-        <div class="card-body">
-            <form th:action="@{/cuentas/guardar}" method="post">
+        <div class="mb-3">
+            <label class="form-label">Cliente</label>
 
-                <div class="mb-3">
-                    <label class="form-label">Cliente</label>
-                    <select name="idCliente" class="form-select" required>
-                        <option value="">Seleccione un cliente</option>
-                        <option th:each="cliente : ${clientes}"
-                                th:value="${cliente.idCliente}"
-                                th:text="${cliente.nombre + ' ' + cliente.apellido}">
-                        </option>
-                    </select>
-                </div>
+            <select class="js-example-basic-single form-control" id="cliente" name="idCliente" required>
 
-                <button type="submit" class="btn btn-success">
-                    Crear cuenta
-                </button>
+                <option value="">Seleccione un cliente</option>
 
-                <a th:href="@{/cuentas/}" class="btn btn-secondary">
-                    Cancelar
-                </a>
-            </form>
+                <option th:each="cliente : ${clientes}" th:value="${cliente.idCliente}"
+                    th:text="${cliente.idCliente + ' - ' + cliente.nombre + ' ' + cliente.apellido}">
+                </option>
+
+            </select>
         </div>
-    </div>
-</section>
+
+        <script>
+            $(document).ready(function () {
+                $('.js-example-basic-single').select2();
+            });
+        </script>
+        </div>
+    </section>
 
 </body>
+
 </html>
