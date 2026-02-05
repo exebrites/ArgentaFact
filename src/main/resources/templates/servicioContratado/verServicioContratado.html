@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
+
+<head>
+    <title>Ver Servicio Contratado</title>
+</head>
+
+<body>
+    <section layout:fragment="content" class="p-4">
+        <h2 class="mb-4">Ver Servicio Contratado</h2>
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <a th:href="@{/servicioContratado/}" class="btn btn-af-secondary btn-sm">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
+            </div>
+            <div class="card-body">
+                <h5>Detalles del Servicio Contratado</h5>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>ID Servicio Contratado</th>
+                        <td th:text="${servicioContratado.getIdServicioContratado()}"></td>
+                    </tr>
+                    <tr>
+                        <th>Cliente</th>
+                        <td th:text="${servicioContratado.getCliente().getNombre()}"></td>
+                    </tr>
+                    <tr>
+                        <th>Servicio</th>
+                        <td th:text="${servicioContratado.getServicio().getNombreServicio()}"></td>
+                    </tr>
+                    <tr>
+                        <th>Precio Acordado</th>
+                        <td th:text="${servicioContratado.getPrecioAcordado()}"></td>
+                    </tr>
+                    <!-- Agrega más campos según sea necesario -->
+                </table>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

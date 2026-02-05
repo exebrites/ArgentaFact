@@ -20,6 +20,7 @@ import com.argentafact.service.ServicioService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -138,4 +139,12 @@ public class ServicioContratadoController {
     // return "redirect:/facturas/crear";
     // }
 
+
+    @GetMapping("/{id}/verServicioContratado")
+    public String verServicioContratado(@PathVariable Long id, Model model) {
+        var servicioContratado = servicioContratadoService.findById(id);
+        model.addAttribute("servicioContratado", servicioContratado);
+        return "servicioContratado/verServicioContratado";
+    }
+    
 }
