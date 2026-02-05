@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +23,8 @@ import com.argentafact.model.EstadoServicioContratado;
 import com.argentafact.model.Factura;
 import com.argentafact.model.ServicioContratado;
 import com.argentafact.model.TipoFactura;
+import com.argentafact.model.Usuario;
+import com.argentafact.repository.UsuarioRepository;
 import com.argentafact.service.ClienteService;
 import com.argentafact.service.EmpleadoService;
 import com.argentafact.service.FacturaService;
@@ -39,6 +44,8 @@ public class FacturacionMasivaController {
     private ServicioService servicioService;
     @Autowired
     private EmpleadoService empleadoService;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @GetMapping("/")
     public String facturarMasivo() {
@@ -56,9 +63,20 @@ public class FacturacionMasivaController {
                 serviciosActuales,
                 facturasDelMes);
         // generar facturas masivas
-        List<Empleado> empleados = empleadoService.buscarTodos();
-        facturaService.generarFacturasMasivas(serviciosAFacturar, empleados);
-        
+        // obtener el empleado autenticado y asignarlo a la factura
+
+        // 1. Obtener el username del usuario autenticado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        // 2. Buscar el usuario en la BD
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+        // 3. Obtener el empleado relacionado
+        Empleado empleado = usuario.getEmpleado();
+
+        facturaService.generarFacturasMasivas(serviciosAFacturar, empleado);
 
         return "redirect:/facturas/";
     }
