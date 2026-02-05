@@ -9,32 +9,38 @@
 <body>
     <section layout:fragment="content" class="p-4">
         <h2 class="mb-4">Contratar servicio</h2>
-        <a th:href="@{/servicioContratado/crear}" class="btn btn-primary">Crear contrato</a>
+        <div class="card shadow-sm">
+            <div class="card-header bg-white ">
 
-        <table class="table table-striped mt-3">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Cliente</th>
-                    <th>Servicio</th>
-                    <th>Precio</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="servicioContratado : ${serviciosContratados}">
-                    <td th:text="${servicioContratado.getIdServicioContratado()}"></td>
-                    <th th:text="${servicioContratado.getCliente().getNombre()}"></th>
-                    <th th:text="${servicioContratado.getServicio().getNombreServicio()}"></th>
-                    <td th:text="${servicioContratado.getPrecioAcordado()}"></td>
-                    <td>Ver</td>
+                <a th:href="@{/servicioContratado/crear}" class="btn btn-primary">Crear contrato</a>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Cliente</th>
+                            <th>Servicio</th>
+                            <th>Precio</th>
+                            <th colspan="3" class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="servicioContratado : ${serviciosContratados}">
+                            <td th:text="${servicioContratado.getIdServicioContratado()}"></td>
+                            <th th:text="${servicioContratado.getCliente().getNombre()}"></th>
+                            <th th:text="${servicioContratado.getServicio().getNombreServicio()}"></th>
+                            <td th:text="${servicioContratado.getPrecioAcordado()}"></td>
+                            <td><a th:href="@{/servicioContratado/{id}/verServicioContratado(id=${servicioContratado.getIdServicioContratado()})}" class="btn btn-sm btn-primary">Ver</a>
+                                <a href="#" class="btn btn-sm btn-danger">Cancelar Servicio</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                </tr>
-            </tbody>
-        </table>
-
-
-         <!-- Botones de navegación -->
+        <!-- Botones de navegación -->
         <div class="btn-group d-flex justify-content-center">
             <a th:href="@{/servicioContratado/(pagina=0)}" class="btn btn-outline-secondary">Primera</a>
 
@@ -48,7 +54,8 @@
             <a th:if="${paginaActual < totalPaginas - 1}" th:href="@{/servicioContratado/(pagina=${paginaActual + 1})}"
                 class="btn btn-outline-primary">→</a>
 
-            <a th:href="@{/servicioContratado/(pagina=${totalPaginas - 1})}" class="btn btn-outline-secondary">Última</a>
+            <a th:href="@{/servicioContratado/(pagina=${totalPaginas - 1})}"
+                class="btn btn-outline-secondary">Última</a>
         </div>
 
     </section>

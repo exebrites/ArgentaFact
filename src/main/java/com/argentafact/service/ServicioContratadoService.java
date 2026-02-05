@@ -94,4 +94,8 @@ public class ServicioContratadoService {
     public Page<ServicioContratado> buscarTodos(PageRequest of) {
         return this.servicioContratadoRepository.findAll(of);
     }
+
+    public ServicioContratado findById(Long id) {
+        return this.servicioContratadoRepository.findByIdServicioContratado(id);
+    }
 }
