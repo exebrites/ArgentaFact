@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
+<head>
+    <title>Cancelar Servicio Contratado</title>
+</head>
+
+ 
+  <body>
+    <section layout:fragment="content">
+        <div class="card">
+            <div class="card-header">
+                <a th:href="@{/servicioContratado/}" class="btn btn-af-secondary btn-sm">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
+            </div>
+            <div class="card-body">
+                <h1>Cancelar Servicio Contratado</h1>
+                <div class="alert alert-danger">
+                    <p>¿Estás seguro de que deseas cancelar el servicio contratado <span th:text="${servicioContratado.servicio.nombreServicio}"> </span>?</p>
+                    <form th:action="@{/servicioContratado/{id}/cancelarServicioContratado(id=${servicioContratado.idServicioContratado})}" th:method="post">
+                        <button type="submit" class="btn btn-danger">Sí, cancelar servicio</button>
+                    </form>
+                    <br>
+                    <a th:href="@{/servicioContratado/}" class="btn btn-primary">Cancelar</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</body>
+ 
+</html>

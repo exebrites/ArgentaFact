@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.argentafact.model.DetalleServicioContratado;
+import com.argentafact.model.EstadoServicioContratado;
 import com.argentafact.model.LineaServicioContratado;
 import com.argentafact.model.ServicioContratado;
 import com.argentafact.service.ClienteService;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+ 
+
 
 @Controller
 @RequestMapping("/servicioContratado")
@@ -146,5 +149,20 @@ public class ServicioContratadoController {
         model.addAttribute("servicioContratado", servicioContratado);
         return "servicioContratado/verServicioContratado";
     }
+
+    @GetMapping("/{id}/cancelarServicioContratado")
+    public String cancelarServicioContratado(@PathVariable Long id, Model model) {
+        var servicioContratado = servicioContratadoService.findById(id);
+        model.addAttribute("servicioContratado", servicioContratado);
+        return "servicioContratado/cancelarServicioContratado";
+    }
+    @PostMapping("/{id}/cancelarServicioContratado")
+    public String postMethodName(@PathVariable Long id, Model model) {
+        var servicioContratado = servicioContratadoService.findById(id);
+        servicioContratado.setEstado(EstadoServicioContratado.CANCELADO);
+        servicioContratadoService.guardar(servicioContratado);
+        return "redirect:/servicioContratado/";
+    }
+    
     
 }
