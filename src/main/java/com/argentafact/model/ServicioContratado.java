@@ -42,7 +42,7 @@ public class ServicioContratado {
         this.servicio = servicio;
         this.fechaAlta = LocalDate.now();
         this.estado = EstadoServicioContratado.ACTIVO;
-        this.precioAcordado = servicio.getPrecio();
+        this.precioAcordado = servicio.getPrecioConIva();
     }
 
     public Cliente getCliente() {

@@ -89,9 +89,6 @@ public class ServicioContratadoController {
     }
 
     @GetMapping("/detalleServicioContratado")
-    // public String verDetalleProducto(@ModelAttribute("detalle")
-    // DetalleDeFacturaFormulario detalle, Model model) {
-
     public String verServicioPorContratar(Model model) {
         var servicios = servicioService.buscarTodos();
         model.addAttribute("servicios", servicios);
@@ -105,7 +102,7 @@ public class ServicioContratadoController {
         var servicio = servicioService.findById(idServicio);
         var linea = new LineaServicioContratado();
         linea.setNombre(servicio.getNombreServicio());
-        linea.setPrecio(servicio.getPrecio());
+        linea.setPrecio(servicio.getPrecioConIva());
         linea.setDescripcion(servicio.getDescripcion());
         linea.setIdServicio(servicio.getIdServicio());
 
@@ -119,17 +116,7 @@ public class ServicioContratadoController {
 
         return "redirect:/servicioContratado/crear";
     }
-
-    // @GetMapping("/limpiarDetalle")
-    // public String eliminarLinea(
-    // @ModelAttribute("detalle") DetalleServicioContratado detalle,
-    // HttpSession session) {
-
-    // detalle.limpiar();
-
-    // return "redirect:/servicios/crear";
-    // }
-    // // eliminar un servicio de detalle de factura
+ 
 
     @GetMapping("/eliminarDetalle/{idServicio}")
     public String eliminarDetalleFactura(@PathVariable Long idServicio,
