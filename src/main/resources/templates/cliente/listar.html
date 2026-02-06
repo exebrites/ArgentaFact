@@ -37,11 +37,12 @@
                             <td th:text="${cliente.condicionFiscal.descripcion}"></td>
                             <td><a th:href="@{/clientes/{id}(id=${cliente.idCliente})}"
                                     class="btn btn-af-view btn-sm">Ver</a>
+
+                                <a th:href="@{/clientes/{id}/editar(id=${cliente.idCliente})}"
+                                    class="btn btn-af-edit btn-sm">Editar</a>
+                                <a th:href="@{/clientes/{id}/eliminar(id=${cliente.idCliente})}"
+                                    class="btn btn-af-delete btn-sm">Eliminar</a>
                             </td>
-                            <td><a th:href="@{/clientes/{id}/editar(id=${cliente.idCliente})}"
-                                    class="btn btn-af-edit btn-sm">Editar</a></td>
-                            <td><a th:href="@{/clientes/{id}/eliminar(id=${cliente.idCliente})}"
-                                    class="btn btn-af-delete btn-sm">Eliminar</a></td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(clientes)}">
                             <td colspan="7" class="text-center text-muted">
