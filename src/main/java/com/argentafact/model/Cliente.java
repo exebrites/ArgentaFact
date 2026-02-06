@@ -33,7 +33,7 @@ public class Cliente {
     private CondicionFiscal condicionFiscal;
 
     @Column(nullable = true)
-    private String localidad;
+    private Departamento localidad;
 
     public Cliente() {
     }
@@ -106,11 +106,11 @@ public class Cliente {
         this.condicionFiscal = condicionFiscal;
     }
 
-    public String getLocalidad() {
+    public Departamento getLocalidad() {
         return localidad;
     }
 
-    public void setLocalidad(String localidad) {
+    public void setLocalidad(Departamento localidad) {
         this.localidad = localidad;
     }
 
