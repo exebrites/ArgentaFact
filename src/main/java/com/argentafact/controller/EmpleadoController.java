@@ -1,6 +1,8 @@
 package com.argentafact.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,10 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.argentafact.model.DetalleDeFacturaFormulario;
 import com.argentafact.model.Empleado;
 import com.argentafact.model.Usuario;
 import com.argentafact.repository.EmpleadoRepository;
@@ -50,9 +52,18 @@ public class EmpleadoController {
      */
     @GetMapping("/")
 
-    public String listar(Model model) {
-        var empleados = empleadoService.buscarTodos();
-        model.addAttribute("empleados", empleados);
+    public String listar(
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "5") int tamano,
+            Model model) {
+
+        Page<Empleado> paginaEmpleados = empleadoService.buscarTodos(
+                PageRequest.of(pagina, tamano));
+
+        // Solo lo esencial al modelo
+        model.addAttribute("empleados", paginaEmpleados.getContent());
+        model.addAttribute("paginaActual", pagina);
+        model.addAttribute("totalPaginas", paginaEmpleados.getTotalPages());
         return "empleado/listar";
     }
 
@@ -116,28 +127,28 @@ public class EmpleadoController {
             // empleadoService.registrarEmpleadoConUsuario(usuario.getEmpleado(), usuario);
             // 1. Validaciones de negocio - Empleado
             if (empleadoRepository.existsByDni(empleado.getDni())) {
-            throw new IllegalArgumentException("Ya existe un empleado con el DNI: " +
-            empleado.getDni());
+                throw new IllegalArgumentException("Ya existe un empleado con el DNI: " +
+                        empleado.getDni());
             }
 
             if (empleadoRepository.existsByEmail(empleado.getEmail())) {
-            throw new IllegalArgumentException("Ya existe un empleado con el email: " +
-            empleado.getEmail());
+                throw new IllegalArgumentException("Ya existe un empleado con el email: " +
+                        empleado.getEmail());
             }
 
             // 2. Validaciones de negocio - Usuario
             if (usuarioRepository.existsByUsername(usuario.getUsername())) {
-            throw new IllegalArgumentException("El username '" + usuario.getUsername() +
-            "' ya está en uso");
+                throw new IllegalArgumentException("El username '" + usuario.getUsername() +
+                        "' ya está en uso");
             }
 
             if (usuarioRepository.existsByEmail(usuario.getEmail())) {
-            throw new IllegalArgumentException("El email de usuario ya está registrado");
+                throw new IllegalArgumentException("El email de usuario ya está registrado");
             }
 
             // 3. Validar confirmación de contraseña
             if (!usuario.getPassword().equals(usuario.getConfirmarPassword())) {
-            throw new IllegalArgumentException("Las contraseñas no coinciden");
+                throw new IllegalArgumentException("Las contraseñas no coinciden");
             }
 
             // 4. Encriptar contraseña
