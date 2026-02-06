@@ -71,4 +71,12 @@ public class Pago {
     public TipoPago getTipoPago() {
         return tipoPago;
     }
+
+    @Override
+    public String toString() {
+        return "Pago [idPago=" + idPago + ", fecha=" + fecha + ", monto=" + monto + ", tipoPago=" + tipoPago
+                + ", estadoPago=" + estadoPago + ", factura=" + factura + ", empleado=" + empleado + "]";
+    }
+
+    
 }

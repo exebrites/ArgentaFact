@@ -110,6 +110,7 @@ public class FacturaService {
     }
 
     public List<Factura> obtenerFacturasPorCliente(Long idCliente) {
+
         return facturaRespository.findByClienteIdClienteAndBajaFalse(idCliente);
     }
 
@@ -126,6 +127,8 @@ public class FacturaService {
     }
 
     public void generarFacturasMasivas(List<ServicioContratado> serviciosAFacturar, Empleado empleado) {
+
+        // obtener los clientes únicos de los servicios a facturar
         List<Cliente> clientes = new ArrayList<>();
         for (ServicioContratado servicioContratado : serviciosAFacturar) {
             if (!clientes.contains(servicioContratado.getCliente())) {
@@ -162,5 +165,29 @@ public class FacturaService {
             factura.setTotal(totalServicos);
             this.guardarFactura(factura);
         }
+
     }
+
+    public int obtenerTotalFacturasImpagas() {
+        var facturasImpagas = this.obtenerFacturasDelMesActual();
+        int totalFacturasImpagas = 0;
+        for (Factura factura : facturasImpagas) {
+            if (factura.getEstado() == EstadoFactura.PENDIENTE) {
+                totalFacturasImpagas++;
+            }
+        }
+        return totalFacturasImpagas;
+    }
+
+    public List<Factura> obtenerUltimaFacturasPagas() {
+        var facturasMes = this.obtenerFacturasDelMesActual();
+        List<Factura> facturasPagasMes = new ArrayList<>();
+        for (Factura factura : facturasMes) {
+            if (factura.getEstado() != EstadoFactura.PENDIENTE && factura.getEstado() != EstadoFactura.ANULADA) {
+                facturasPagasMes.add(factura);
+            }
+        }
+        return facturasPagasMes;
+    }
+
 }

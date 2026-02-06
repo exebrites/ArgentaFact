@@ -1,5 +1,11 @@
 package com.argentafact.controller;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -7,8 +13,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.argentafact.model.EstadoFactura;
+import com.argentafact.model.Factura;
+import com.argentafact.model.Pago;
+import com.argentafact.repository.PagoRepository;
+import com.argentafact.service.FacturaService;
+import com.argentafact.service.PagoService;
+
 @Controller
 public class AuthController {
+
+    @Autowired
+    private FacturaService facturaService;
+    @Autowired
+    private PagoService pagoService;
+    @Autowired
+    private PagoRepository pagoRepository;
 
     /**
      * Página de login
@@ -45,6 +65,18 @@ public class AuthController {
     public String home(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("username", auth.getName());
+        // obtener el numero de facturas del mes
+        var facturas = facturaService.obtenerFacturasDelMesActual();
+        model.addAttribute("facturasDelMes", facturas.size());
+        // obtener el numero total de pagos del mes
+        var totalPagosMes = pagoService.obtenerTotalPagosDelMesActual();
+        model.addAttribute("totalPagosMes", totalPagosMes);
+        // obtener el numero total de facturas impagas
+        var totalFacturasImpagas = facturaService.obtenerTotalFacturasImpagas();
+        model.addAttribute("totalFacturasImpagas", totalFacturasImpagas);
+        // TODO obtener ultimas 5 facturas pagas del mes
+        var ultimasFacturasPagas = facturaService.obtenerUltimaFacturasPagas();
+        model.addAttribute("ultimasFacturasPagas", ultimasFacturasPagas);
         return "dashboard";
     }
 

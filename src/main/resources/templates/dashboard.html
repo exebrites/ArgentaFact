@@ -17,7 +17,7 @@
 
 
             <!-- MAIN CONTENT -->
-            <section  layout:fragment="content">
+            <section layout:fragment="content">
 
                 <h2 class="mb-4">Panel de administración</h2>
 
@@ -27,17 +27,8 @@
                     <div class="col-md-3">
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <h6 class="text-muted">Clientes</h6>
-                                <h3 class="fw-bold">128</h3>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
                                 <h6 class="text-muted">Facturas del mes</h6>
-                                <h3 class="fw-bold">56</h3>
+                                <h3 class="fw-bold" th:text="${facturasDelMes}">56</h3>
                             </div>
                         </div>
                     </div>
@@ -46,7 +37,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h6 class="text-muted">Pagos recibidos</h6>
-                                <h3 class="fw-bold">$ 1.250.000</h3>
+                                <h3 class="fw-bold" th:text="${totalPagosMes}">$ 1.250.000</h3>
                             </div>
                         </div>
                     </div>
@@ -55,7 +46,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h6 class="text-muted">Facturas impagas</h6>
-                                <h3 class="fw-bold text-danger">12</h3>
+                                <h3 class="fw-bold text-danger" th:text="${totalFacturasImpagas}">12</h3>
                             </div>
                         </div>
                     </div>
@@ -78,20 +69,13 @@
                                     <th>Estado</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody th:each="factura : ${ultimasFacturasPagas}">
                                 <tr>
-                                    <td>00125</td>
-                                    <td>Empresa ABC</td>
-                                    <td>20/01/2026</td>
-                                    <td>$ 250.000</td>
-                                    <td><span class="badge bg-success">Pagada</span></td>
-                                </tr>
-                                <tr>
-                                    <td>00126</td>
-                                    <td>Juan Pérez</td>
-                                    <td>21/01/2026</td>
-                                    <td>$ 85.000</td>
-                                    <td><span class="badge bg-warning text-dark">Pendiente</span></td>
+                                    <td th:text="${factura.numeroFactura}">00125</td>
+                                    <td th:text="${factura.cliente.nombre + ' ' + factura.cliente.apellido}">Empresa ABC</td>
+                                    <td th:text="${factura.getFechaFormateada()}">20/01/2026</td>
+                                    <td th:text="${factura.total}">$ 250.000</td>
+                                    <td><span class="badge bg-success" th:text="${factura.estado}">Pagada</span></td>
                                 </tr>
                             </tbody>
                         </table>
