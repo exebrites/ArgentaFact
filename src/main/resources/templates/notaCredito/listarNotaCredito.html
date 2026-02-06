@@ -24,20 +24,24 @@
                             <th colspan="4" class="text-center">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody th:each="notaCredito : ${listaNotaCredito}">
-                        <tr>
+                    <tbody>
+                        <tr th:each="notaCredito : ${listaNotaCredito}">
                             <td th:text="${notaCredito.getFechaFormateada()}"></td>
                             <td th:text="${notaCredito.monto}"></td>
                             <td th:text="${notaCredito.motivo}"></td>
-                            <td><a class="btn btn-af-view btn-sm">Ver</a></td>
+                            <td><a class="btn btn-af-view btn-sm">Ver</a>
                             <td>
                                 <a class="btn btn-warning btn-sm">Editar</a>
-                            </td>
-                            <td>
+
                                 <a class="btn btn-danger btn-sm">Eliminar</a>
-                            </td>
-                            <td><a th:href="@{/generar/notaCredito/{id}(id=${notaCredito.idNotaCredito})}"
+
+                                <a th:href="@{/generar/notaCredito/{id}(id=${notaCredito.idNotaCredito})}"
                                     class="btn btn-af-view btn-sm"> <i class="bi bi-file-earmark-pdf-fill"></i></a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(listaNotaCredito)}">
+                            <td colspan="5" class="text-center text-muted">
+                                No hay registros de notas de credito
                             </td>
                         </tr>
                     </tbody>

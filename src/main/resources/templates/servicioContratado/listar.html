@@ -39,6 +39,11 @@
                                     class="btn btn-sm btn-danger">Cancelar Servicio</a>
                             </td>
                         </tr>
+                        <tr th:if="${#lists.isEmpty(serviciosContratados)}">
+                            <td colspan="7" class="text-center text-muted">
+                                No hay registro de servicios contratados
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
