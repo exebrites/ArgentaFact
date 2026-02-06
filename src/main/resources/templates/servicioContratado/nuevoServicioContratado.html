@@ -50,7 +50,7 @@
                                 <td><span th:text="${servicio.getNombre()}">Nombre de ejemplo</span></td>
                                 <td><span th:text="${servicio.getDescripcion()}">Nombre de ejemplo</span></td>
                                 <td><span th:text="${servicio.getPrecio()}">Nombre de ejemplo</span></td>
-                                <td><a th:href="@{/facturas/eliminarDetalle/{idServicio}(idServicio=${servicio.getIdServicio()})}"
+                                <td><a th:href="@{/servicioContratado/eliminarDetalle/{idServicio}(idServicio=${servicio.getIdServicio()})}"
                                         class="btn btn-af-delete btn-sm">Eliminar</a>
                                 </td>
                             </tr>
