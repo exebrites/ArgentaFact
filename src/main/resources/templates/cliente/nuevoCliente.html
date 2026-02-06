@@ -35,7 +35,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="cuit" class="form-label">(*) CUIT</label>
+                        <label for="cuit" class="form-label">(*) CUIT/DNI</label>
                         <input type="text" class="form-control" id="cuit" name="cuit" th:field="*{cuit}"
                             placeholder="Ingrese su CUIT" required/>
                         <div th:if="${#fields.hasErrors('cuit')}" th:class="invalid-feedback">

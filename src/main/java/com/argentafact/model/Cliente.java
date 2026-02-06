@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.persistence.GenerationType;
 
 @Entity
@@ -14,15 +15,24 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCliente;
     
+    @Column(nullable = false)
+    @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
     private String apellido;
+
+    @Column(nullable = false)
+    @NotBlank(message = "El CUIT/DNI es obligatorio")
     private String cuit;
+
     @Column(nullable = true)
     private String direccion;
     @Column(nullable = true)
     private String telefono;
 
+    @Column(nullable = false)
+    @NotBlank(message = "La condición fiscal es obligatorio")
     private CondicionFiscal condicionFiscal;
+    
     @Column(nullable = true)
     private String localidad;
 
