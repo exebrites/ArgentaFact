@@ -28,8 +28,8 @@
                             <th colspan="3" class="text-center">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody th:each="cliente : ${clientes}">
-                        <tr>
+                    <tbody>
+                        <tr th:each="cliente : ${clientes}">
 
                             <td th:text="${cliente.nombre}"></td>
                             <td th:text="${cliente.apellido}"></td>
@@ -42,6 +42,11 @@
                                     class="btn btn-af-edit btn-sm">Editar</a></td>
                             <td><a th:href="@{/clientes/{id}/eliminar(id=${cliente.idCliente})}"
                                     class="btn btn-af-delete btn-sm">Eliminar</a></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(clientes)}">
+                            <td colspan="7" class="text-center text-muted">
+                                No hay clientes registrados
+                            </td>
                         </tr>
                     </tbody>
                 </table>

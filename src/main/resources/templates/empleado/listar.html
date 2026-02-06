@@ -40,6 +40,11 @@
                                 <a class="btn btn-danger btn-sm">Eliminar</a>
                             </td>
                         </tr>
+                        <tr th:if="${#lists.isEmpty(empleados)}">
+                            <td colspan="7" class="text-center text-muted">
+                                No hay empleados registrados
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
