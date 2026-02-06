@@ -15,10 +15,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import com.argentafact.model.Cliente;
 import com.argentafact.model.Servicio;
 import com.argentafact.service.ServicioService;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 @RequestMapping("/servicios/")
@@ -88,5 +92,20 @@ public class ServicioController {
         model.addAttribute("servicio", servicio);
         return "servicio/verServicio";
     }
+
+    @GetMapping("{id}/editar")
+    public String editarServicio(@PathVariable("id") Long id, Model model) {
+        var servicio = servicioService.findById(id);
+        model.addAttribute("servicio", servicio);
+        return "servicio/editarServicio";
+    }
+    @PutMapping("{id}")
+    public String actualizarServicio(@PathVariable("id") Long id,
+            @ModelAttribute("servicio") Servicio servicio) {
+        servicioService.actualizarServicioPorId(id, servicio);
+        return "redirect:/servicios/";
+    }
+    
+
     
 }

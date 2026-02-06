@@ -25,7 +25,7 @@ public class ServicioService {
     public void eliminar(Long id) {
         servicioRepository.deleteById(id);
     }
-    
+
     public List<Servicio> buscarTodos() {
         return servicioRepository.findAll();
     }
@@ -37,4 +37,15 @@ public class ServicioService {
     public Servicio findById(Long id) {
         return servicioRepository.findByIdServicio(id);
     }
+
+    public void actualizarServicioPorId(Long id, Servicio servicio) {
+
+        servicioRepository.findById(id).ifPresent(servicioObtenida -> {
+            servicioObtenida.setNombreServicio(servicio.getNombreServicio());
+            servicioObtenida.setDescripcion(servicio.getDescripcion());
+            servicioObtenida.setPrecio((servicio.getPrecio()));
+            servicioRepository.save(servicioObtenida);
+        });
+    }
+
 }

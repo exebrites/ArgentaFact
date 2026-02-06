@@ -33,9 +33,11 @@
                             <td th:text="${servicio.descripcion}"></td>
                             <td th:text="${servicio.precio}"></td>
 
-                            <td><a class="btn btn-af-view btn-sm" th:href="@{/servicios/{id}(id=${servicio.idServicio}) }">Ver</a>
+                            <td><a class="btn btn-af-view btn-sm"
+                                    th:href="@{/servicios/{id}(id=${servicio.idServicio}) }">Ver</a>
 
-                                <a class="btn btn-warning btn-sm">Editar</a>
+                                <a class="btn btn-warning btn-sm"
+                                    th:href="@{/servicios/{id}/editar(id=${servicio.idServicio}) }">Editar</a>
 
                                 <a th:href="@{/servicios/{id}/eliminar(id=${servicio.idServicio})}"
                                     class="btn btn-danger btn-sm">Eliminar</a>
