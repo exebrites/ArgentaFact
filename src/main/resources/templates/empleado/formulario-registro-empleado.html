@@ -1,115 +1,121 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/base}">
+
 <head>
     <meta charset="UTF-8">
     <title>Registro de Empleado</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
+
 <body>
-    <section layout:fragment="content">
-        <div class="container">
-            <h1 class="text-center">Registro de Nuevo Empleado</h1>
-            
-            <!-- Mensajes de error generales -->
-            <div th:if="${error}" class="alert alert-danger text-center" role="alert" th:text="${error}"></div>
-            
-            <form class="needs-validation" th:action="@{/empleados/registrar-empleado}" th:method="post" th:object="${empleado}" novalidate>
-                
-                <!-- DATOS DEL EMPLEADO -->
-                <fieldset>
-                    <legend class="text-center">Datos Personales</legend>
-                    
-                    <div class="form-group">
-                        <label for="nombre" class="form-label">Nombre *</label>
-                        <input type="text" id="nombre" name="nombre" class="form-control" 
-                               th:field="*{nombre}" required>
-                        <span class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" 
-                              th:errors="*{nombre}">
-                            <th:block th:each="error : ${#fields.errors('nombre')}">
-                                <span class="text-danger" th:text="${error}"></span>
-                            </th:block>
-                        </span>
+    <section layout:fragment="content" class="p-4">
+        <h2 class="mb-4">Empleados</h2>
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <a th:href="@{/empleados/}" class="btn btn-af-secondary btn-sm">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
+            </div>
+            <div class="card-body p-1">
+                <!-- Mensajes de error generales -->
+                <div th:if="${error}" class="alert alert-danger text-center" role="alert" th:text="${error}"></div>
+
+                <form class="needs-validation" th:action="@{/empleados/registrar-empleado}" th:method="post"
+                    th:object="${empleado}" novalidate>
+
+                    <!-- DATOS DEL EMPLEADO -->
+                    <fieldset>
+                        <legend class="text-center">Datos Personales</legend>
+
+                        <div class="form-group">
+                            <label for="nombre" class="form-label">Nombre *</label>
+                            <input type="text" id="nombre" name="nombre" class="form-control" th:field="*{nombre}"
+                                placeholder="Ingrese su nombre" required>
+                            <span class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">
+                                <th:block th:each="error : ${#fields.errors('nombre')}">
+                                    <span class="text-danger" th:text="${error}"></span>
+                                </th:block>
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="apellido" class="form-label">Apellido *</label>
+                            <input type="text" id="apellido" name="apellido" class="form-control" th:field="*{apellido}"
+                                placeholder="Ingrese su apellido" required>
+                            <span class="invalid-feedback" th:if="${#fields.hasErrors('apellido')}"
+                                th:errors="*{apellido}">
+                                <th:block th:each="error : ${#fields.errors('apellido')}">
+                                    <span class="text-danger" th:text="${error}"></span>
+                                </th:block>
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dni" class="form-label">DNI *</label>
+                            <input type="text" id="dni" name="dni" class="form-control" th:field="*{dni}"
+                                placeholder="Ingrese su DNI" required>
+                            <span class="invalid-feedback" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}">
+                                <th:block th:each="error : ${#fields.errors('dni')}">
+                                    <span class="text-danger" th:text="${error}"></span>
+                                </th:block>
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email del Empleado *</label>
+                            <input type="email" id="email" name="email" class="form-control" th:field="*{email}"
+                                placeholder="Ingrese su email" required>
+                            <span class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                                <th:block th:each="error : ${#fields.errors('email')}">
+                                    <span class="text-danger" th:text="${error}"></span>
+                                </th:block>
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefono" class="form-label">Teléfono</label>
+                            <input type="tel" id="telefono" name="telefono" class="form-control" th:field="*{telefono}"
+                                placeholder="Ingrese su teléfono">
+                            <span class="invalid-feedback" th:if="${#fields.hasErrors('telefono')}"
+                                th:errors="*{telefono}">
+                                <th:block th:each="error : ${#fields.errors('telefono')}">
+                                    <span class="text-danger" th:text="${error}"></span>
+                                </th:block>
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="departamento" class="form-label">Departamento</label>
+                            <input type="text" id="departamento" name="departamento" class="form-control"
+                                th:field="*{departamento}" placeholder="Ingrese su departamento">
+                            <span class="invalid-feedback" th:if="${#fields.hasErrors('departamento')}"
+                                th:errors="*{departamento}">
+                                <th:block th:each="error : ${#fields.errors('departamento')}">
+                                    <span class="text-danger" th:text="${error}"></span>
+                                </th:block>
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cargo" class="form-label">Cargo</label>
+                            <input type="text" id="cargo" name="cargo" class="form-control" th:field="*{cargo}"
+                                placeholder="Ingrese su cargo">
+                            <span class="invalid-feedback" th:if="${#fields.hasErrors('cargo')}" th:errors="*{cargo}">
+                                <th:block th:each="error : ${#fields.errors('cargo')}">
+                                    <span class="text-danger" th:text="${error}"></span>
+                                </th:block>
+                            </span>
+                        </div>
+                    </fieldset>
+
+                    <br>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success">Registrar Empleado</button>
+                        <a th:href="@{/empleados/}" class="btn btn-secondary">Cancelar</a>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="apellido" class="form-label">Apellido *</label>
-                        <input type="text" id="apellido" name="apellido" class="form-control" 
-                               th:field="*{apellido}" required>
-                        <span class="invalid-feedback" th:if="${#fields.hasErrors('apellido')}" 
-                              th:errors="*{apellido}">
-                            <th:block th:each="error : ${#fields.errors('apellido')}">
-                                <span class="text-danger" th:text="${error}"></span>
-                            </th:block>
-                        </span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="dni" class="form-label">DNI *</label>
-                        <input type="text" id="dni" name="dni" class="form-control" 
-                               th:field="*{dni}" required>
-                        <span class="invalid-feedback" th:if="${#fields.hasErrors('dni')}" 
-                              th:errors="*{dni}">
-                            <th:block th:each="error : ${#fields.errors('dni')}">
-                                <span class="text-danger" th:text="${error}"></span>
-                            </th:block>
-                        </span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email" class="form-label">Email del Empleado *</label>
-                        <input type="email" id="email" name="email" class="form-control" 
-                               th:field="*{email}" required>
-                        <span class="invalid-feedback" th:if="${#fields.hasErrors('email')}" 
-                              th:errors="*{email}">
-                            <th:block th:each="error : ${#fields.errors('email')}">
-                                <span class="text-danger" th:text="${error}"></span>
-                            </th:block>
-                        </span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="telefono" class="form-label">Teléfono</label>
-                        <input type="tel" id="telefono" name="telefono" class="form-control" 
-                               th:field="*{telefono}">
-                        <span class="invalid-feedback" th:if="${#fields.hasErrors('telefono')}" 
-                              th:errors="*{telefono}">
-                            <th:block th:each="error : ${#fields.errors('telefono')}">
-                                <span class="text-danger" th:text="${error}"></span>
-                            </th:block>
-                        </span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="departamento" class="form-label">Departamento</label>
-                        <input type="text" id="departamento" name="departamento" class="form-control" 
-                               th:field="*{departamento}">
-                        <span class="invalid-feedback" th:if="${#fields.hasErrors('departamento')}" 
-                              th:errors="*{departamento}">
-                            <th:block th:each="error : ${#fields.errors('departamento')}">
-                                <span class="text-danger" th:text="${error}"></span>
-                            </th:block>
-                        </span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="cargo" class="form-label">Cargo</label>
-                        <input type="text" id="cargo" name="cargo" class="form-control" 
-                               th:field="*{cargo}">
-                        <span class="invalid-feedback" th:if="${#fields.hasErrors('cargo')}" 
-                              th:errors="*{cargo}">
-                            <th:block th:each="error : ${#fields.errors('cargo')}">
-                                <span class="text-danger" th:text="${error}"></span>
-                            </th:block>
-                        </span>
-                    </div>
-                </fieldset>
-            
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Registrar Empleado</button>
-                    <a th:href="@{/exampleados}" class="btn btn-secondary">Cancelar</a>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
     </section>
 </body>
+
 </html>
