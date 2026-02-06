@@ -14,7 +14,7 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCliente;
-    
+
     @Column(nullable = false)
     @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
@@ -30,9 +30,8 @@ public class Cliente {
     private String telefono;
 
     @Column(nullable = false)
-    @NotBlank(message = "La condición fiscal es obligatorio")
     private CondicionFiscal condicionFiscal;
-    
+
     @Column(nullable = true)
     private String localidad;
 
@@ -45,6 +44,8 @@ public class Cliente {
         this.nombre = nombre.toUpperCase().trim();
         this.apellido = apellido.toUpperCase().trim();
         this.cuit = cuit;
+        
+
         this.condicionFiscal = condicionFiscal;
     }
 
