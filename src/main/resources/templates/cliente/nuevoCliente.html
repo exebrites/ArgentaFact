@@ -80,7 +80,7 @@
                         <select class="form-select" id="condicionFiscal" name="condicionFiscal"
                             th:field="*{condicionFiscal}"required>
                             <option th:each="condicion : ${condicionesFiscales}" th:value="${condicion}"
-                                th:text="${condicion}"></option>
+                                th:text="${condicion.descripcion}"></option>
                         </select>
                     <button type="submit" class="btn btn-success">Crear</button>
                 </form>
