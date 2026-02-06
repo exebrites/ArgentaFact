@@ -1,36 +1,34 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/base}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
 
-<section layout:fragment="content">
+<section layout:fragment="content" class="p-4">
+    <h2 class="mb-4">Nuevo Servicio</h2>
 
-    <h1>Nuevo Servicio</h1>
 
-    <div class="card">
-        <div class="card-body">
+     <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <a th:href="@{/servicios/}" class="btn btn-af-secondary btn-sm">
+                <i class="bi bi-arrow-left"></i> Volver
+            </a>
+        </div>
+        <div class="card-body p-1">
 
-            <form th:action="@{/servicios/guardar}" 
-                  method="post"
-                  th:object="${servicio}">
+            <form th:action="@{/servicios/guardar}" method="post" th:object="${servicio}">
 
                 <div class="mb-3">
-                    <label class="form-label">Nombre</label>
-                    <input type="text" class="form-control"
-                           th:field="*{nombreServicio}" required>
+                    <label class="form-label">(*)Nombre</label>
+                    <input type="text" class="form-control" th:field="*{nombreServicio}" placeholder="Ingrese el nombre del servicio" required>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Descripción</label>
-                    <textarea class="form-control"
-                              th:field="*{descripcion}" rows="3"></textarea>
+                    <textarea class="form-control" th:field="*{descripcion}" placeholder="Ingrese la descripción del servicio" rows="3"></textarea>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Precio</label>
-                    <input type="number" step="0.01"
-                           class="form-control"
-                           th:field="*{precio}" required>
+                    <label class="form-label">(*)Precio</label>
+                    <input type="number" step="0.01" class="form-control" th:field="*{precio}" placeholder="Ingrese el precio del servicio" required>
                 </div>
 
                 <button type="submit" class="btn btn-success">
@@ -44,7 +42,8 @@
             </form>
 
         </div>
-    </div>
+        </div>
 
 </section>
+
 </html>
