@@ -69,20 +69,13 @@
                                     <th>Estado</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody th:each="factura : ${ultimasFacturasPagas}">
                                 <tr>
-                                    <td>00125</td>
-                                    <td>Empresa ABC</td>
-                                    <td>20/01/2026</td>
-                                    <td>$ 250.000</td>
-                                    <td><span class="badge bg-success">Pagada</span></td>
-                                </tr>
-                                <tr>
-                                    <td>00126</td>
-                                    <td>Juan Pérez</td>
-                                    <td>21/01/2026</td>
-                                    <td>$ 85.000</td>
-                                    <td><span class="badge bg-warning text-dark">Pendiente</span></td>
+                                    <td th:text="${factura.numeroFactura}">00125</td>
+                                    <td th:text="${factura.cliente.nombre + ' ' + factura.cliente.apellido}">Empresa ABC</td>
+                                    <td th:text="${factura.getFechaFormateada()}">20/01/2026</td>
+                                    <td th:text="${factura.total}">$ 250.000</td>
+                                    <td><span class="badge bg-success" th:text="${factura.estado}">Pagada</span></td>
                                 </tr>
                             </tbody>
                         </table>

@@ -71,9 +71,12 @@ public class AuthController {
         // obtener el numero total de pagos del mes
         var totalPagosMes = pagoService.obtenerTotalPagosDelMesActual();
         model.addAttribute("totalPagosMes", totalPagosMes);
-        //   obtener el numero total de facturas impagas
-       var totalFacturasImpagas = facturaService.obtenerTotalFacturasImpagas();
+        // obtener el numero total de facturas impagas
+        var totalFacturasImpagas = facturaService.obtenerTotalFacturasImpagas();
         model.addAttribute("totalFacturasImpagas", totalFacturasImpagas);
+        // TODO obtener ultimas 5 facturas pagas del mes
+        var ultimasFacturasPagas = facturaService.obtenerUltimaFacturasPagas();
+        model.addAttribute("ultimasFacturasPagas", ultimasFacturasPagas);
         return "dashboard";
     }
 
