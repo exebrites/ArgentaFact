@@ -1,8 +1,11 @@
 package com.argentafact.service;
 
 
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,6 +63,18 @@ public class UsuarioService {
      */
     public Optional<Usuario> buscarPorUsername(String username) {
         return usuarioRepository.findByUsername(username);
+    }
+
+    public Page<Usuario> buscarTodos(PageRequest of){
+        return usuarioRepository.findAll(of);
+    }
+
+    public List<Usuario> buscarTodos() {
+        return usuarioRepository.findAll();
+    }
+
+    public Usuario findById(Long id) {
+        return usuarioRepository.findById(id).orElse(null);
     }
     
 }
