@@ -28,6 +28,10 @@ public class CuentaService {
         return cuentaRepository.findAll();
     }
 
+    public Page<Cuenta> listarTodas(PageRequest of) {
+        return cuentaRepository.findAll(of);
+    }
+
     public Cuenta obtenerPorId(Long idCuenta) {
         return cuentaRepository.findById(idCuenta)
                 .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
@@ -44,7 +48,6 @@ public class CuentaService {
         Cuenta cuenta = new Cuenta(cliente);
         return cuentaRepository.save(cuenta);
     }
-
 
     @Transactional
     public void acreditar(Long idCuenta, BigDecimal monto) {
@@ -66,7 +69,9 @@ public class CuentaService {
         }
     }
 
-    public Page<Cuenta> listarTodas(PageRequest of) {
-        return cuentaRepository.findAll(of);
+    @Transactional(readOnly = true)
+    public Cuenta obtenerCuentaPorCliente(Long idCliente) {
+        return cuentaRepository.findByClienteIdCliente(idCliente)
+                .orElseThrow(() -> new RuntimeException("El cliente no tiene cuenta"));
     }
 }

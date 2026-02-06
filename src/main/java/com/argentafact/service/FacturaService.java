@@ -32,7 +32,13 @@ public class FacturaService {
         return facturaRespository.findAll();
     }
 
+    /**
+     * Guarda una factura. 
+     * Si es una factura NUEVA, actualiza el saldo de la cuenta.
+     * Si ya existe, solo actualiza los datos.
+     */
     public Factura guardarFactura(Factura factura) {
+        boolean esNueva = (factura.getIdFactura() == null);
 
         if (factura.getSaldoPendiente() == null) {
             factura.setSaldoPendiente(factura.getTotal());
@@ -44,14 +50,21 @@ public class FacturaService {
 
         Factura facturaGuardada = facturaRespository.save(factura);
 
-        Cuenta cuenta = cuentaRepository
-                .findByClienteIdCliente(factura.getCliente().getIdCliente())
-                .orElseThrow(() -> new IllegalStateException("El cliente no posee cuenta"));
+        // SOLO si la factura es nueva, impactamos el total en la cuenta corriente
+        if (esNueva) {
+            Cuenta cuenta = cuentaRepository
+                    .findByClienteIdCliente(factura.getCliente().getIdCliente())
+                    .orElseThrow(() -> new IllegalStateException("El cliente no posee cuenta"));
 
-        cuenta.acreditar(factura.getTotal());
-        cuentaRepository.save(cuenta);
+            cuenta.acreditar(factura.getTotal());
+            cuentaRepository.save(cuenta);
+        }
 
         return facturaGuardada;
+    }
+
+    public Factura actualizarFactura(Factura factura) {
+        return facturaRespository.save(factura);
     }
 
     public BigDecimal calcularSaldoPendienteCliente(Long idCliente) {
@@ -84,9 +97,7 @@ public class FacturaService {
     public String generarNumeroFactura() {
         var puntoVenta = new Empresa().getPuntoVenta();
         Long idUltimaFactura = this.obtenerIdUltimaFactura();
-
         int numero = (idUltimaFactura == null) ? 1 : idUltimaFactura.intValue() + 1;
-
         return String.format("%04d-%08d", puntoVenta, numero);
     }
 
@@ -99,12 +110,10 @@ public class FacturaService {
     }
 
     public List<Factura> obtenerFacturasPorCliente(Long idCliente) {
-        
         return facturaRespository.findByClienteIdClienteAndBajaFalse(idCliente);
     }
 
     public List<Factura> obtenerFacturasDelMesActual() {
-
         var facturas = this.obtenerFacturas();
         LocalDate mesActual = LocalDate.now();
         List<Factura> facturaActuales = new ArrayList<>();
@@ -117,8 +126,6 @@ public class FacturaService {
     }
 
     public void generarFacturasMasivas(List<ServicioContratado> serviciosAFacturar, Empleado empleado) {
-        
-        // obtener los clientes únicos de los servicios a facturar
         List<Cliente> clientes = new ArrayList<>();
         for (ServicioContratado servicioContratado : serviciosAFacturar) {
             if (!clientes.contains(servicioContratado.getCliente())) {
@@ -126,43 +133,34 @@ public class FacturaService {
             }
         }
 
-        // generar facturas para cada cliente
         for (Cliente cliente : clientes) {
-            // crear factura
             Factura factura = new Factura();
             factura.setCliente(cliente);
             factura.setEmpleado(empleado);
-            String nroFactura = this.generarNumeroFactura();
-            factura.setNumeroFactura(nroFactura);
+            factura.setNumeroFactura(this.generarNumeroFactura());
             factura.setEstado(EstadoFactura.PENDIENTE);
             factura.setFechaEmision(LocalDate.now());
             BigDecimal totalServicos = BigDecimal.ZERO;
 
-            // // // determinar el tipo de factura segun la condicion fiscal del cliente.
             if ((cliente.getCondicionFiscal().equals(CondicionFiscal.RESPONSABLE_INSCRIPTO))
-                    ||
-                    (factura.getCliente().getCondicionFiscal().equals(CondicionFiscal.MONOTRIBUTISTA))) {
+                    || (cliente.getCondicionFiscal().equals(CondicionFiscal.MONOTRIBUTISTA))) {
                 factura.setTipoFactura(TipoFactura.A);
             } else {
                 factura.setTipoFactura(TipoFactura.B);
             }
-            // crear detalle de factura
+
             for (ServicioContratado servicioContratado : serviciosAFacturar) {
-                if (cliente.getIdCliente() != servicioContratado.getCliente().getIdCliente()) {
+                if (!cliente.getIdCliente().equals(servicioContratado.getCliente().getIdCliente())) {
                     continue;
                 }
-
                 var detalleFactura = new DetalleFactura(factura,
                         servicioContratado.getServicio(),
                         servicioContratado.getPrecioAcordado());
-
                 factura.AgregarDetalle(detalleFactura);
                 totalServicos = totalServicos.add(servicioContratado.getPrecioAcordado());
             }
             factura.setTotal(totalServicos);
             this.guardarFactura(factura);
         }
-
-
     }
 }
