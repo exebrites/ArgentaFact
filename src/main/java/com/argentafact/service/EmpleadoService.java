@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.argentafact.model.Empleado;
@@ -44,7 +46,6 @@ public class EmpleadoService {
 
     public void registrarEmpleadoConUsuario(Empleado empleado, Usuario usuario) {
 
-       
     }
 
     /**
@@ -59,7 +60,7 @@ public class EmpleadoService {
      * Busca un empleado por ID
      */
 
-    public  Empleado buscarPorId(Long id) {
+    public Empleado buscarPorId(Long id) {
         return empleadoRepository.findByIdEmpleado(id);
     }
 
@@ -94,6 +95,10 @@ public class EmpleadoService {
             empleado.getUsuario().setActivo(false);
             empleadoRepository.save(empleado);
         }
+    }
+
+    public Page<Empleado> buscarTodos(PageRequest of) {
+        return empleadoRepository.findAll(of);
     }
 
 }
