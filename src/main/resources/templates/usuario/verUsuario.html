@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
+
+<head>
+    <title>Usuarios</title>
+</head>
+
+<body>
+    <section layout:fragment="content" class="p-4">
+        <h2 class="mb-4">Usuarios</h2>
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <a th:href="@{/usuarios/}" class="btn btn-af-secondary btn-sm">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
+            </div>
+            <div class="card-body p-1">
+                <p class="mb-0 font-weight-bold">ID:</p><p class="mb-0"><span th:text="${usuario.id}"></span></p>
+                <p class="mb-0 font-weight-bold">Username:</p><p class="mb-0"><span th:text="${usuario.username}"></span></p>
+                <p class="mb-0 font-weight-bold">Email:</p><p class="mb-0"><span th:text="${usuario.email}"></span></p>
+                <p class="mb-0 font-weight-bold">Activo:</p><p class="mb-0"><span th:text="${usuario.activo ? 'S ' : 'N'}"></span></p>
+                <p class="mb-0 font-weight-bold">Empleado:</p><p class="mb-0"><span th:text="${usuario.empleado != null ? usuario.empleado.nombre + ' ' + usuario.empleado.apellido : 'No tiene empleado asignado'}"></span></p>
+            </div>
+        </div>
+
+
+
+    </section>
+
+</body>
+
+</html>
