@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/base}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/base}">
 
 <head>
     <title>Estado de Cuenta</title>
@@ -9,82 +8,86 @@
 
 <body>
 
-<section layout:fragment="content">
-    <h1>Estado de Cuenta</h1>
+    <section layout:fragment="content" class="p-4">
+        <h2>Estado de Cuenta</h2>
+        <div class="card shadow-sm ">
+            <div class="card-header bg-white">
+                <a th:href="@{/cuentas/}" class="btn btn-secondary mt-3">
+                    Volver
+                </a>
+            </div>
 
-    <div class="mb-3">
-        <a th:href="@{/cuentas/}" class="btn btn-secondary mt-3">
-            Volver
-        </a>
-    </div>
-    <!-- DATOS DEL CLIENTE -->
-    <div class="card mb-3">
-        <div class="card-header">
-            <strong>Datos del Cliente</strong>
-        </div>
-        <div class="card-body">
-            <p><strong>Nombre:</strong>
-                <span th:text="${cliente.nombre + ' ' + cliente.apellido}"></span>
-            </p>
-            <p><strong>CUIT:</strong>
-                <span th:text="${cliente.cuit}"></span>
-            </p>
-            <p><strong>Condición Fiscal:</strong>
-                <span th:text="${cliente.condicionFiscal}"></span>
-            </p>
-        </div>
-    </div>
+            <div class="card-body">
+                <!-- DATOS DEL CLIENTE -->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <strong>Datos del Cliente</strong>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Nombre:</strong>
+                            <span th:text="${cliente.nombre + ' ' + cliente.apellido}"></span>
+                        </p>
+                        <p><strong>CUIT:</strong>
+                            <span th:text="${cliente.cuit}"></span>
+                        </p>
+                        <p><strong>Condición Fiscal:</strong>
+                            <span th:text="${cliente.condicionFiscal}"></span>
+                        </p>
+                    </div>
+                </div>
 
-    <!-- DATOS DE LA CUENTA -->
-    <div class="card mb-3">
-        <div class="card-header">
-            <strong>Cuenta</strong>
-        </div>
-        <div class="card-body">
-            <p><strong>ID Cuenta:</strong>
-                <span th:text="${cuenta.idCuenta}"></span>
-            </p>
-            <p><strong>Saldo Pendiente:</strong>
-                $<span th:text="${saldoPendiente}"></span>
-            </p>
-        </div>
-    </div>
+                <!-- DATOS DE LA CUENTA -->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <strong>Cuenta</strong>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>ID Cuenta:</strong>
+                            <span th:text="${cuenta.idCuenta}"></span>
+                        </p>
+                        <p><strong>Saldo Pendiente:</strong>
+                            $<span th:text="${saldoPendiente}"></span>
+                        </p>
+                    </div>
+                </div>
 
-    <!-- FACTURAS -->
-    <div class="card">
-        <div class="card-header">
-            <strong>Facturas del Cliente</strong>
+                <!-- FACTURAS -->
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Facturas del Cliente</strong>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-striped mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Número</th>
+                                    <th>Fecha</th>
+                                    <th>Total</th>
+                                    <th>Saldo Pendiente</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="factura : ${facturas}">
+                                    <td th:text="${factura.numeroFactura}"></td>
+                                    <td th:text="${factura.fechaFormateada}"></td>
+                                    <td th:text="${factura.total}"></td>
+                                    <td th:text="${factura.saldoPendiente}"></td>
+                                    <td th:text="${factura.estado}"></td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(facturas)}">
+                                    <td colspan="5" class="text-center">
+                                        No existen facturas registradas
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-body p-0">
-            <table class="table table-striped mb-0">
-                <thead>
-                    <tr>
-                        <th>Número</th>
-                        <th>Fecha</th>
-                        <th>Total</th>
-                        <th>Saldo Pendiente</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="factura : ${facturas}">
-                        <td th:text="${factura.numeroFactura}"></td>
-                        <td th:text="${factura.fechaFormateada}"></td>
-                        <td th:text="${factura.total}"></td>
-                        <td th:text="${factura.saldoPendiente}"></td>
-                        <td th:text="${factura.estado}"></td>
-                    </tr>
-                    <tr th:if="${#lists.isEmpty(facturas)}">
-                        <td colspan="5" class="text-center">
-                            No existen facturas registradas
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-</section>
+    </section>
 
 </body>
+
 </html>
