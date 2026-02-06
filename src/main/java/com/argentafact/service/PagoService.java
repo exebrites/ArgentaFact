@@ -1,7 +1,9 @@
 package com.argentafact.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -25,9 +27,9 @@ public class PagoService {
     private final HistoricoFiscalRepository historicoFiscalRepository;
 
     public PagoService(PagoRepository pagoRepository,
-                       FacturaRespository facturaRespository,
-                       CuentaRepository cuentaRepository,
-                       HistoricoFiscalRepository historicoFiscalRepository) {
+            FacturaRespository facturaRespository,
+            CuentaRepository cuentaRepository,
+            HistoricoFiscalRepository historicoFiscalRepository) {
         this.pagoRepository = pagoRepository;
         this.facturaRespository = facturaRespository;
         this.cuentaRepository = cuentaRepository;
@@ -35,9 +37,9 @@ public class PagoService {
     }
 
     public void registrarPago(Long idFactura,
-                              BigDecimal monto,
-                              TipoPago tipoPago,
-                              Empleado empleado) {
+            BigDecimal monto,
+            TipoPago tipoPago,
+            Empleado empleado) {
 
         Factura factura = facturaRespository.findById(idFactura)
                 .orElseThrow(() -> new IllegalArgumentException("Factura inexistente"));
@@ -50,8 +52,7 @@ public class PagoService {
                 monto,
                 tipoPago,
                 factura,
-                empleado
-        );
+                empleado);
         pagoRepository.save(pago);
 
         factura.aplicarPago(monto);
@@ -84,5 +85,24 @@ public class PagoService {
 
     public Page<Pago> listarPagos(PageRequest of) {
         return pagoRepository.findAll(of);
+    }
+
+    public BigDecimal obtenerTotalPagosDelMesActual() {
+
+        var pagos = pagoRepository.findAll();
+
+        LocalDate fechaActual = LocalDate.now();
+        List<Pago> pagosDelMes = new ArrayList<>();
+        for (Pago pago : pagos) {
+            if (fechaActual.getMonth() == pago.getFecha().getMonth()) {
+                pagosDelMes.add(pago);
+            }
+        }
+
+        BigDecimal totalPagosMes = BigDecimal.ZERO;
+        for (Pago pago : pagosDelMes) {
+            totalPagosMes = totalPagosMes.add(pago.getMonto());
+        }
+        return totalPagosMes;
     }
 }

@@ -17,7 +17,7 @@
 
 
             <!-- MAIN CONTENT -->
-            <section  layout:fragment="content">
+            <section layout:fragment="content">
 
                 <h2 class="mb-4">Panel de administración</h2>
 
@@ -27,17 +27,8 @@
                     <div class="col-md-3">
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <h6 class="text-muted">Clientes</h6>
-                                <h3 class="fw-bold">128</h3>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
                                 <h6 class="text-muted">Facturas del mes</h6>
-                                <h3 class="fw-bold">56</h3>
+                                <h3 class="fw-bold" th:text="${facturasDelMes}">56</h3>
                             </div>
                         </div>
                     </div>
@@ -46,7 +37,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h6 class="text-muted">Pagos recibidos</h6>
-                                <h3 class="fw-bold">$ 1.250.000</h3>
+                                <h3 class="fw-bold" th:text="${totalPagosMes}">$ 1.250.000</h3>
                             </div>
                         </div>
                     </div>
@@ -55,7 +46,7 @@
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h6 class="text-muted">Facturas impagas</h6>
-                                <h3 class="fw-bold text-danger">12</h3>
+                                <h3 class="fw-bold text-danger" th:text="${totalFacturasImpagas}">12</h3>
                             </div>
                         </div>
                     </div>
