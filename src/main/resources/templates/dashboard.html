@@ -69,13 +69,19 @@
                                     <th>Estado</th>
                                 </tr>
                             </thead>
-                            <tbody th:each="factura : ${ultimasFacturasPagas}">
-                                <tr>
+                            <tbody>
+                                <tr th:each="factura : ${ultimasFacturasPagas}">
                                     <td th:text="${factura.numeroFactura}">00125</td>
-                                    <td th:text="${factura.cliente.nombre + ' ' + factura.cliente.apellido}">Empresa ABC</td>
+                                    <td th:text="${factura.cliente.nombre + ' ' + factura.cliente.apellido}">Empresa ABC
+                                    </td>
                                     <td th:text="${factura.getFechaFormateada()}">20/01/2026</td>
                                     <td th:text="${factura.total}">$ 250.000</td>
                                     <td><span class="badge bg-success" th:text="${factura.estado}">Pagada</span></td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(cuentas)}">
+                                    <td colspan="7" class="text-center text-muted">
+                                        No hay facturas registradas
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
