@@ -33,6 +33,7 @@ public class Servicio {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal precio;
 
+    private final BigDecimal iva = new BigDecimal("0.21");
     public Servicio() {
     }
 
@@ -69,11 +70,18 @@ public class Servicio {
 
         this.precio = precio;
     }
-
+    public BigDecimal getPrecioConIva(){
+        return precio.add(precio.multiply(iva));
+    }
+    
     @Override
     public String toString() {
         return "Servicio [idServicio=" + idServicio + ", nombreServicio=" + nombreServicio + ", descripcion="
                 + descripcion + ", precio=" + precio + "]";
+    }
+
+    public BigDecimal getIva() {
+        return iva;
     }
 
 }
