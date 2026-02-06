@@ -34,7 +34,7 @@
                             <td th:text="${cliente.nombre}"></td>
                             <td th:text="${cliente.apellido}"></td>
                             <td th:text="${cliente.cuit}"></td>
-                            <td th:text="${cliente.condicionFiscal}"></td>
+                            <td th:text="${cliente.condicionFiscal.descripcion}"></td>
                             <td><a th:href="@{/clientes/{id}(id=${cliente.idCliente})}"
                                     class="btn btn-af-view btn-sm">Ver</a>
                             </td>
