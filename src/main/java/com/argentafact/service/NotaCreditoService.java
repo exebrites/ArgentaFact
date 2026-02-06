@@ -2,6 +2,7 @@ package com.argentafact.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.time.LocalDateTime;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,8 @@ import com.argentafact.model.Cuenta;
 import com.argentafact.model.EstadoFactura;
 import com.argentafact.model.Factura;
 import com.argentafact.model.NotaCredito;
+import com.argentafact.model.HistoricoFiscal;
+import com.argentafact.repository.HistoricoFiscalRepository;
 import com.argentafact.repository.NotaCreditoRepository;
 
 @Service
@@ -20,13 +23,16 @@ public class NotaCreditoService {
     private final NotaCreditoRepository notaCreditoRepository;
     private final FacturaService facturaService;
     private final CuentaService cuentaService;
+    private final HistoricoFiscalRepository historicoFiscalRepository;
 
     public NotaCreditoService(NotaCreditoRepository notaCreditoRepository,
                               FacturaService facturaService,
-                              CuentaService cuentaService) {
+                              CuentaService cuentaService,
+                              HistoricoFiscalRepository historicoFiscalRepository) {
         this.notaCreditoRepository = notaCreditoRepository;
         this.facturaService = facturaService;
         this.cuentaService = cuentaService;
+        this.historicoFiscalRepository = historicoFiscalRepository;
     }
 
     @Transactional
@@ -57,6 +63,18 @@ public class NotaCreditoService {
         cuentaService.debitar(cuenta.getIdCuenta(), monto);
 
         notaCreditoRepository.save(notaCredito);
+
+        HistoricoFiscal historico = new HistoricoFiscal(
+                LocalDateTime.now(),
+                factura.getEmpleado(),
+                factura.getCliente(),
+                "NOTA_CREDITO",
+                "Nota de crédito sobre factura N° "
+                        + factura.getNumeroFactura()
+                        + " por $" + monto);
+
+        historicoFiscalRepository.save(historico);
+
     }
 
     public List<NotaCredito> buscarTodas() {

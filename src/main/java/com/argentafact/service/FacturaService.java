@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.argentafact.model.*;
+import com.argentafact.repository.HistoricoFiscalRepository;
 import com.argentafact.repository.CuentaRepository;
 import com.argentafact.repository.FacturaRespository;
 
@@ -21,22 +23,20 @@ public class FacturaService {
 
     private final FacturaRespository facturaRespository;
     private final CuentaRepository cuentaRepository;
+    private final HistoricoFiscalRepository historicoFiscalRepository;
 
     public FacturaService(FacturaRespository facturaRespository,
-            CuentaRepository cuentaRepository) {
+            CuentaRepository cuentaRepository,
+            HistoricoFiscalRepository historicoFiscalRepository) {
         this.facturaRespository = facturaRespository;
         this.cuentaRepository = cuentaRepository;
+        this.historicoFiscalRepository = historicoFiscalRepository;
     }
 
     public List<Factura> obtenerFacturas() {
         return facturaRespository.findAll();
     }
 
-    /**
-     * Guarda una factura. 
-     * Si es una factura NUEVA, actualiza el saldo de la cuenta.
-     * Si ya existe, solo actualiza los datos.
-     */
     public Factura guardarFactura(Factura factura) {
         boolean esNueva = (factura.getIdFactura() == null);
 
@@ -60,6 +60,15 @@ public class FacturaService {
             cuentaRepository.save(cuenta);
         }
 
+        HistoricoFiscal historico = new HistoricoFiscal(
+                LocalDateTime.now(),
+                factura.getEmpleado(),
+                factura.getCliente(),
+                "FACTURA_EMITIDA",
+                "Factura N° " + factura.getNumeroFactura()
+                        + " emitida por $" + factura.getTotal());
+
+        historicoFiscalRepository.save(historico);
         return facturaGuardada;
     }
 

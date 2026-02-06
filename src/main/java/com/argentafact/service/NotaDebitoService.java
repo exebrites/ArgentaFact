@@ -2,6 +2,7 @@ package com.argentafact.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.time.LocalDateTime;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,8 @@ import com.argentafact.model.Cuenta;
 import com.argentafact.model.EstadoFactura;
 import com.argentafact.model.Factura;
 import com.argentafact.model.NotaDebito;
+import com.argentafact.model.HistoricoFiscal;
+import com.argentafact.repository.HistoricoFiscalRepository;
 import com.argentafact.repository.FacturaRespository;
 import com.argentafact.repository.NotaDebitoRepository;
 
@@ -21,14 +24,15 @@ public class NotaDebitoService {
     private final FacturaRespository facturaRespository;
 
     private final NotaDebitoRepository notaDebitoRepository;
-    private final FacturaService facturaService;
+    private final HistoricoFiscalRepository historicoFiscalRepository;
     private final CuentaService cuentaService;
 
     public NotaDebitoService(NotaDebitoRepository notaDebitoRepository,
-                             FacturaService facturaService,
-                             CuentaService cuentaService, FacturaRespository facturaRespository) {
+                             HistoricoFiscalRepository historicoFiscalRepository,
+                             CuentaService cuentaService, 
+                             FacturaRespository facturaRespository) {
         this.notaDebitoRepository = notaDebitoRepository;
-        this.facturaService = facturaService;
+        this.historicoFiscalRepository = historicoFiscalRepository;
         this.cuentaService = cuentaService;
         this.facturaRespository = facturaRespository;
     }
@@ -63,6 +67,17 @@ public class NotaDebitoService {
         cuentaService.acreditar(cuenta.getIdCuenta(), monto);
 
         notaDebitoRepository.save(notaDebito);
+
+        HistoricoFiscal historico = new HistoricoFiscal(
+                LocalDateTime.now(),
+                factura.getEmpleado(),
+                factura.getCliente(),
+                "NOTA_DEBITO",
+                "Nota de débito sobre factura N° "
+                        + factura.getNumeroFactura()
+                        + " por $" + monto);
+
+        historicoFiscalRepository.save(historico);
     }
 
     public List<NotaDebito> buscarTodas() {
