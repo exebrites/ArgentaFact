@@ -30,6 +30,9 @@
                 <span th:text="${servicio.precio}"></span>
             </p>
 
+            <p><strong>Precio Con Iva:</strong>
+                <span th:text="'$' + ${servicio.getPrecioConIva()}"></span>
+            </p>
 
 
         </div>
