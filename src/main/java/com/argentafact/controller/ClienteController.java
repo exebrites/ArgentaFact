@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.argentafact.model.Cliente;
 import com.argentafact.model.CondicionFiscal;
+import com.argentafact.model.Departamento;
 import com.argentafact.service.ClienteService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -44,6 +45,7 @@ public class ClienteController {
     @GetMapping("/crear")
     public String nuevoCliente(Model model) {
         var cliente = new Cliente();
+        model.addAttribute("localidades", Departamento.values());
         model.addAttribute("cliente", cliente);
         model.addAttribute("condicionesFiscales", CondicionFiscal.values());
         return "cliente/nuevoCliente";

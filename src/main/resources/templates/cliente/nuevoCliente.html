@@ -17,7 +17,7 @@
                     <div class="mb-3">
                         <label for="nombre" class="form-label">(*) Nombre</label>
                         <input type="text" class="form-control" id="nombre" name="nombre" th:field="*{nombre}"
-                            placeholder="Ingrese su nombre" required/>
+                            placeholder="Ingrese su nombre" required />
                         <div th:if="${#fields.hasErrors('nombre')}" th:class="invalid-feedback">
                             <div th:each="error : ${#fields.errors('nombre')}">
                                 <span th:text="${error}"></span>
@@ -37,7 +37,7 @@
                     <div class="mb-3">
                         <label for="cuit" class="form-label">(*) CUIT/DNI</label>
                         <input type="text" class="form-control" id="cuit" name="cuit" th:field="*{cuit}"
-                            placeholder="Ingrese su CUIT" required/>
+                            placeholder="Ingrese su CUIT" required />
                         <div th:if="${#fields.hasErrors('cuit')}" th:class="invalid-feedback">
                             <div th:each="error : ${#fields.errors('cuit')}">
                                 <span th:text="${error}"></span>
@@ -56,14 +56,12 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="localidad" class="form-label">Localidad</label>
-                        <input type="text" class="form-control" id="localidad" name="localidad" th:field="*{localidad}"
-                            placeholder="Ingrese su localidad" />
-                        <div th:if="${#fields.hasErrors('localidad')}" th:class="invalid-feedback">
-                            <div th:each="error : ${#fields.errors('localidad')}">
-                                <span th:text="${error}"></span>
-                            </div>
-                        </div>
+                        <label for="localidad" class="form-label"> Localidad</label>
+                        <select class="form-select" id="localidad" name="localidad"
+                            th:field="*{localidad}" required>
+                            <option th:each="localidad : ${localidades}" th:value="${localidad}"
+                                th:text="${localidad.descripcion}"></option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="telefono" class="form-label">Teléfono</label>
@@ -78,11 +76,12 @@
                     <div class="mb-3">
                         <label for="condicionFiscal" class="form-label"> (*)Condición fiscal</label>
                         <select class="form-select" id="condicionFiscal" name="condicionFiscal"
-                            th:field="*{condicionFiscal}"required>
+                            th:field="*{condicionFiscal}" required>
                             <option th:each="condicion : ${condicionesFiscales}" th:value="${condicion}"
                                 th:text="${condicion.descripcion}"></option>
                         </select>
-                    <button type="submit" class="btn btn-success">Crear</button>
+                    </div>
+                        <button type="submit" class="btn btn-success">Crear</button>
                 </form>
 
             </div>
