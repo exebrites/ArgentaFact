@@ -33,7 +33,7 @@
                             <td th:text="${servicio.descripcion}"></td>
                             <td th:text="${servicio.precio}"></td>
 
-                            <td><a class="btn btn-af-view btn-sm">Ver</a>
+                            <td><a class="btn btn-af-view btn-sm" th:href="@{/servicios/{id}(id=${servicio.idServicio}) }">Ver</a>
 
                                 <a class="btn btn-warning btn-sm">Editar</a>
 

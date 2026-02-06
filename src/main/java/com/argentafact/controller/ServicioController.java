@@ -82,4 +82,11 @@ public class ServicioController {
         }
         return "redirect:/servicios/";
     }
+    @GetMapping("{id}")
+    public String verServicio(@PathVariable("id") Long id, Model model) {
+        var servicio = servicioService.findById(id);
+        model.addAttribute("servicio", servicio);
+        return "servicio/verServicio";
+    }
+    
 }
