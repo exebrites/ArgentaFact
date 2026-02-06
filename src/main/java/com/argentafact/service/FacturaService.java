@@ -176,4 +176,15 @@ public class FacturaService {
         return totalFacturasImpagas;
     }
 
+    public List<Factura> obtenerUltimaFacturasPagas() {
+        var facturasMes = this.obtenerFacturasDelMesActual();
+        List<Factura> facturasPagasMes = new ArrayList<>();
+        for (Factura factura : facturasMes) {
+            if (factura.getEstado() != EstadoFactura.PENDIENTE && factura.getEstado() != EstadoFactura.ANULADA) {
+                facturasPagasMes.add(factura);
+            }
+        }
+        return facturasPagasMes;
+    }
+
 }
