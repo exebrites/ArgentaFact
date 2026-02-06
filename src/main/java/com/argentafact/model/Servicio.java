@@ -70,7 +70,9 @@ public class Servicio {
 
         this.precio = precio;
     }
-
+    public BigDecimal getPrecioConIva(){
+        return precio.add(precio.multiply(iva));
+    }
     
     @Override
     public String toString() {
