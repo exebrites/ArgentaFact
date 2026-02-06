@@ -18,13 +18,12 @@ import com.argentafact.service.ClienteService;
 import com.argentafact.service.ServicioContratadoService;
 import com.argentafact.service.ServicioService;
 
+ 
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
- 
-
 
 @Controller
 @RequestMapping("/servicioContratado")
@@ -49,11 +48,11 @@ public class ServicioContratadoController {
             Model model) {
 
         Page<ServicioContratado> paginaClientes = servicioContratadoService.buscarTodos(PageRequest.of(pagina, tamano));
-      
+
         model.addAttribute("serviciosContratados", paginaClientes.getContent());
         model.addAttribute("paginaActual", pagina);
         model.addAttribute("totalPaginas", paginaClientes.getTotalPages());
-         
+
         return "servicioContratado/listar";
     }
 
@@ -123,25 +122,24 @@ public class ServicioContratadoController {
 
     // @GetMapping("/limpiarDetalle")
     // public String eliminarLinea(
-    // @ModelAttribute("detalle") DetalleDeFacturaFormulario detalleFactura,
+    // @ModelAttribute("detalle") DetalleServicioContratado detalle,
     // HttpSession session) {
 
-    // detalleFactura.limpiar();
+    // detalle.limpiar();
 
-    // return "redirect:/facturas/crear";
+    // return "redirect:/servicios/crear";
     // }
     // // eliminar un servicio de detalle de factura
 
-    // @GetMapping("/eliminarDetalle/{idServicio}")
-    // public String eliminarDetalleFactura(@PathVariable Long idServicio,
-    // @ModelAttribute("detalle") DetalleDeFacturaFormulario detalle,
-    // RedirectAttributes redirectAttributes) {
+    @GetMapping("/eliminarDetalle/{idServicio}")
+    public String eliminarDetalleFactura(@PathVariable Long idServicio,
+            @ModelAttribute("detalle") DetalleServicioContratado detalle,
+            RedirectAttributes redirectAttributes) {
 
-    // detalle.eliminarServicio(idServicio);
+        detalle.eliminarServicio(idServicio);
 
-    // return "redirect:/facturas/crear";
-    // }
-
+        return "redirect:/servicioContratado/crear";
+    }
 
     @GetMapping("/{id}/verServicioContratado")
     public String verServicioContratado(@PathVariable Long id, Model model) {
@@ -156,6 +154,7 @@ public class ServicioContratadoController {
         model.addAttribute("servicioContratado", servicioContratado);
         return "servicioContratado/cancelarServicioContratado";
     }
+
     @PostMapping("/{id}/cancelarServicioContratado")
     public String postMethodName(@PathVariable Long id, Model model) {
         var servicioContratado = servicioContratadoService.findById(id);
@@ -163,6 +162,5 @@ public class ServicioContratadoController {
         servicioContratadoService.guardar(servicioContratado);
         return "redirect:/servicioContratado/";
     }
-    
-    
+
 }
