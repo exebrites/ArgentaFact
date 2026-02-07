@@ -1,0 +1,4 @@
+# Retrospectiva 
+
+- Durante este 2da iteración obtuvimos mejores resultados gracias a la comunicacion y coordinación de tareas. Cabe destacar la importacia de tener mentalizado una solucion antes de comenzar a desarrollar funcionalidades y lo fundamental de casos de prueba para verificar el correcto funcionamiento del sistema y detectar resultados inesperados. 
+- Sin embargo, no hemos podido realizar todas las HU que nos hemos planteado debido a los tiempos que han demandado las HU que si se pudieron realizar, es decir, no estimamos correctamente las horas que debían darse a cada HU y por tal motivo no se realizaron todas. Por otra parte, hemos estado realizando correcciones con mínimas pruebas lo cual han demandado tiempo para ver errores y corregirlas. Lo positivo? Es que hubo mejor comunicación y a medida que se realizaba algo o surgía algún problema, esto se notificaba y se resolvía lo antes posible
