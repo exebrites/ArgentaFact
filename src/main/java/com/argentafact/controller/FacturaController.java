@@ -1,6 +1,7 @@
 package com.argentafact.controller;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,12 +25,11 @@ import com.argentafact.model.EstadoFactura;
 import com.argentafact.model.Factura;
 import com.argentafact.model.FacturaSesion;
 import com.argentafact.model.Linea;
-
+import com.argentafact.model.ServicioContratado;
 import com.argentafact.model.TipoFactura;
 import com.argentafact.model.Usuario;
 import com.argentafact.repository.UsuarioRepository;
 import com.argentafact.service.ClienteService;
-import com.argentafact.service.EmpleadoService;
 import com.argentafact.service.FacturaService;
 import com.argentafact.service.ServicioContratadoService;
 import com.argentafact.service.ServicioService;
@@ -48,8 +48,6 @@ public class FacturaController {
     @Autowired
     private FacturaService facturaService;
     @Autowired
-    private EmpleadoService empleadoService;
-    @Autowired
     private ClienteService clienteService;
     @Autowired
     private ServicioService servicioService;
@@ -57,6 +55,7 @@ public class FacturaController {
     private ServicioContratadoService servicioContratadoService;
     @Autowired
     private UsuarioRepository usuarioRepository;
+
     @ModelAttribute("detalleFactura")
     public DetalleDeFacturaFormulario setUpDetalleFacturaFormulario() {
         return new DetalleDeFacturaFormulario();
@@ -104,10 +103,9 @@ public class FacturaController {
     public String agregarFactura(@ModelAttribute("detalleFactura") DetalleDeFacturaFormulario detalleFactura,
             @ModelAttribute("factura") Factura factura, Model model,
             @ModelAttribute("facturaSesion") FacturaSesion facturaSesion, RedirectAttributes redirectAttributes) {
-        //  obtener empleado autenticado
+        // obtener empleado autenticado
 
-
-       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
         // 2. Buscar el usuario en la BD
@@ -238,8 +236,23 @@ public class FacturaController {
 
     @GetMapping("/facturarServicioContratado")
     public String facturarServicioContratado(Model model) {
-        var servicioContratados = servicioContratadoService.buscarTodos();
-        model.addAttribute("servicioContratados", servicioContratados);
+
+        // obtener todos los contratos activos del mes actual
+
+        var serviciosActuales = servicioContratadoService.obtenerServiciosContratadosActivosDelMesActual();
+
+        // verificar si tienen que no tengan facturas en el mes actual
+        // todas las facturas de este mes
+        var facturasDelMes = facturaService
+                .obtenerFacturasDelMesActual();
+
+        // obtener servicios a facturar que no tengan facturas
+        List<ServicioContratado> serviciosAFacturar = servicioContratadoService.obtenerServiciosAFacturar(
+                serviciosActuales,
+                facturasDelMes);
+        System.out.println("servicios a facturas \n");
+        System.out.println(serviciosAFacturar);
+        model.addAttribute("servicioContratados", serviciosAFacturar);
         return "factura/facturarServicioContratado";
     }
 
@@ -248,7 +261,7 @@ public class FacturaController {
         var servicioContratado = servicioContratadoService.findByIdServicioContratado(servicioContratado_id);
         // facturar
         var factura = new Factura();
-        //   obtener empleado autenticado
+        // obtener empleado autenticado
         // 1. Obtener el username del usuario autenticado
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
