@@ -9,18 +9,31 @@
 <body>
     <section layout:fragment="content" class="p-4">
         <h2 class="mb-4">facturar Servicio Contratado</h2>
-      <form th:action="@{/facturas/facturarServicioContratado}" th:method="post">
-          <div class="form-group">
-            <label for="servicioContratado">Servicio Contratado</label>
-            <select name="servicioContratado_id" class="js-example-basic-single form-control" required>
-                <option value="">Seleccione un servicio contratado</option>
-                <option th:each="servicioContratado : ${servicioContratados}" th:value="${servicioContratado.idServicioContratado}"
-                    th:text="${servicioContratado.getCliente().getNombre()} + ' ' + ${servicioContratado.getCliente().getApellido()} + ' - ' + ${servicioContratado.getCliente().getCuit()}+ ' - ' + ${servicioContratado.getServicio().getNombreServicio()}">
-                </option>
-            </select>
+        <div class="card shadow-sm">
+            <div class="card-header  bg-white">
+                <div class="card-header">
+                    <a th:href="@{/facturas/}" class="btn btn-af-secondary btn-sm">
+                        <i class="bi bi-arrow-left"></i> Volver
+                    </a>
+                </div>
+            </div>
+            <div class="card-body  p-1">
+                <form th:action="@{/facturas/facturarServicioContratado}" th:method="post">
+                    <div class="form-group">
+                        <label for="servicioContratado">Servicio Contratado</label>
+                        <select name="servicioContratado_id" class="js-example-basic-single form-control" required>
+                            <option value="">Seleccione un servicio contratado</option>
+                            <option th:each="servicioContratado : ${servicioContratados}"
+                                th:value="${servicioContratado.idServicioContratado}"
+                                th:text="${servicioContratado.getCliente().getNombre()} + ' ' + ${servicioContratado.getCliente().getApellido()} + ' - ' + ${servicioContratado.getCliente().getCuit()}+ ' - ' + ${servicioContratado.getServicio().getNombreServicio()}">
+                            </option>
+                        </select>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-af-primary btn-sm">Facturar</button>
+                </form>
+            </div>
         </div>
-        <button type="submit">Enviar</button>
-      </form>
         <script>
             $(document).ready(function () {
                 $('.js-example-basic-single').select2();
