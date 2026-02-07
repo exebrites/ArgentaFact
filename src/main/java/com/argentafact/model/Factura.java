@@ -113,7 +113,7 @@ public class Factura {
         return total;
     }
     public BigDecimal getTotalConIva(){
-        return getTotal().add(getIva());
+        return getTotal();
     }
 
     public void setTotal(BigDecimal total) {
