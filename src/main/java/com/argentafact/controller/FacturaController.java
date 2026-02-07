@@ -290,7 +290,7 @@ public class FacturaController {
         // generar los detalles de factura
         var detalleFactura = new DetalleFactura(factura, servicioContratado.getServicio(),
                 servicioContratado.getPrecioAcordado());
-
+        servicioContratado.setFacturado(true);
         factura.AgregarDetalle(detalleFactura);
         facturaService.guardarFactura(factura);
         return "redirect:/facturas/";

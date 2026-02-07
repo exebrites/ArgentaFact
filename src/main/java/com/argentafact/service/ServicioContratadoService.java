@@ -47,7 +47,11 @@ public class ServicioContratadoService {
         for (var servicioContratado : serviciosActuales) {
             if (servicioContratado.getEstado() == EstadoServicioContratado.ACTIVO) {
                 if (servicioContratado.getFechaAlta().getMonth() == fechaActual.getMonth()) {
-                    serviciosAFacturar.add(servicioContratado);
+                    // si not servicioContratado.isFacturado =>
+                    if (!servicioContratado.isFacturado()) {
+
+                        serviciosAFacturar.add(servicioContratado);
+                    }
                 }
             }
         }
