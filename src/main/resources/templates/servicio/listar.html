@@ -8,8 +8,6 @@
 
 <body>
 
-
-
     <section layout:fragment="content" class="p-4">
         <h2 class="mb-4">Servicios</h2>
         <div class="card shadow-sm">
@@ -21,19 +19,19 @@
                     <thead class="table-light">
                         <tr>
                             <th>Nombre</th>
-                            <th>Descripcion</th>
+                            <th>Descripción</th>
                             <th>Precio</th>
-
-                            <th colspan="3" class="text-center">Acciones</th>
+                            <th class="text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="servicio : ${servicios}">
                             <td th:text="${servicio.nombreServicio}"></td>
                             <td th:text="${servicio.descripcion}"></td>
-                            <td th:text="${servicio.precio}"></td>
+                            <td>$<span th:text="${servicio.precio}"></span></td>
 
-                            <td><a class="btn btn-af-view btn-sm"
+                            <td class="text-center">
+                                <a class="btn btn-af-view btn-sm"
                                     th:href="@{/servicios/{id}(id=${servicio.idServicio}) }">Ver</a>
 
                                 <a class="btn btn-warning btn-sm"
@@ -44,32 +42,30 @@
                             </td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(servicios)}">
-                            <td colspan="7" class="text-center text-muted">
+                            <td colspan="4" class="text-center text-muted">
                                 No hay servicios registrados
                             </td>
                         </tr>
-
                     </tbody>
                 </table>
             </div>
 
-            <!-- Botones de navegación -->
-            <div class="btn-group d-flex justify-content-center">
-                <a th:href="@{/servicios/(pagina=0)}" class="btn btn-outline-secondary">Primera</a>
+            <div class="btn-group d-flex justify-content-center p-3">
+                <a th:href="@{/servicios/(pagina=0)}" class="btn btn-outline-secondary btn-sm">Primera</a>
 
                 <a th:if="${paginaActual > 0}" th:href="@{/servicios/(pagina=${paginaActual - 1})}"
-                    class="btn btn-outline-primary">←</a>
+                    class="btn btn-outline-primary btn-sm">←</a>
 
-                <button class="btn btn-primary" disabled>
+                <button class="btn btn-primary btn-sm" disabled>
                     <span th:text="${paginaActual + 1}"></span>
                 </button>
 
                 <a th:if="${paginaActual < totalPaginas - 1}" th:href="@{/servicios/(pagina=${paginaActual + 1})}"
-                    class="btn btn-outline-primary">→</a>
+                    class="btn btn-outline-primary btn-sm">→</a>
 
-                <a th:href="@{/servicios/(pagina=${totalPaginas - 1})}" class="btn btn-outline-secondary">Última</a>
+                <a th:href="@{/servicios/(pagina=${totalPaginas - 1})}" class="btn btn-outline-secondary btn-sm">Última</a>
             </div>
-
         </div>
     </section>
 </body>
+</html>

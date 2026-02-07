@@ -25,7 +25,7 @@ public class Cliente {
     private String nombre;
     private String apellido;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @NotBlank(message = "El CUIT/DNI es obligatorio")
     private String cuit;
 

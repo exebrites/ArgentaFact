@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,6 +17,9 @@ import com.argentafact.model.Cliente;
 import com.argentafact.model.CondicionFiscal;
 import com.argentafact.model.Departamento;
 import com.argentafact.service.ClienteService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -52,8 +56,17 @@ public class ClienteController {
     }
 
     @PostMapping("/")
-    public String agregarCliente(@ModelAttribute("cliente") Cliente cliente, Model model) {
-        clienteService.guardar(cliente);
+    public String guardar(@Valid Cliente cliente, BindingResult result, Model model) {
+        if (result.hasErrors())
+            return "cliente/nuevoCliente";
+
+        try {
+            clienteService.guardar(cliente);
+        } catch (Exception e) {
+            // Pasamos el mensaje de error del Service a la vista
+            model.addAttribute("errorCuit", e.getMessage());
+            return "cliente/nuevoCliente";
+        }
         return "redirect:/clientes/";
     }
 
@@ -73,10 +86,32 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public String actualizarCliente(@PathVariable("id") Integer id,
-            @ModelAttribute("cliente") Cliente cliente) {
-        clienteService.actualizarClientePorId((long) id, cliente);
+    public String actualizarCliente(@PathVariable("id") Long id,
+            @Valid @ModelAttribute("cliente") Cliente cliente,
+            BindingResult result,
+            Model model) {
+        
+        if (result.hasErrors()) {
+            prepareModelForForm(model); 
+            return "clientes/editarCliente";
+        }
+
+        try {
+            
+            clienteService.actualizarClientePorId(id, cliente);
+        } catch (Exception e) {
+            
+            model.addAttribute("errorCuit", e.getMessage());
+            prepareModelForForm(model);
+            return "clientes/editarCliente";
+        }
+
         return "redirect:/clientes/";
+    }
+
+    private void prepareModelForForm(Model model) {
+        model.addAttribute("localidades", Departamento.values());
+        model.addAttribute("condicionesFiscales", CondicionFiscal.values());
     }
 
     @GetMapping("/{id}/eliminar")

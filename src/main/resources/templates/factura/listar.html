@@ -34,7 +34,7 @@
                             <th>Tipo de factura</th>
                             <th>Total</th>
                             <th>Estado</th>
-                            <th colspan="4" class="text-center">Acciones</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,9 +44,6 @@
                             <td th:text="${factura.tipoFactura}"></td>
                             <td th:text="${factura.total}"></td>
                             <td th:text="${factura.estado}"></td>
-                            <td><a href="#" class="btn btn-af-view btn-sm">Ver</a>
-                            <td><a href="#" class="btn btn-af-edit btn-sm">Editar</a>
-                            <td><a href="#" class="btn btn-af-delete btn-sm">Eliminar</a>
                             <td><a th:href="@{/generar/{id}(id=${factura.idFactura})}" class="btn btn-af-view btn-sm">
                                     <i class="bi bi-file-earmark-pdf-fill"></i></a>
                             </td>
