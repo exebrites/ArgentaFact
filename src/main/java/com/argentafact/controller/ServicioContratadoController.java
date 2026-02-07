@@ -1,5 +1,9 @@
 package com.argentafact.controller;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,8 +21,6 @@ import com.argentafact.model.ServicioContratado;
 import com.argentafact.service.ClienteService;
 import com.argentafact.service.ServicioContratadoService;
 import com.argentafact.service.ServicioService;
-
- 
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -47,7 +49,8 @@ public class ServicioContratadoController {
             @RequestParam(defaultValue = "5") int tamano,
             Model model) {
 
-        Page<ServicioContratado> paginaServicioContratado = servicioContratadoService.buscarTodos(PageRequest.of(pagina, tamano));
+        Page<ServicioContratado> paginaServicioContratado = servicioContratadoService
+                .buscarTodos(PageRequest.of(pagina, tamano));
 
         model.addAttribute("serviciosContratados", paginaServicioContratado.getContent());
         model.addAttribute("paginaActual", pagina);
@@ -77,8 +80,32 @@ public class ServicioContratadoController {
         }
         var cliente = servicioContratado.getCliente();
         // crear el contrato por cada servicio y su cliente
-        for (LineaServicioContratado linea : detalle.getServiciosSeleccionados()) {
+        // TODO controlar que el contrato del mes para un cliente no tenga el mismo
+        // servicio contrato(duplicados)
+        // 1. todo obtener contratos del mes
+        // 2. obtener contratos del cliente
+        // 3. verificar que no se repita el servicio
+        var contratoCliente = cliente.getServicioContratados();
+        List<ServicioContratado> contratoMesActual = new ArrayList<>();
+        LocalDate fechaActual = LocalDate.now();
+        for (ServicioContratado contrato : contratoCliente) {
+            if (contrato.getFechaAlta().getMonth() == fechaActual.getMonth()
+                    && contrato.getEstado() == EstadoServicioContratado.ACTIVO) {
+                contratoMesActual.add(contrato);
+            }
+        }
 
+        for (ServicioContratado contrato : contratoMesActual) {
+            for (LineaServicioContratado linea : detalle.getServiciosSeleccionados()) {
+                if (contrato.getServicio().getIdServicio() == linea.getIdServicio()) {
+                    redirectAttributes.addFlashAttribute("mensajeError",
+                            "El servicio " + linea.getNombre() + " ya se encuentra contratado");
+                    return "redirect:/servicioContratado/crear";
+                }
+            }
+        }
+
+        for (LineaServicioContratado linea : detalle.getServiciosSeleccionados()) {
             var servicio = servicioService.findById(linea.getIdServicio());
             var nuevoServicioContratado = new ServicioContratado(cliente, servicio);
             servicioContratadoService.guardar(nuevoServicioContratado);
@@ -116,7 +143,6 @@ public class ServicioContratadoController {
 
         return "redirect:/servicioContratado/crear";
     }
- 
 
     @GetMapping("/eliminarDetalle/{idServicio}")
     public String eliminarDetalleFactura(@PathVariable Long idServicio,
