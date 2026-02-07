@@ -1,11 +1,35 @@
 ```mermaid
 classDiagram
 
+class ServicioContratado{
+ 
+   - idServicioContratado: Long
+   - fechaAlta:date
+   - fechaBaja:date
+   - estado: EstadoServicioContratado 
+   - precioAcordado: decimal
+   - facturado: boolean
+}
+
+class Usuario {
+    - id: Long
+    - username:String
+    - password:String
+    - confirmarPassword:String 
+    - email:String 
+    - activo:boolean
+}
+
+
 class Empleado {
-  -idEmpleado: Long
-  -nombre: string
-  -email: string
-  -contraseña: string
+  - idEmpleado: Long
+  - nombre: string
+  - apellido: string
+  - dni: string
+  - email: string
+  - fechaIngreso: date
+  - departamento: String
+  - cargo:String
 }
 
 class Cliente {
@@ -16,6 +40,7 @@ class Cliente {
   -direccion: string
   -telefono: string
   -condicionFiscal: CondicionFiscal
+  -localidad:Departamento
 }
 
 class Cuenta {
@@ -28,12 +53,10 @@ class Servicio {
   -nombreServicio: string
   -descripcion: string
   -precio: decimal
+  -iva: decimal
 }
 
-class Alicuota {
-    -idAlicuota: Long
-    -porcentaje: decimal
-}
+ 
 
 class Factura {
   -idFactura: Long
@@ -42,8 +65,8 @@ class Factura {
   -tipoFactura: TipoFactura
   -total: decimal
   -estado: EstadoFactura
-  +emitir()
-  +anular()
+  -saldoPendiente: decimal
+  -baja:boolean
 }
 
 class NotaCredito {
@@ -78,8 +101,6 @@ class EstadoFactura {
 
 class DetalleFactura {
   -idDetalleFactura: Long
-  -cantidad: int
-  -precioUnitario: decimal
   -subtotal: decimal
 }
 
@@ -87,7 +108,7 @@ class Pago {
   -idPago: Long
   -fecha: date
   -monto: decimal
-  -medioPago: TipoPago
+  -tipoPago: TipoPago
   -estadoPago: EstadoPago
 }
 
@@ -122,6 +143,33 @@ class CondicionFiscal {
   EXENTO
   CONSUMIDOR_FINAL
 }
+class EstadoServicioContratado {
+  <<enumeration>>
+  ACTIVO
+  SUSPENDIDO
+  CANCELADO
+}
+class Departamento{
+  <<enumeration>>
+    POSADAS 
+    OBERA 
+    IGUAZU 
+    Eldorado 
+    GUARANI 
+    SAN_IGNACIO 
+    CAINGUAS 
+    LIBERTADOR_GRAL_SAN_MARTIN 
+    APOSTOLES 
+    LEANDRO_N_ALEM 
+    GENERAL_MANUEL_BELGRANO 
+    MONTECERLO 
+    CANDELARIA 
+    SAN_PEDRO 
+    _25_DE_MAYO 
+    SAN_JAVIER 
+    CONCEPCION 
+}
+
 
 class HistoricoFiscal {
 - idHistorico: Long
@@ -129,6 +177,8 @@ class HistoricoFiscal {
 - referenciaFactura: Factura
 - referenciaEmpleado: Empleado
 - referenciaCliente: Cliente
+- descripcion: String
+- tipoOperacion: String
 }
 
 %% Relaciones
@@ -150,6 +200,8 @@ Factura "1" --> "*" NotaCredito : notasCredito
 Factura "1" --> "*" NotaDebito : notasDebito
 Factura "1" -->  "1" HistoricoFiscal
 
-Alicuota "1" --> "*" Servicio : alícuotas
+ServicioContratado "1" --> "*" Cliente: cliente
+ServicioContratado "1" --> "*" Servicio: servicio
 
+Usuario "1" --> "1" Empleado
 ```

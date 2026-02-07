@@ -31,7 +31,7 @@ public class Factura {
 
     private BigDecimal saldoPendiente;
 
-    // TODO agregar IVA
+     
     private boolean baja;
     
     @ManyToOne
