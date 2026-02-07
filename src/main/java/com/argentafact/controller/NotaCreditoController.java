@@ -1,5 +1,8 @@
 package com.argentafact.controller;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -7,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.argentafact.model.NotaCredito;
 import com.argentafact.service.FacturaService;
@@ -44,6 +48,7 @@ public class NotaCreditoController {
     @GetMapping("/crear")
     public String nuevoNotaCredito(Model model) {
         var notaCredito = new NotaCredito();
+        notaCredito.setFechaEmision(LocalDate.now());
         var listaFacturas = facturaService.obtenerFacturasActivas();
         var motivos = Motivo.values();
         model.addAttribute("notaCredito", notaCredito);
@@ -53,10 +58,27 @@ public class NotaCreditoController {
     }
 
     @PostMapping("/")
-    public String agregarNotaCredito(@ModelAttribute("notaCredito") NotaCredito notaCredito) {
-        // GENERAR NOTA DE CREDITO POR MONTO TOTAL DE LA FACTURA => CANCELAR FACTURA
-        notaCredito.setMonto(notaCredito.getFactura().getTotal());
-        notaCreditoService.guardarNotaCredito(notaCredito);
+    public String agregarNotaCredito(@ModelAttribute("notaCredito") NotaCredito notaCredito,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            notaCreditoService.guardarNotaCredito(notaCredito);
+        } catch (RuntimeException e) {
+            if (e.getMessage().equals("La factura no se puede afectar o ya está pagada completamente")) {
+
+                redirectAttributes.addFlashAttribute("error",
+                        "La factura no se puede afectar o ya esta pagada completamente");
+                return "redirect:/notaCredito/crear";
+            }
+            if (e.getMessage().equals("El monto de la nota de crédito no puede superar el saldo pendiente")) {
+                redirectAttributes.addFlashAttribute("error",
+                        "El monto de la nota de crédito no puede superar el saldo pendiente");
+                return "redirect:/notaCredito/crear";
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/notaCredito/crear";
+        }
         return "redirect:/notaCredito/";
     }
 

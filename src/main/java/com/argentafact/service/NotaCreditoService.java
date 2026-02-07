@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.argentafact.controller.Motivo;
 import com.argentafact.model.Cuenta;
 import com.argentafact.model.EstadoFactura;
 import com.argentafact.model.Factura;
@@ -26,9 +27,9 @@ public class NotaCreditoService {
     private final HistoricoFiscalRepository historicoFiscalRepository;
 
     public NotaCreditoService(NotaCreditoRepository notaCreditoRepository,
-                              FacturaService facturaService,
-                              CuentaService cuentaService,
-                              HistoricoFiscalRepository historicoFiscalRepository) {
+            FacturaService facturaService,
+            CuentaService cuentaService,
+            HistoricoFiscalRepository historicoFiscalRepository) {
         this.notaCreditoRepository = notaCreditoRepository;
         this.facturaService = facturaService;
         this.cuentaService = cuentaService;
@@ -36,15 +37,16 @@ public class NotaCreditoService {
     }
 
     @Transactional
-    public void guardarNotaCredito(NotaCredito notaCredito) {
+    public void guardarNotaCredito(NotaCredito notaCredito) throws RuntimeException {
         Factura factura = notaCredito.getFactura();
-
+        notaCredito.setMotivo(Motivo.DISMINUIR);
         if (!factura.estaActiva() || !factura.tieneSaldoPendiente()) {
             throw new RuntimeException("La factura no se puede afectar o ya está pagada completamente");
         }
 
         if (notaCredito.getMonto() == null) {
             notaCredito.setMonto(factura.getSaldoPendiente());
+
         } else if (notaCredito.getMonto().compareTo(factura.getSaldoPendiente()) > 0) {
             throw new RuntimeException("El monto de la nota de crédito no puede superar el saldo pendiente");
         }
@@ -54,7 +56,9 @@ public class NotaCreditoService {
         factura.aplicarPago(monto);
 
         if (factura.getSaldoPendiente().compareTo(BigDecimal.ZERO) <= 0) {
+            notaCredito.setMotivo(Motivo.CANCELACION);
             factura.setEstado(EstadoFactura.ANULADA);
+            factura.setBaja(true);
         }
 
         facturaService.actualizarFactura(factura);
