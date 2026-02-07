@@ -63,7 +63,6 @@ public class ClienteController {
         try {
             clienteService.guardar(cliente);
         } catch (Exception e) {
-            // Pasamos el mensaje de error del Service a la vista
             model.addAttribute("errorCuit", e.getMessage());
             return "cliente/nuevoCliente";
         }

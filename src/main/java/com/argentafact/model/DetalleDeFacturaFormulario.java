@@ -32,7 +32,6 @@ public class DetalleDeFacturaFormulario implements Serializable {
                 ", total=" + total +
                 '}';
     }
-    // ... otros métodos
 
     public void eliminarServicio(Long id) {
         Linea servicioAEliminar = null;

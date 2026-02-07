@@ -35,7 +35,7 @@ public class Pago {
 
     //Constructores
 
-    protected Pago() {}
+    public Pago() {}
 
     public Pago(BigDecimal monto, TipoPago tipoPago, Factura factura, Empleado empleado) {
         this.fecha = LocalDate.now();

@@ -1,8 +1,5 @@
 package com.argentafact.controller;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.argentafact.model.Cliente;
-import com.argentafact.model.CondicionFiscal;
-import com.argentafact.model.DetalleFactura;
+
 import com.argentafact.model.Empleado;
 import com.argentafact.model.EstadoFactura;
 import com.argentafact.model.EstadoServicioContratado;

@@ -15,7 +15,7 @@ import com.argentafact.model.Servicio;
 import com.argentafact.service.ServicioService;
 
 @Controller
-@SessionAttributes("detalle") // <-- ¡Aquí está la clave!
+@SessionAttributes("detalle") 
 public class DetalleFacturaController {
     @Autowired
     private ServicioService servicioService;

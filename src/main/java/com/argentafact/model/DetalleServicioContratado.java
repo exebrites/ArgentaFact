@@ -32,7 +32,6 @@ public class DetalleServicioContratado implements Serializable {
                 ", total=" + total +
                 '}';
     }
-    // ... otros métodos
 
     public void eliminarServicio(Long id) {
         LineaServicioContratado servicioAEliminar = null;

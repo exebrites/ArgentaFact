@@ -25,7 +25,7 @@ public class HistoricoFiscalController {
     @GetMapping({ "", "/" })
     public String listar(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "5") int size,
             Model model) {
 
         Page<HistoricoFiscal> historicosPage = service.buscarTodos(PageRequest.of(page, size));
