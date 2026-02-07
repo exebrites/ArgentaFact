@@ -1,9 +1,14 @@
 package com.argentafact.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.persistence.GenerationType;
@@ -34,6 +39,9 @@ public class Cliente {
 
     @Column(nullable = true)
     private Departamento localidad;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ServicioContratado> servicioContratados = new ArrayList<>();
 
     public Cliente() {
     }
@@ -113,12 +121,21 @@ public class Cliente {
     public void setLocalidad(Departamento localidad) {
         this.localidad = localidad;
     }
+    
 
     @Override
     public String toString() {
         return "Cliente [idCliente=" + idCliente + ", nombre=" + nombre + ", apellido=" + apellido + ", cuil=" + cuit
                 + ", direccion=" + direccion + ", telefono=" + telefono + ", condicionFiscal="
                 + condicionFiscal + "]";
+    }
+
+    public List<ServicioContratado> getServicioContratados() {
+        return servicioContratados;
+    }
+
+    public void setServicioContratados(List<ServicioContratado> servicioContratados) {
+        this.servicioContratados = servicioContratados;
     }
 
 }
