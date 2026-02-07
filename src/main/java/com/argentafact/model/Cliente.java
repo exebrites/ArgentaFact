@@ -52,7 +52,6 @@ public class Cliente {
         this.nombre = nombre.toUpperCase().trim();
         this.apellido = apellido.toUpperCase().trim();
         this.cuit = cuit;
-        
 
         this.condicionFiscal = condicionFiscal;
     }
@@ -121,7 +120,6 @@ public class Cliente {
     public void setLocalidad(Departamento localidad) {
         this.localidad = localidad;
     }
-    
 
     @Override
     public String toString() {
@@ -138,4 +136,7 @@ public class Cliente {
         this.servicioContratados = servicioContratados;
     }
 
+    public String getFullName() {
+        return this.nombre + " " + this.apellido;
+    }
 }

@@ -297,10 +297,10 @@ public class FacturaController {
         try {
             facturaService.guardarFactura(factura);
         } catch (IllegalStateException e) {
-            if (e.getMessage().equals("El cliente no posee cuenta")) {
-                redirectAttributes.addFlashAttribute("error", "El cliente no posee cuenta");
-                return "redirect:/facturas/facturarServicioContratado";
-            }
+
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/facturas/facturarServicioContratado";
+
         }
         return "redirect:/facturas/";
     }

@@ -54,7 +54,8 @@ public class FacturaService {
         if (esNueva) {
             Cuenta cuenta = cuentaRepository
                     .findByClienteIdCliente(factura.getCliente().getIdCliente())
-                    .orElseThrow(() -> new IllegalStateException("El cliente no posee cuenta"));
+                    .orElseThrow(() -> new IllegalStateException(
+                            "El cliente no posee cuenta " + factura.getCliente().getFullName()));
 
             cuenta.acreditar(factura.getTotal());
             cuentaRepository.save(cuenta);
@@ -135,7 +136,8 @@ public class FacturaService {
         return facturaActuales;
     }
 
-    public void generarFacturasMasivas(List<ServicioContratado> serviciosAFacturar, Empleado empleado) {
+    public void generarFacturasMasivas(List<ServicioContratado> serviciosAFacturar, Empleado empleado)
+            throws IllegalStateException {
 
         // obtener los clientes únicos de los servicios a facturar
         List<Cliente> clientes = new ArrayList<>();
@@ -168,6 +170,7 @@ public class FacturaService {
                 var detalleFactura = new DetalleFactura(factura,
                         servicioContratado.getServicio(),
                         servicioContratado.getPrecioAcordado());
+                servicioContratado.setFacturado(true);
                 factura.AgregarDetalle(detalleFactura);
                 totalServicos = totalServicos.add(servicioContratado.getPrecioAcordado());
             }

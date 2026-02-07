@@ -10,9 +10,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.argentafact.model.Cliente;
 import com.argentafact.model.CondicionFiscal;
@@ -34,51 +36,61 @@ import com.argentafact.service.ServicioService;
 @Controller
 @RequestMapping("/facturacion-masiva")
 public class FacturacionMasivaController {
-    @Autowired
-    private ServicioContratadoService servicioContratadoService;
-    @Autowired
-    private FacturaService facturaService;
-    @Autowired
-    private ClienteService clienteService;
-    @Autowired
-    private ServicioService servicioService;
-    @Autowired
-    private EmpleadoService empleadoService;
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+        @Autowired
+        private ServicioContratadoService servicioContratadoService;
+        @Autowired
+        private FacturaService facturaService;
+        @Autowired
+        private ClienteService clienteService;
+        @Autowired
+        private ServicioService servicioService;
+        @Autowired
+        private EmpleadoService empleadoService;
+        @Autowired
+        private UsuarioRepository usuarioRepository;
 
-    @GetMapping("/")
-    public String facturarMasivo() {
-        // obtener todos los contratos activos del mes actual
+        @GetMapping("/")
+        public String facturarMasivo(Model model, RedirectAttributes redirectAttributes) {
+                // obtener todos los contratos activos del mes actual
 
-        var serviciosActuales = servicioContratadoService.obtenerServiciosContratadosActivosDelMesActual();
+                var serviciosActuales = servicioContratadoService.obtenerServiciosContratadosActivosDelMesActual();
 
-        // verificar si tienen que no tengan facturas en el mes actual
-        // todas las facturas de este mes
-        var facturasDelMes = facturaService
-                .obtenerFacturasDelMesActual();
+                // verificar si tienen que no tengan facturas en el mes actual
+                // todas las facturas de este mes
+                var facturasDelMes = facturaService
+                                .obtenerFacturasDelMesActual();
 
-        // obtener servicios a facturar que no tengan facturas
-        List<ServicioContratado> serviciosAFacturar = servicioContratadoService.obtenerServiciosAFacturar(
-                serviciosActuales,
-                facturasDelMes);
-        // generar facturas masivas
-        // obtener el empleado autenticado y asignarlo a la factura
+                // obtener servicios a facturar que no tengan facturas
+                List<ServicioContratado> serviciosAFacturar = servicioContratadoService.obtenerServiciosAFacturar(
+                                serviciosActuales,
+                                facturasDelMes);
+                // generar facturas masivas
+                // obtener el empleado autenticado y asignarlo a la factura
 
-        // 1. Obtener el username del usuario autenticado
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
+                // 1. Obtener el username del usuario autenticado
+                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                String username = auth.getName();
 
-        // 2. Buscar el usuario en la BD
-        Usuario usuario = usuarioRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+                // 2. Buscar el usuario en la BD
+                Usuario usuario = usuarioRepository.findByUsername(username)
+                                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
-        // 3. Obtener el empleado relacionado
-        Empleado empleado = usuario.getEmpleado();
+                // 3. Obtener el empleado relacionado
+                Empleado empleado = usuario.getEmpleado();
 
-        facturaService.generarFacturasMasivas(serviciosAFacturar, empleado);
+                if (serviciosAFacturar.isEmpty()) {
+                        redirectAttributes.addFlashAttribute("info", "No  hay servicios para facturar ");
+                        return "redirect:/facturas/";
+                }
+                try {
+                        facturaService.generarFacturasMasivas(serviciosAFacturar, empleado);
+                } catch (IllegalStateException e) {
 
-        return "redirect:/facturas/";
-    }
+                        redirectAttributes.addFlashAttribute("error", e.getMessage());
+                        return "redirect:/facturas/";
+
+                }
+                return "redirect:/facturas/";
+        }
 
 }
