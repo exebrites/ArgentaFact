@@ -2,6 +2,7 @@ package com.argentafact.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -77,10 +78,13 @@ public class ServicioContratadoService {
                     }
                     if (!encontrado) {
                         // serviciosAFacturar.add(servicioContrato);
-                        // TODO generar factura para este servicio
-                        System.out.println("Generando factura para el servicio: " +
-                                servicioContrato.getServicio().getNombreServicio());
-                        serviciosAFacturar.add(servicioContrato);
+                        // generar factura para este servicio
+                        if (servicioContrato.getEstado() == EstadoServicioContratado.ACTIVO) {
+
+                            System.out.println("Generando factura para el servicio: " +
+                                    servicioContrato.getServicio().getNombreServicio());
+                            serviciosAFacturar.add(servicioContrato);
+                        }
                     }
                 }
             }
@@ -88,13 +92,17 @@ public class ServicioContratadoService {
         if (serviciosAFacturar.isEmpty()) {
             serviciosAFacturar = serviciosActuales;
         }
-
+        // eliminar duplicados
+        // eliminar duplicados
+        HashSet<ServicioContratado> serviciosAFacturarHS = new HashSet<>(serviciosAFacturar);
+        serviciosAFacturar.clear();
+        serviciosAFacturar.addAll(serviciosAFacturarHS);
         return serviciosAFacturar;
 
     }
 
     public Page<ServicioContratado> buscarTodos(PageRequest of) {
-        //   obtener contratos activos
+        // obtener contratos activos
         var contratos = this.servicioContratadoRepository.findAll(of);
         List<ServicioContratado> contratosActivosList = contratos.stream()
                 .filter(servicioContratado -> servicioContratado.getEstado() == EstadoServicioContratado.ACTIVO)
