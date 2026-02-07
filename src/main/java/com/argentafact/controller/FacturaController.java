@@ -257,7 +257,8 @@ public class FacturaController {
     }
 
     @PostMapping("/facturarServicioContratado")
-    public String guardarFacturaPorServicio(@ModelAttribute("servicioContratado_id") Long servicioContratado_id) {
+    public String guardarFacturaPorServicio(@ModelAttribute("servicioContratado_id") Long servicioContratado_id,
+            RedirectAttributes redirectAttributes) {
         var servicioContratado = servicioContratadoService.findByIdServicioContratado(servicioContratado_id);
         // facturar
         var factura = new Factura();
@@ -292,7 +293,15 @@ public class FacturaController {
                 servicioContratado.getPrecioAcordado());
         servicioContratado.setFacturado(true);
         factura.AgregarDetalle(detalleFactura);
-        facturaService.guardarFactura(factura);
+
+        try {
+            facturaService.guardarFactura(factura);
+        } catch (IllegalStateException e) {
+            if (e.getMessage().equals("El cliente no posee cuenta")) {
+                redirectAttributes.addFlashAttribute("error", "El cliente no posee cuenta");
+                return "redirect:/facturas/facturarServicioContratado";
+            }
+        }
         return "redirect:/facturas/";
     }
 

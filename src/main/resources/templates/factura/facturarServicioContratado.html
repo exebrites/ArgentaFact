@@ -8,6 +8,12 @@
 
 <body>
     <section layout:fragment="content" class="p-4">
+
+        <div th:if="${error != null}" class="alert alert-danger">
+            <p th:text="${error}"></p>
+        </div>
+
+
         <h2 class="mb-4">facturar Servicio Contratado</h2>
         <div class="card shadow-sm">
             <div class="card-header  bg-white">
