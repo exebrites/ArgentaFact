@@ -257,7 +257,8 @@ public class FacturaController {
     }
 
     @PostMapping("/facturarServicioContratado")
-    public String guardarFacturaPorServicio(@ModelAttribute("servicioContratado_id") Long servicioContratado_id) {
+    public String guardarFacturaPorServicio(@ModelAttribute("servicioContratado_id") Long servicioContratado_id,
+            RedirectAttributes redirectAttributes) {
         var servicioContratado = servicioContratadoService.findByIdServicioContratado(servicioContratado_id);
         // facturar
         var factura = new Factura();
@@ -290,9 +291,17 @@ public class FacturaController {
         // generar los detalles de factura
         var detalleFactura = new DetalleFactura(factura, servicioContratado.getServicio(),
                 servicioContratado.getPrecioAcordado());
-
+        servicioContratado.setFacturado(true);
         factura.AgregarDetalle(detalleFactura);
-        facturaService.guardarFactura(factura);
+
+        try {
+            facturaService.guardarFactura(factura);
+        } catch (IllegalStateException e) {
+
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/facturas/facturarServicioContratado";
+
+        }
         return "redirect:/facturas/";
     }
 

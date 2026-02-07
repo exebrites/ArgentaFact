@@ -33,6 +33,8 @@ public class ServicioContratado {
     private EstadoServicioContratado estado;
     private BigDecimal precioAcordado;
 
+    private boolean facturado = false;
+
     // periodicidad (mensual, anual)
     public ServicioContratado() {
     }
@@ -116,6 +118,14 @@ public class ServicioContratado {
                 ", estado=" + estado +
                 ", precioAcordado=" + precioAcordado +
                 '}';
+    }
+
+    public boolean isFacturado() {
+        return facturado;
+    }
+
+    public void setFacturado(boolean facturado) {
+        this.facturado = facturado;
     }
 
 }

@@ -8,6 +8,14 @@
 
 <body>
     <section layout:fragment="content" class="p-4">
+        <div th:if="${error != null}" class="alert alert-danger">
+            <p th:text="${error}"></p>
+        </div>
+        <div th:if="${info != null}" class="alert alert-info">
+            <p th:text="${info}"></p>
+        </div>
+
+
         <h2 class="mb-4">Facturas</h2>
 
         <div class="card shadow-sm">
@@ -43,7 +51,7 @@
                                     <i class="bi bi-file-earmark-pdf-fill"></i></a>
                             </td>
                         </tr>
-                          <tr th:if="${#lists.isEmpty(facturas)}">
+                        <tr th:if="${#lists.isEmpty(facturas)}">
                             <td colspan="7" class="text-center text-muted">
                                 No hay facturas registrados
                             </td>

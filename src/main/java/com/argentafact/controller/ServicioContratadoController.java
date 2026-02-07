@@ -171,6 +171,12 @@ public class ServicioContratadoController {
     @PostMapping("/{id}/cancelarServicioContratado")
     public String postMethodName(@PathVariable Long id, Model model) {
         var servicioContratado = servicioContratadoService.findById(id);
+
+        if (servicioContratado.isFacturado()) {
+            model.addAttribute("mensajeError", "No se puede cancelar el servicio contratado porque ya fue facturado");
+            model.addAttribute("servicioContratado", servicioContratado);
+            return "servicioContratado/cancelarServicioContratado";
+        }
         servicioContratado.setEstado(EstadoServicioContratado.CANCELADO);
         servicioContratadoService.guardar(servicioContratado);
         return "redirect:/servicioContratado/";
