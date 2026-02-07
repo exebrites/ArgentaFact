@@ -22,6 +22,7 @@
                             <th>Cliente</th>
                             <th>Servicio</th>
                             <th>Precio</th>
+                            <th>Estado</th>
                             <th>Fecha de contratacion</th>
                             <th colspan="3" class="text-center">Acciones</th>
                         </tr>
@@ -32,6 +33,7 @@
                             <th th:text="${servicioContratado.getCliente().getNombre()}"></th>
                             <th th:text="${servicioContratado.getServicio().getNombreServicio()}"></th>
                             <td th:text="'$' + ${servicioContratado.getPrecioAcordado()}"></td>
+                            <td th:text="${servicioContratado.getEstado()}"></td>
                             <td th:text="${servicioContratado.getFechaAltaFormateada()}"></td>
                             <td><a th:href="@{/servicioContratado/{id}/verServicioContratado(id=${servicioContratado.getIdServicioContratado()})}"
                                     class="btn btn-sm btn-primary">Ver</a>
