@@ -29,11 +29,7 @@
                             <td th:text="${notaCredito.getFechaFormateada()}"></td>
                             <td th:text="${notaCredito.monto}"></td>
                             <td th:text="${notaCredito.motivo}"></td>
-                            <td><a class="btn btn-af-view btn-sm">Ver</a>
                             <td>
-                                <a class="btn btn-warning btn-sm">Editar</a>
-
-                                <a class="btn btn-danger btn-sm">Eliminar</a>
 
                                 <a th:href="@{/generar/notaCredito/{id}(id=${notaCredito.idNotaCredito})}"
                                     class="btn btn-af-view btn-sm"> <i class="bi bi-file-earmark-pdf-fill"></i></a>

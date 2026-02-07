@@ -266,7 +266,7 @@ public class PdfService {
             cell = new PdfPCell(new Phrase("-", NORMAL_FONT));
             table.addCell(cell);
 
-            cell = new PdfPCell(new Phrase(notaCredito.getMotivo(), NORMAL_FONT));
+            cell = new PdfPCell(new Phrase(notaCredito.getMotivo().toString(), NORMAL_FONT));
             table.addCell(cell);
 
             cell = new PdfPCell(new Phrase(String.format("$%.2f",

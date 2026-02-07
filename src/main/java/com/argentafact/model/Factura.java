@@ -173,7 +173,7 @@ public class Factura {
         return DateFormatterUtil.format(fechaEmision);
     }
     public String getNumeroFacturaConMontoFormateado(){
-        return this.numeroFactura + " - $" + this.total;
+        return this.numeroFactura + " - $" + this.saldoPendiente;
     }
 
     public void aplicarPago(BigDecimal monto) {

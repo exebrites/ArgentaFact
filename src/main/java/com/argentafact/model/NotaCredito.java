@@ -2,6 +2,8 @@ package com.argentafact.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
+import com.argentafact.controller.Motivo;
 import com.argentafact.utils.DateFormatterUtil;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,9 +21,9 @@ public class NotaCredito {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idNotaCredito;
 
-    private LocalDate fechaEmision;
+    private LocalDate fechaEmision = LocalDate.now();
     private BigDecimal monto;
-    private String motivo;
+    private Motivo motivo;
 
     @ManyToOne
     @JoinColumn(name = "id_factura", nullable = false)
@@ -30,7 +32,7 @@ public class NotaCredito {
     public NotaCredito() {
     }
 
-    public NotaCredito(LocalDate fechaEmision, BigDecimal monto, String motivo) {
+    public NotaCredito(LocalDate fechaEmision, BigDecimal monto, Motivo motivo) {
         this.fechaEmision = fechaEmision == null ? LocalDate.now() : fechaEmision;
         this.monto = monto;
         this.motivo = motivo;
@@ -60,11 +62,11 @@ public class NotaCredito {
         this.monto = monto;
     }
 
-    public String getMotivo() {
+    public Motivo getMotivo() {
         return motivo;
     }
 
-    public void setMotivo(String motivo) {
+    public void setMotivo(Motivo motivo) {
         this.motivo = motivo;
     }
 
