@@ -4,8 +4,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -92,7 +94,13 @@ public class ServicioContratadoService {
     }
 
     public Page<ServicioContratado> buscarTodos(PageRequest of) {
-        return this.servicioContratadoRepository.findAll(of);
+        //   obtener contratos activos
+        var contratos = this.servicioContratadoRepository.findAll(of);
+        List<ServicioContratado> contratosActivosList = contratos.stream()
+                .filter(servicioContratado -> servicioContratado.getEstado() == EstadoServicioContratado.ACTIVO)
+                .collect(Collectors.toList());
+        Page<ServicioContratado> contratosActivos = new PageImpl<>(contratosActivosList);
+        return contratosActivos;
     }
 
     public ServicioContratado findById(Long id) {

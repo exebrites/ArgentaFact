@@ -47,11 +47,11 @@ public class ServicioContratadoController {
             @RequestParam(defaultValue = "5") int tamano,
             Model model) {
 
-        Page<ServicioContratado> paginaClientes = servicioContratadoService.buscarTodos(PageRequest.of(pagina, tamano));
+        Page<ServicioContratado> paginaServicioContratado = servicioContratadoService.buscarTodos(PageRequest.of(pagina, tamano));
 
-        model.addAttribute("serviciosContratados", paginaClientes.getContent());
+        model.addAttribute("serviciosContratados", paginaServicioContratado.getContent());
         model.addAttribute("paginaActual", pagina);
-        model.addAttribute("totalPaginas", paginaClientes.getTotalPages());
+        model.addAttribute("totalPaginas", paginaServicioContratado.getTotalPages());
 
         return "servicioContratado/listar";
     }

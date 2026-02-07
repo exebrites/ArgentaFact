@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import com.argentafact.model.Servicio;
@@ -31,6 +32,8 @@ public class ServicioService {
     }
 
     public Page<Servicio> buscarTodos(PageRequest of) {
+    
+    
         return servicioRepository.findAll(of);
     }
 
