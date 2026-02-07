@@ -26,7 +26,10 @@ public class ClienteService {
         return clienteRepository.findAll();
     }  
 
-    public void guardar(Cliente cliente) {
+    public void guardar(Cliente cliente) throws Exception {
+        if (clienteRepository.existsByCuit(cliente.getCuit())) {
+            throw new Exception("El CUIT/DNI ya se encuentra registrado.");
+        }
         clienteRepository.save(cliente);
     }
 
@@ -47,19 +50,24 @@ public class ClienteService {
         return clienteRepository.findByIdClienteNotIn(idsConCuenta);
     }
 
-    public void actualizarClientePorId(Long id, Cliente cliente) {
-         clienteRepository.findById(id).
-            ifPresent(clienteObtenida -> {
-                clienteObtenida.setNombre(cliente.getNombre());
-                clienteObtenida.setApellido(cliente.getApellido());
-                clienteObtenida.setCuit(cliente.getCuit());
-                clienteObtenida.setDireccion(cliente.getDireccion());
-                clienteObtenida.setTelefono(cliente.getTelefono());
-                clienteObtenida.setLocalidad(cliente.getLocalidad());
-                clienteObtenida.setCondicionFiscal(cliente.getCondicionFiscal());
-                clienteRepository.save(clienteObtenida);
-            });
+    public void actualizarClientePorId(Long id, Cliente cliente) throws Exception {
+        
+        if (clienteRepository.existsByCuitAndIdClienteNot(cliente.getCuit(), id)) {
+            throw new Exception("El CUIT/DNI ya pertenece a otro cliente.");
+        }
+
+        clienteRepository.findById(id).ifPresent(clienteObtenida -> {
+            clienteObtenida.setNombre(cliente.getNombre());
+            clienteObtenida.setApellido(cliente.getApellido());
+            clienteObtenida.setCuit(cliente.getCuit());
+            clienteObtenida.setDireccion(cliente.getDireccion());
+            clienteObtenida.setTelefono(cliente.getTelefono());
+            clienteObtenida.setLocalidad(cliente.getLocalidad());
+            clienteObtenida.setCondicionFiscal(cliente.getCondicionFiscal());
+            clienteRepository.save(clienteObtenida);
+        });
     }
+
     public void eliminarClientePorId(Long id ){
         clienteRepository.deleteById(id);
     }

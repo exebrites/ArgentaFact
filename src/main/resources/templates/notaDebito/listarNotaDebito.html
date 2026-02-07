@@ -21,31 +21,17 @@
                             <th>Factura</th>
                             <th>Monto</th>
                             <th>Motivo</th>
-                            <th colspan="4" class="text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="notaDebito : ${listaNotaDebito}">
-                            <!-- Factura: número y cliente -->
-                            <td
-                                th:text="${notaDebito.factura.numeroFactura + ' - ' + notaDebito.factura.cliente.nombre + ' ' + notaDebito.factura.cliente.apellido}">
+                            <td th:text="${notaDebito.factura.numeroFactura + ' - ' + notaDebito.factura.cliente.nombre + ' ' + notaDebito.factura.cliente.apellido}">
                             </td>
                             <td th:text="${notaDebito.monto}"></td>
                             <td th:text="${notaDebito.motivo}"></td>
-                            <td><a class="btn btn-af-view btn-sm">Ver</a></td>
-                            <td>
-                                <a class="btn btn-warning btn-sm">Editar</a>
-
-                                <a class="btn btn-danger btn-sm">Eliminar</a>
-
-                                <a th:href="@{/generar/notaDebito/{id}(id=${notaDebito.idNotaDebito})}"
-                                    class="btn btn-af-view btn-sm">
-                                    <i class="bi bi-file-earmark-pdf-fill"></i>
-                                </a>
-                            </td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(listaNotaDebito)}">
-                            <td colspan="5" class="text-center text-muted">
+                            <td colspan="3" class="text-center text-muted">
                                 No hay registros de notas de débito
                             </td>
                         </tr>
@@ -54,7 +40,6 @@
             </div>
         </div>
 
-        <!-- Botones de navegación -->
         <div class="btn-group d-flex justify-content-center mt-3">
             <a th:href="@{/notaDebito/(pagina=0)}" class="btn btn-outline-secondary">Primera</a>
 

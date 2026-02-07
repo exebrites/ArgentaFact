@@ -7,59 +7,47 @@
 </head>
 
 <body>
-
     <section layout:fragment="content" class="p-4">
-
         <h2 class="mb-4">Crear Cuenta</h2>
 
-
         <div class="card shadow-sm">
-            <div class="card-header bg-white ">
-                <a th:href="@{/clientes/}" class="btn btn-af-secondary btn-sm">
+            <div class="card-header bg-white">
+                <a th:href="@{/cuentas/}" class="btn btn-af-secondary btn-sm">
                     <i class="bi bi-arrow-left"></i> Volver
                 </a>
             </div>
 
-
-            <div class="card-body p-1">
+            <div class="card-body p-0">
                 <form th:action="@{/cuentas/guardar}" method="post">
-
-                    <div class="mb-3">
-                        <label class="form-label">Cliente</label>
-
-                        <select class="js-example-basic-single form-control" id="cliente" name="idCliente" required>
-
-                            <option value="">Seleccione un cliente</option>
-
-                            <option th:each="cliente : ${clientes}" th:value="${cliente.idCliente}"
-                                th:text="${cliente.idCliente + ' - ' + cliente.nombre + ' ' + cliente.apellido}">
-                            </option>
-
-                        </select>
+                    <div class="p-4">
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Cliente</strong></label>
+                            <select class="js-example-basic-single form-control" id="cliente" name="idCliente" required>
+                                <option value="">Seleccione un cliente</option>
+                                <option th:each="cliente : ${clientes}" th:value="${cliente.idCliente}"
+                                    th:text="${cliente.idCliente + ' - ' + cliente.nombre + ' ' + cliente.apellido}">
+                                </option>
+                            </select>
+                        </div>
                     </div>
 
-                    <button type="submit" class="btn btn-success mt-3">
-                        Crear cuenta
-                    </button>
-
-                    <a th:href="@{/cuentas/}" class="btn btn-secondary mt-3">
-                        Cancelar
-                    </a>
-
+                    <div class="card-footer bg-light border-top-0">
+                        <button type="submit" class="btn btn-af-primary">
+                            Crear cuenta
+                        </button>
+                        <a th:href="@{/cuentas/}" class="btn btn-secondary">
+                            Cancelar
+                        </a>
+                    </div>
                 </form>
-
             </div>
         </div>
 
         <script>
             $(document).ready(function () {
-                $('.js-example-basic-single').select2();
+                $('.js-example-basic-single').select2({ width: '100%' });
             });
         </script>
-
     </section>
-
-
 </body>
-
 </html>

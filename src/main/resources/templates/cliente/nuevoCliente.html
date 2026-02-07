@@ -37,11 +37,13 @@
                     <div class="mb-3">
                         <label for="cuit" class="form-label">(*) CUIT/DNI</label>
                         <input type="text" class="form-control" id="cuit" name="cuit" th:field="*{cuit}"
+                            th:classappend="${#fields.hasErrors('cuit') || errorCuit != null} ? 'is-invalid' : ''"
                             placeholder="Ingrese su CUIT" required />
-                        <div th:if="${#fields.hasErrors('cuit')}" th:class="invalid-feedback">
-                            <div th:each="error : ${#fields.errors('cuit')}">
-                                <span th:text="${error}"></span>
-                            </div>
+                    
+                        <div class="invalid-feedback" th:if="${errorCuit}" th:text="${errorCuit}"></div>
+                    
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('cuit')}">
+                            <span th:errors="*{cuit}"></span>
                         </div>
                     </div>
 
@@ -81,7 +83,9 @@
                                 th:text="${condicion.descripcion}"></option>
                         </select>
                     </div>
-                        <button type="submit" class="btn btn-success">Crear</button>
+                        <button type="submit" class="btn btn-primary me-2">
+                           Crear
+                        </button>
                 </form>
 
             </div>

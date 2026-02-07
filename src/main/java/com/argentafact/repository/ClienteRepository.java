@@ -13,4 +13,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     List<Cliente> findByIdClienteNotIn(List<Long> idsClientesConCuenta);
 
+    boolean existsByCuit(String cuit);
+    
+    boolean existsByCuitAndIdClienteNot(String cuit, Long idCliente);
+
 }
