@@ -161,8 +161,19 @@ public class Factura {
     }
 
     public BigDecimal getIva(){
-        return getTotal().multiply(BigDecimal.valueOf(0.21));
+        BigDecimal totalIva = BigDecimal.ZERO;
+        for (DetalleFactura detalleFactura : detalleFacturas) {
+            // obtener detalle precio e iva 
+            // calcular el iva y sumar
+            BigDecimal ivaCobrar =   detalleFactura.getServicio().getIva().multiply(detalleFactura.getServicio().getPrecio());
+            totalIva = totalIva.add(ivaCobrar);
+        }
+        return totalIva;
     }
+
+    
+
+
     public boolean isBaja() {
         return baja;
     }

@@ -330,6 +330,8 @@ public class PdfService {
                 cell.setBorder(Rectangle.NO_BORDER);
                 table.addCell(cell);
 
+               
+
                 cell = new PdfPCell(new Phrase(String.format("$%.2f", factura.getIva()),
                         BOLD_FONT));
                 cell.setBorder(Rectangle.NO_BORDER);
