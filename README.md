@@ -1,8 +1,12 @@
 
-# **POO2-Integrador: ArgentaFact**
+# **ArgentaFact** - *Sistema integral de facturación y gestión de cuentas*
+
+
 
 ## **Descripción del Proyecto**
 ArgentaFact es un sistema diseñado para la gestión integral de cuentas y facturación. Su funcionalidad principal radica en centralizar la administración de clientes, la emisión de comprobantes de acuerdo con la normativa argentina actual y el control detallado de los pagos vinculados a cada cuenta.
+![ArgentaFact Logo](/docs/logo_argentaFact.png)
+
 
 El sistema está desarrollado en **Java**, utilizando el framework **Spring Boot** para el backend, y **PostgreSQL** como base de datos relacional.
 
