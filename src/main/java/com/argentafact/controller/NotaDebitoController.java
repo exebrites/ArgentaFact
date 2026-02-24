@@ -1,5 +1,8 @@
 package com.argentafact.controller;
 
+import java.math.BigDecimal;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,9 +44,16 @@ public class NotaDebitoController {
     public String nuevoNotaDebito(Model model) {
         var notaDebito = new NotaDebito();
         var listaFacturas = facturaService.obtenerFacturasActivas();
+        // filtrar 
+        
+        var listaFacturasFiltradas = listaFacturas.stream()
+                .filter(factura -> factura.getSaldoPendiente().compareTo(BigDecimal.ZERO) > 0)
+                .collect(Collectors.toList());
+
+
         var motivos = Motivo.values();
         model.addAttribute("notaDebito", notaDebito);
-        model.addAttribute("listaFacturas", listaFacturas);
+        model.addAttribute("listaFacturas", listaFacturasFiltradas);
         model.addAttribute("motivos", motivos);
         return "notaDebito/nuevoNotaDebito";
     }

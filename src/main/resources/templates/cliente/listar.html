@@ -38,8 +38,8 @@
                                 <a th:href="@{/clientes/{id}/editar(id=${cliente.idCliente})}"
                                     class="btn btn-af-edit btn-sm">Editar</a>
                                     
-                                <a th:href="@{/clientes/{id}/eliminar(id=${cliente.idCliente})}"
-                                    class="btn btn-af-delete btn-sm">Eliminar</a>
+                                <!-- <a th:href="@{/clientes/{id}/eliminar(id=${cliente.idCliente})}"
+                                    class="btn btn-af-delete btn-sm">Eliminar</a> -->
                             </td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(clientes)}">
