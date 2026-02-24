@@ -68,10 +68,5 @@ mvn clean install
 
 ---
 
-## **Contribuciones**
-Este proyecto es parte del trabajo integrador de la materia **Programación Orientada a Objetos II**. Si deseas contribuir, por favor abre un **issue** o envía un **pull request** con tus mejoras o sugerencias.
-
----
-
 ## **Licencia**
 El proyecto ArgentaFact está disponible bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
